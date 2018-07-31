@@ -833,12 +833,6 @@
               </div>
           </form>
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-
       </div>
     </div>
   </div>
@@ -856,28 +850,64 @@
         <!-- Modal body -->
         <div class="modal-body">
            <form>
-
+                <div class="form-group">
+                  <label class="control-label" >First seen:</label>
+                  <input type="datetime-local" class="form-control" name="first_seen">
+              </div>
+               <div class="form-group">
+                  <label class="control-label" >Last seen:</label>
+                  <input type="datetime-local" class="form-control" name="last_seen">
+              </div>
+               <div class="form-group">
+                  <label class="control-label" >Count:</label>
+                  <input type="number" class="form-control" name="count">
+              </div>
+               <div class="form-group">
+                  <label class="control-label" >Sighting of reference:</label>
+                  <input type="text" class="form-control" name="sighting_of_ref">
+              </div>
+               <div class="form-group">
+                  <label class="control-label" >Observed data references:</label>
+                  <select  class="form-control" name="labels">
+                        <option>Choose an option</option>
+                  </select>
+              </div>
+               <div class="form-group">
+                  <label class="control-label" >Observed data references:</label>
+                  <select  class="form-control" name="labels">
+                        <option>Choose an option</option>
+                  </select>
+              </div>
+               <div class="form-group">
+                  <label class="control-label" >Where sighted references:</label>
+                  <select  class="form-control" name="labels">
+                        <option>Choose an option</option>
+                  </select>
+              </div>
+               <div class="form-group">
+                     <label class="control-label" >Summary:</label>
+                     <textarea class="form-control" rows="3" name="summ"></textarea>
+              </div>
+               <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
            </form>
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-
       </div>
     </div>
   </div>
 
   <!-- Maec Modals-->
     <!-- The Modal -->
-  <div class="modal fade" id="behaivor">
+  <div class="modal fade" id="behavior">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Behavior</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
@@ -908,14 +938,13 @@
                   <label class="control-label" >Where sighted reference:</label>
                   <input type="text" class="form-control" name="where_sight_ref">
               </div>
+                <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
             </form>
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-
       </div>
     </div>
   </div>
@@ -926,20 +955,70 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Collection</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
+          <form>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Association type:</label>
+                  <select  class="form-control" name="assoc_type">
+                        <option>Choose an option</option>
+                        <option value="file-system-entities">File system entities</option>
+                        <option value="network-entities">Network entities</option>
+                      <option value="process-entities">Process entities</option>
+                      <option value="memory-entities">Memory entities</option>
+                      <option value="ipc-entities">Ipc entities</option>
+                        <option value="device-entities">Device entities</option>
+                      <option value="service-entities">Service entities</option>
+                      <option value="potential-indicators">Potential indicators</option>
+                      <option value="same-malware-family">Same malware family</option>
+                        <option value="clustered-together">Clustered together</option>
+                      <option value="observed-together">Observed together</option>
+                      <option value="same-malware-toolkit">Same malware toolkit</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Entity references:</label>
+                  <select  class="form-control" name="entity_refs">
+                        <option>Choose an option</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Observable references:</label>
+                  <select  class="form-control" name="observ_refs">
+                        <option>Choose an option</option>
+                      <option value="artifact">Artifact</option>
+                      <option value="autonomous-system">Autonomous system</option>
+                      <option value="directory">Directory</option>
+                      <option value="domain-name">Domain name</option>
+                      <option value="email-addr">Email addr</option>
+                      <option value="email-message">Email message</option>
+                      <option value="file">File</option>
+                      <option value="ipv4-addr">Ipv4 addr</option>
+                      <option value="ipv6-addr">Ipv6 addr</option>
+                      <option value="mac-addr">MAC addr</option>
+                      <option value="network-traffic">Network traffic</option>
+                      <option value="process">Process</option>
+                      <option value="software">Software</option>
+                      <option value="url">Url</option>
+                      <option value="user-account">User account</option>
+                      <option value="windows-registry-key">Windows registry key</option>
+                  </select>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+          </form>
         </div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
-
       </div>
     </div>
   </div>
@@ -951,19 +1030,326 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Malware action</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <select  class="form-control" name="nm">
+                        <option>Choose an option</option>
+                        <option value="accept-socket-connection">accept-socket-connection</option>
+                        <option value="add-connection-to-network-share">add-connection-to-network-share</option>
+                      <option value="add-network-share">add-network-share</option>
+                      <option value="add-scheduled-task">add-scheduled-task</option>
+                      <option value="add-system-call-hook">add-system-call-hook</option>
+                        <option value="add-user-to-group">add-user-to-group</option>
+                      <option value="add-user">add-user</option>
+                      <option value="add-windows-hook">add-windows-hook</option>
+                      <option value="allocate-process-virtual-memory">allocate-process-virtual-memory</option>
+                        <option value="bind-address-to-socket">bind-address-to-socket</option>
+                      <option value="call-library-function">call-library-function</option>
+                      <option value="change-password">change-password</option>
+                      <option value="check-for-kernel-debugger">check-for-kernel-debugger</option>
+                      <option value="check-for-remote-debugger">check-for-remote-debugger</option>
+                      <option value="close-file">close-file</option>
+                      <option value="close-port">close-port</option>
+                      <option value="close-registry-key">close-registry-key</option>
+                      <option value="close-socket">close-socket</option>
+                      <option value="connect-to-ftp-server">connect-to-ftp-server</option>
+                      <option value="connect-to-ip-address">connect-to-ip-address</option>
+                      <option value="connect-to-irc-server">connect-to-irc-server</option>
+                      <option value="connect-to-named-pipe">connect-to-named-pipe</option>
+                      <option value="connect-to-network-share">connect-to-network-share</option>
+                      <option value="connect-to-socket-address">connect-to-socket-address</option>
+                      <option value="connect-to-socket">connect-to-socket</option>
+                      <option value="connect-to-url">connect-to-url</option>
+                      <option value="copy-file">copy-file</option>
+                      <option value="create-critical-section">create-critical-section</option>
+                      <option value="create-dialog-box">create-dialog-box</option>
+                      <option value="create-directory">create-directory</option>
+                      <option value="create-event">create-event</option>
+                      <option value="create-file-alternate-data-stream">create-file-alternate-data-stream</option>
+                      <option value="create-file-mapping">create-file-mapping</option>
+                      <option value="create-file-symbolic-link">create-file-symbolic-link</option>
+                      <option value="create-file">create-file</option>
+                      <option value="create-mailslotn">create-mailslot</option>
+                      <option value="create-mutex">create-mutex</option>
+                      <option value="create-named-pipe">create-named-pipe</option>
+                      <option value="create-process-as-user">create-process-as-usere</option>
+                      <option value="create-process">create-process</option>
+                      <option value="create-registry-key-value">create-registry-key-value</option>
+                      <option value="create-registry-key">create-registry-key</option>
+                      <option value="create-remote-thread-in-process">create-remote-thread-in-process</option>
+                      <option value="create-semaphore">create-semaphore</option>
+                      <option value="create-service">create-service</option>
+                      <option value="create-socket">create-socket</option>
+                      <option value="create-thread">create-thread</option>
+                      <option value="create-window">create-window</option>
+                      <option value="delete-critical-section">delete-critical-section</option>
+                      <option value="delete-directory">delete-directory</option>
+                      <option value="delete-event">delete-event</option>
+                      <option value="delete-file">delete-file</option>
+                      <option value="delete-mutex">delete-mutex</option>
+                      <option value="delete-named-pipe">delete-named-pipe</option>
+                      <option value="delete-network-share">delete-network-share</option>
+                      <option value="delete-registry-key-value">delete-registry-key-value</option>
+                      <option value="delete-registry-key">delete-registry-key</option>
+                      <option value="delete-semaphore">delete-semaphore</option>
+                      <option value="delete-service">delete-service</option>
+                      <option value="delete-user">delete-user</option>
+                      <option value="disconnect-from-ftp-server">disconnect-from-ftp-server</option>
+                      <option value="disconnect-from-ip">disconnect-from-ip</option>
+                      <option value="disconnect-from-irc-server">disconnect-from-irc-server</option>
+                      <option value="disconnect-from-named-pipe">disconnect-from-named-pipe</option>
+                      <option value="disconnect-from-network-share">disconnect-from-network-share</option>
+                      <option value="disconnect-from-socket">disconnect-from-socket</option>
+                      <option value="download-file">download-file</option>
+                      <option value="enumerate-libraries">enumerate-libraries</option>
+                      <option value="enumerate-network-shares">enumerate-network-shares</option>
+                      <option value="enumerate-processes">enumerate-processes</option>
+                      <option value="enumerate-registry-key-subkeys">enumerate-registry-key-subkeys</option>
+                      <option value="enumerate-registry-key-values">enumerate-registry-key-values</option>
+                      <option value="enumerate-services">enumerate-services</option>
+                      <option value="enumerate-system-handles">enumerate-system-handles</option>
+                      <option value="enumerate-threads">enumerate-threads</option>
+                      <option value="enumerate-users">enumerate-users</option>
+                      <option value="enumerate-windows">enumerate-windows</option>
+                      <option value="execute-file">execute-file</option>
+                      <option value="find-file">find-file</option>
+                      <option value="find-window">find-window</option>
+                      <option value="flush-process-instruction-cache">flush-process-instruction-cache</option>
+                      <option value="free-library">free-library</option>
+                      <option value="free-process-virtual-memory">free-process-virtual-memory</option>
+                      <option value="get-disk-attributes">get-disk-attributes</option>
+                      <option value="get-disk-type">get-disk-type</option>
+                      <option value="get-elapsed-system-up-time">get-elapsed-system-up-time</option>
+                      <option value="get-file-or-directory-attributes">get-file-or-directory-attributes</option>
+                      <option value="get-function-address">get-function-address</option>
+                      <option value="get-host-by-address">get-host-by-address</option>
+                      <option value="get-host-by-name">get-host-by-name</option>
+                      <option value="get-netbios-name">get-netbios-name</option>
+                      <option value="get-process-current-directory">get-process-current-directory</option>
+                      <option value="get-process-environment-variable">get-process-environment-variable</option>
+                      <option value="get-process-startupinfo">get-process-startupinfo</option>
+                      <option value="get-registry-key-attributes">get-registry-key-attributes</option>
+                      <option value="get-system-global-flags">get-system-global-flags</option>
+                      <option value="get-system-host-name">get-system-host-name</option>
+                      <option value="get-system-local-time">get-system-local-time</option>
+                      <option value="get-system-time">get-system-time</option>
+                      <option value="get-thread-context">get-thread-context</option>
+                      <option value="get-thread-username">get-thread-username</option>
+                      <option value="get-user-attributes">get-user-attributes</option>
+                      <option value="get-username">get-username</option>
+                      <option value="get-windows-directory">get-windows-directory</option>
+                      <option value="get-windows-system-directory">get-windows-system-directory</option>
+                      <option value="get-temporary-files-directory">get-temporary-files-directory</option>
+                      <option value="impersonate-process">impersonate-process</option>
+                      <option value="invoke-user-privilege">invoke-user-privilege</option>
+                      <option value="join-irc-channel">join-irc-channel</option>
+                      <option value="kill-process">kill-process</option>
+                      <option value="kill-thread">kill-thread</option>
+                      <option value="kill-window">kill-window</option>
+                      <option value="leave-irc-channel">leave-irc-channel</option>
+                      <option value="enumerate-disks">enumerate-disks</option>
+                      <option value="listen-on-port">listen-on-port</option>
+                      <option value="listen-on-socket">listen-on-socket</option>
+                      <option value="load-and-call-driver">load-and-call-driver</option>
+                      <option value="load-driver">load-driver</option>
+                      <option value="load-library">load-library</option>
+                      <option value="lock-file">lock-file</option>
+                      <option value="logon-as-user">logon-as-user</option>
+                      <option value="map-file-into-process">map-file-into-process</option>
+                      <option value="map-library-into-process">map-library-into-process</option>
+                      <option value="modify-process-virtual-memory-protection">modify-process-virtual-memory-protection</option>
+                      <option value="modify-registry-key-value">modify-registry-key-value</option>
+                      <option value="modify-registry-key">modify-registry-key</option>
+                      <option value="modify-service-configuration">modify-service-configuration</option>
+                      <option value="monitor-directory">monitor-directory</option>
+                      <option value="monitor-disk">monitor-disk</option>
+                      <option value="monitor-registry-key">monitor-registry-key</option>
+                      <option value="mount-disk">mount-disk</option>
+                      <option value="move-file">move-file</option>
+                      <option value="open-critical-section">open-critical-section</option>
+                      <option value="open-event">open-event</option>
+                      <option value="open-file-mapping">open-file-mapping</option>
+                      <option value="open-directory">open-directory</option>
+                      <option value="open-file">open-file</option>
+                      <option value="open-mutex">open-mutex</option>
+                      <option value="open-port">open-port</option>
+                      <option value="open-process">open-process</option>
+                      <option value="open-registry-key">open-registry-key</option>
+                      <option value="open-semaphore">open-semaphore</option>
+                      <option value="open-service">open-service</option>
+                      <option value="queue-apc-in-thread">queue-apc-in-thread</option>
+                      <option value="read-from-file">read-from-file</option>
+                      <option value="read-from-mailslot">read-from-mailslot</option>
+                      <option value="read-from-named-pipe">read-from-named-pipe</option>
+                      <option value="read-from-process-memory">read-from-process-memory</option>
+                      <option value="read-registry-key-value">read-registry-key-value</option>
+                      <option value="receive-data-on-socket">receive-data-on-socket</option>
+                      <option value="receive-http-response">receive-http-response</option>
+                      <option value="receive-irc-private-message">receive-irc-private-message</option>
+                      <option value="receive-network-packet">receive-network-packet</option>
+                      <option value="release-critical-section">release-critical-section</option>
+                      <option value="release-mutex">release-mutex</option>
+                      <option value="release-semaphore">release-semaphore</option>
+                      <option value="remove-user-from-group">remove-user-from-group</option>
+                      <option value="rename-file">rename-file</option>
+                      <option value="reset-event">reset-event</option>
+                      <option value="revert-thread-to-self">revert-thread-to-self</option>
+                      <option value="send-control-code-to-file">send-control-code-to-file</option>
+                      <option value="send-control-code-to-service">send-control-code-to-service</option>
+                      <option value="send-data-on-socket">send-data-on-socket</option>
+                      <option value="send-data-to-address-on-socket">send-data-to-address-on-socket</option>
+                      <option value="send-dns-query">send-dns-query</option>
+                      <option value="send-email-message">send-email-message</option>
+                      <option value="send-ftp-command">send-ftp-command</option>
+                      <option value="send-http-connect-request">send-http-connect-request</option>
+                      <option value="send-http-delete-request">send-http-delete-request</option>
+                      <option value="send-http-get-request">send-http-get-request</option>
+                      <option value="send-http-head-request">send-http-head-request</option>
+                      <option value="send-http-options-request">send-http-options-request</option>
+                      <option value="send-http-patch-request">send-http-patch-request</option>
+                      <option value="send-http-post-request">send-http-post-request</option>
+                      <option value="send-http-put-request">send-http-put-request</option>
+                      <option value="send-http-trace-request">send-http-trace-request</option>
+                      <option value="send-icmp-request">send-icmp-request</option>
+                      <option value="send-irc-private-message">send-irc-private-message</option>
+                      <option value="send-network-packet">send-network-packet</option>
+                      <option value="send-reverse-dns-lookup">send-reverse-dns-lookup</option>
+                      <option value="set-file-or-directory-attributes">set-file-or-directory-attributes</option>
+                      <option value="set-irc-nickname">set-irc-nickname</option>
+                      <option value="set-netbios-name">set-netbios-name</option>
+                      <option value="set-process-current-directory">set-process-current-directory</option>
+                      <option value="set-process-environment-variable">set-process-environment-variable</option>
+                      <option value="set-system-global-flags">set-system-global-flags</option>
+                      <option value="set-system-host-name">set-system-host-name</option>
+                      <option value="set-system-local-time">set-system-local-time/option>
+                      <option value="set-system-time">set-system-time</option>
+                      <option value="set-thread-context">set-thread-context</option>
+                      <option value="show-window">show-window</option>
+                      <option value="shutdown-system">shutdown-system</option>
+                      <option value="sleep-process">sleep-process</option>
+                      <option value="sleep-system">sleep-system</option>
+                      <option value="start-service">start-service</option>
+                      <option value="stop-service">stop-service</option>
+                      <option value="unload-driver">unload-driver</option>
+                      <option value="unlock-file">unlock-file</option>
+                      <option value="unmap-file-from-process">unmap-file-from-process</option>
+                      <option value="unmount-disk">unmount-disk</option>
+                      <option value="upload-file">upload-file</option>
+                      <option value="write-to-file">write-to-file</option>
+                      <option value="write-to-mailslot">write-to-mailslot</option>
+                      <option value="write-to-named-pipe">write-to-named-pipe</option>
+                      <option value="write-to-process-memory">write-to-process-memory</option>
+
+
+
+
+
+
+
+
+                  </select>
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Is successful:</label>
+                  <div class="form-check-inline">
+                      <label class="form-check-label" for="radio1">
+                        <input type="radio" class="form-check-input" id="radio1" name="is_succ" value="True" > True
+                      </label>
+                  </div>
+                  <div class="form-check-inline">
+                      <label class="form-check-label" for="radio1">
+                        <input type="radio" class="form-check-input" id="radio1" name="is_succ" value="False" > False
+                      </label>
+                  </div>
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Timestamp:</label>
+                  <input type="datetime-local" class="form-control" name="timestmp">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Input object references:</label>
+                  <select multiple class="form-control" name="input_obj_refs">
+                        <option>Choose an option</option>
+                      <option value="artifact">Artifact</option>
+                      <option value="autonomous-system">Autonomous system</option>
+                      <option value="directory">Directory</option>
+                      <option value="domain-name">Domain name</option>
+                      <option value="email-addr">Email addr</option>
+                      <option value="email-message">Email message</option>
+                      <option value="file">File</option>
+                      <option value="ipv4-addr">Ipv4 addr</option>
+                      <option value="ipv6-addr">Ipv6 addr</option>
+                      <option value="mac-addr">MAC addr</option>
+                      <option value="network-traffic">Network traffic</option>
+                      <option value="process">Process</option>
+                      <option value="software">Software</option>
+                      <option value="url">Url</option>
+                      <option value="user-account">User account</option>
+                      <option value="windows-registry-key">Windows registry key</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Output object references:</label>
+                  <select multiple class="form-control" name="output_obj_refs">
+                        <option>Choose an option</option>
+                      <option value="artifact">Artifact</option>
+                      <option value="autonomous-system">Autonomous system</option>
+                      <option value="directory">Directory</option>
+                      <option value="domain-name">Domain name</option>
+                      <option value="email-addr">Email addr</option>
+                      <option value="email-message">Email message</option>
+                      <option value="file">File</option>
+                      <option value="ipv4-addr">Ipv4 addr</option>
+                      <option value="ipv6-addr">Ipv6 addr</option>
+                      <option value="mac-addr">MAC addr</option>
+                      <option value="network-traffic">Network traffic</option>
+                      <option value="process">Process</option>
+                      <option value="software">Software</option>
+                      <option value="url">Url</option>
+                      <option value="user-account">User account</option>
+                      <option value="windows-registry-key">Windows registry key</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >API call:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Address:</label>
+                      <input type="text" class="form-control" name="addr">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Return value:</label>
+                      <input type="text" class="form-control" name="ret_val">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Parameters:</label>
+                      <textarea class="form-control" rows="3" name="params"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Function name:</label>
+                      <input type="text" class="form-control" name="fun_name">
+                  </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+          </form>
         </div>
 
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+
 
       </div>
     </div>
@@ -975,19 +1361,29 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Malware family</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
+          <form>
+
+
+
+
+
+
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+          </form>
         </div>
 
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+
 
       </div>
     </div>
