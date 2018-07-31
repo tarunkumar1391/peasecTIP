@@ -1,0 +1,12 @@
+body {
+    height: 100%;
+    overflow: auto;
+    padding-bottom: 10%;
+
+}
+.bodycontent{
+    margin-top: 10%;
+}
+.home_bodycontent{
+    margin-top: 2%;
+}

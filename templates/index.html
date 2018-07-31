@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'angular/angular-material.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+
+</head>
+<body>
+<div class="container-fluid">
+
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light navbar-light fixed-top ">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                  <ul class=" nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#login" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Login</a>
+                    </li>
+                      <li class="nav-item  ">
+                      <a class="nav-link" href="#register" id="register-tab" data-toggle="tab" aria-controls="register" aria-selected="false">Register</a>
+                    </li>
+
+                  </ul>
+
+            </nav>
+            <!--/.Navbar-->
+       </div>
+
+       <div class="row bodycontent " >
+           <!--flash msg section-->
+           <div class="container col-lg-4" >
+               {% with messages = get_flashed_messages() %}
+               {% if messages %}
+               {% for msg in messages %}
+                <div class="alert alert-info alert-dismissible fade show " role="alert">
+                   {{ msg }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+               {% endfor %}
+               {% endif %}
+                {% endwith %}
+            <!-- end of flash msg's-->
+
+               <div class="tab-content">
+                   <div class="card tab-pane fade show active " role="tabpanel" aria-labelledby="login-tab" id="login">
+                        <div class="card-header">
+                         Sign In
+                    </div>
+                        <img class="img-thumbnail rounded mx-auto my-lg-2 d-block  " src="{{ url_for('static',filename='images/peasecresize.png') }}" alt="Card image cap">
+                        <div class="card-body">
+                    <form action="{{ url_for('auth') }}" method="POST">
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Username:</span>
+                          </div>
+                          <input type="text" class="form-control" aria-label="Default" name="uname" aria-describedby="inputGroup-sizing-default">
+                        </div>
+
+                        <div class="input-group mb-3">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
+                          </div>
+                          <input type="password" class="form-control" aria-label="Default" name="passwd" aria-describedby="inputGroup-sizing-default">
+                        </div>
+
+                        <button type="submit" class="col-lg-2  ml-auto btn btn-primary ">Login</button>
+                        <button type="reset" class="col-lg-2 ml-auto btn btn-light">Cancel</button>
+
+
+                    </form>
+
+                  </div>
+
+                    </div>
+
+
+                   <div class="card tab-pane fade " role="tabpanel" aria-labelledby="register-tab" id="register">
+                        <div class="card-header">Register</div>
+                        <div class="card-body">
+                            <form action="{{ url_for('register') }}" method="POST" >
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">First name:</span>
+                                  </div>
+                                  <input type="text" class="form-control" aria-label="Default" name="fname" aria-describedby="inputGroup-sizing-default" required>
+
+                                </div>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Last name:</span>
+                                  </div>
+                                  <input type="text" class="form-control" aria-label="Default" name="lname" aria-describedby="inputGroup-sizing-default" required>
+                                </div>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Email:</span>
+                                  </div>
+                                  <input type="email" class="form-control" aria-label="Default" name="email" aria-describedby="inputGroup-sizing-default" required>
+                                </div>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Username:</span>
+                                  </div>
+                                  <input type="text" class="form-control" aria-label="Default" name="uname" aria-describedby="inputGroup-sizing-default" required>
+                                </div>
+                                <div class="input-group mb-3">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Password:</span>
+                                  </div>
+                                  <input type="password" class="form-control" aria-label="Default" name="passwd1" aria-describedby="inputGroup-sizing-default" required>
+{#                                    <input type="hidden" id="passwd">#}
+                                </div>
+{#                                <div class="input-group mb-3">#}
+{#                                  <div class="input-group-prepend">#}
+{#                                    <span class="input-group-text" id="inputGroup-sizing-default">Re-type Password:</span>#}
+{#                                  </div>#}
+{#                                  <input type="password" class="form-control" aria-label="Default" uname="passwd2" aria-describedby="inputGroup-sizing-default" required>#}
+{#                                </div>#}
+
+                                <button type="submit" class="col-lg-2 ml-lg-auto btn btn-primary">Register</button>
+                                <button type="reset" class="col-lg-2 ml-lg-auto btn btn-light">Reset</button>
+                            </form>
+                        </div>
+
+                    </div>
+
+               </div>
+
+            </div>
+
+       </div>
+
+
+        <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+
+
+
+</div>
+
+
+</body>
+
+<script src="{{ url_for('static',filename = 'angular/angular.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-animate.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-aria.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-material.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-messages.min.js') }}"></script>
+
+<script></script>
+</html>

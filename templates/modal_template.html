@@ -1,0 +1,1019 @@
+ <!-- SDO Modals -->
+  <div class="modal fade" id="attackpattern">
+    <div class="modal-dialog  modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Attack pattern</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('attk_pattern') }}" method="POST">
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+
+                    <input type="text" class="form-control" name="nm">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Description:</label>
+
+                    <textarea class="form-control" rows="3" name="desc"></textarea>
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >List of kill_chain_phases:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Kill chain name:</label>
+                      <input type="text" class="form-control" name="kcName">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Phase name:</label>
+                      <input type="text" class="form-control" name="phase_name">
+                  </div>
+
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >External_references:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Source name:</label>
+                      <input type="text" class="form-control" name="extref_srcname">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >URL:</label>
+                      <input type="text" class="form-control" name="extref_url">
+                  </div>
+                  <div class="form-group">
+                  <label class="control-label" >Hashes:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Hash type:</label>
+                      <input type="text" class="form-control" name="hash_type">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Hash value:</label>
+                      <input type="text" class="form-control" name="hash_value">
+                  </div>
+              </div>
+                  <div class="form-group">
+                      <label class="control-label" >External Id:</label>
+                      <input type="text" class="form-control" name="extref_extid">
+                  </div>
+
+
+              </div>
+
+               <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+
+
+              </div>
+          </form>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="campaign">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Campaign</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="" method="POST">
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+
+                    <input type="text" class="form-control" name="nm">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Description:</label>
+
+                    <textarea class="form-control" rows="3" name="desc"></textarea>
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Aliases:</label>
+
+                    <input type="text" class="form-control" name="aliases">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >First seen:</label>
+
+                    <input type="datetime-local" class="form-control" name="first_seen">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Last seen:</label>
+
+                    <input type="datetime-local" class="form-control" name="last_seen">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Objective:</label>
+
+                    <input type="text" class="form-control" name="objective">
+
+              </div>
+
+        <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+       </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="identity">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Identity</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+
+                    <input type="text" class="form-control" name="nm">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Labels:</label>
+
+                    <input type="text" class="form-control" name="labels">
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Description:</label>
+
+                    <textarea class="form-control" rows="3" name="desc"></textarea>
+
+              </div>
+              <div class="form-group">
+                    <label class="control-label" for="select_id_class" >Identity class:</label>
+                    <select class="form-control" name="id_class" id="select_id_class">
+                        <option value="">Choose an option</option>
+                        <option value="individual">Individual</option>
+                        <option value="group">Group</option>
+                        <option value="organization">Organization</option>
+                        <option value="class">Class</option>
+                        <option value="unknown">Unknown</option>
+                    </select>
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="select_sector" >Sectors:</label>
+
+                    <select class="form-control" name="id_class" id="select_sector">
+                        <option value="">Choose an option</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="aerospace">Aerospace</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="communications">Communications</option>
+                        <option value="construction">Construction</option>
+                        <option value="defence">Defence</option>
+                        <option value="education">Education</option>
+                        <option value="energy">Energy</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="financial-services">Financial services</option>
+                        <option value="government-national">Government national</option>
+                        <option value="government-regional">Government regional</option>
+                        <option value="government-local">Government local</option>
+                        <option value="government-public-services">Government public services</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="hospitality-leisure">Hospitality leisure</option>
+                        <option value="infrastructure">Infrastructure</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="mining">Mining</option>
+                        <option value="non-profit">Non-profit</option>
+                        <option value="pharmaceuticals">Pharmaceuticals</option>
+                        <option value="retail">Retail</option>
+                        <option value="technology">Technology</option>
+                        <option value="telecommunications">Telecommunications</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="utilities">Utilities</option>
+                    </select>
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Contact Information:</label>
+
+                    <textarea class="form-control" rows="3" name="contactinfor"></textarea>
+
+              </div>
+          </form>
+        </div>
+
+       <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="indicator">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Indicator</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+             <form>
+                 <div class="form-group">
+                      <label class="control-label" >Name:</label>
+                      <input type="text" class="form-control" name="nm">
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label" for="select_label" >Labels:</label>
+                    <select class="form-control" name="id_class" id="select_label">
+                        <option value="">Choose an option</option>
+                        <option value="anomalous-activity">Anomalous activity</option>
+                        <option value="anonymization">Anonymization</option>
+                        <option value="benign">Benign</option>
+                        <option value="compromised">Compromised</option>
+                        <option value="malicious-activity">Malicious activity</option>
+                        <option value="attribution">Attribution</option>
+                    </select>
+                  </div>
+                 <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+                 </div>
+                 <div class="form-group">
+                      <label class="control-label" >Pattern:</label>
+                      <input type="text" class="form-control" name="pattern">
+                 </div>
+                 <div class="form-group">
+                      <label class="control-label" >Valid from:</label>
+                      <input type="datetime-local" class="form-control" name="valid_from">
+                 </div>
+                 <div class="form-group">
+                      <label class="control-label" >Valid untill:</label>
+                      <input type="datetime-local" class="form-control" name="valid_untill">
+                 </div>
+                 <div class="form-group">
+                  <label class="control-label" >List of kill_chain_phases:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Kill chain name:</label>
+                      <input type="text" class="form-control" name="kcName">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Phase name:</label>
+                      <input type="text" class="form-control" name="phase_name">
+                  </div>
+              </div>
+
+
+
+               <!-- Modal footer -->
+                  <div class="modal-footer">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                      <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
+             </form>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="intrusionset">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Intrusion set</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <input type="text" class="form-control" name="nm">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Aliases:</label>
+                  <input type="text" class="form-control" name="aliases">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Description:</label>
+                  <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >First seen:</label>
+                  <input type="datetime-local" class="form-control" name="first_seen">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Last seen:</label>
+                  <input type="datetime-local" class="form-control" name="last_seen">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Goals:</label>
+                  <textarea class="form-control" rows="3" name="goals"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="resource_lev" >Resource level:</label>
+                  <select class="form-control" name="res_level" id="resource_lev">
+                        <option value="">Choose an option</option>
+                        <option value="individual">Individual</option>
+                        <option value="club">Club</option>
+                        <option value="contest">Contest</option>
+                        <option value="team">Team</option>
+                        <option value="organization">Organization</option>
+                        <option value="government">Government</option>
+                    </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="primary_motiv" >Primary motivation:</label>
+                  <select class="form-control" name="prim_motiv" id="primary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="secondary_motiv" >Secondary motivation:</label>
+                  <select multiple class="form-control" name="sec_motiv" id="secondary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+              </div>
+               <!-- Modal footer -->
+                  <div class="modal-footer">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                      <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
+          </form>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="malware">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Malware</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+               <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <input type="text" class="form-control" name="nm">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Labels:</label>
+                  <select multiple class="form-control" name="labels">
+
+                        <option value="adware">Adware</option>
+                        <option value="backdoor">Backdoor</option>
+                        <option value="bot">Bot</option>
+                        <option value="ddos">Ddos</option>
+                        <option value="dropper">Dropper</option>
+                        <option value="exploit-kit">Exploit kit</option>
+                          <option value="keylogger">Keylogger</option>
+                          <option value="ransomware">Ransomware</option>
+                          <option value="remote-access-trojan">Remote access trojan</option>
+                          <option value=" resource-exploitation">Resource exploitation</option>
+                          <option value="rogue-security-software">Rogue security software</option>
+                          <option value="rootkit">Rootkit</option>
+                          <option value="screen-capture">Screen capture</option>
+
+                    </select>
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >kill_chain_phases:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Kill chain name:</label>
+                      <input type="text" class="form-control" name="kcName">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Phase name:</label>
+                      <input type="text" class="form-control" name="phase_name">
+                  </div>
+
+
+              </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="report">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Report</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <input type="text" class="form-control" name="nm">
+              </div>
+              <div class="form-group">
+                    <label class="control-label" for="select_label" >Labels:</label>
+                    <select class="form-control" name="labels" >
+                        <option value="">Choose an option</option>
+                        <option value="threat-report">Threat report</option>
+                        <option value="attack-pattern">Attack pattern</option>
+                        <option value="campaign">Campaign</option>
+                        <option value="identity">Identity</option>
+                        <option value="indicator">Indicator</option>
+                        <option value="malware">Malware</option>
+                        <option value="observed-data">Observed-data</option>
+                        <option value="threat-actor">Threat actor</option>
+                        <option value="tool">Tool</option>
+                        <option value="vulnerability">Vulnerability</option>
+                    </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Description:</label>
+                  <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Published:</label>
+                  <input type="datetime-local" class="form-control" name="published">
+              </div>
+              <div class="form-group">
+                    <label class="control-label" for="obj_refs" >Object Ref's:</label>
+                    <select class="form-control" name="obj_ref" >
+                        <option value="">Choose an option</option>
+
+                    </select>
+              </div>
+               <!-- Modal footer -->
+                  <div class="modal-footer">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                      <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="threatactor">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Threat Actor</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <input type="text" class="form-control" name="nm">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Labels:</label>
+                  <select multiple class="form-control" name="labels">
+                        <option value="activist">Activist</option>
+                        <option value="competitor">Competitor</option>
+                        <option value="crime-syndicate">Crime syndicate</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="hacker">Hacker</option>
+                        <option value="insider-accidental">Insider accidental</option>
+                        <option value="insider-disgruntled">Insider disgruntled</option>
+                        <option value="nation-state">Nation state</option>
+                        <option value="sensationalist">Sensationalist</option>
+                        <option value="spy">Spy</option>
+                        <option value="terrorist">Terrorist</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Aliases:</label>
+                  <input type="text" class="form-control" name="aliases">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Roles:</label>
+                  <select multiple class="form-control" name="roles">
+                      <option> Choose an option</option>
+                        <option value="agent">agent</option>
+                        <option value="director">director</option>
+                        <option value="independent">independent</option>
+                        <option value="infrastructure-architect">infrastructure-architect</option>
+                        <option value="infrastructure-operator">infrastructure-operator</option>
+                        <option value="malware-author">malware-author</option>
+                        <option value="sponsor">sponsor</option>
+
+                  </select>
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Goals:</label>
+                     <textarea class="form-control" rows="3" name="goals"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Sophistication:</label>
+                  <select multiple class="form-control" name="sophistication">
+                      <option> Choose an option</option>
+                        <option value="none">None</option>
+                        <option value="minimal">Minimal</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="expert">Expert</option>
+                        <option value="innovator">Innovator</option>
+                        <option value="strategic">Strategic</option>
+
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Resource level:</label>
+                  <select multiple class="form-control" name="res_level">
+                      <option> Choose an option</option>
+                        <option value="individual">Individual</option>
+                        <option value="club">Club</option>
+                        <option value="contest">Contest</option>
+                        <option value="team">Team</option>
+                        <option value="organization">Organization</option>
+                        <option value="government">Government</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="primary_motiv" >Primary motivation:</label>
+                  <select class="form-control" name="prim_motiv" id="primary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="sec_motiv" >Secondary motivation:</label>
+                  <select class="form-control" name="sec_motiv" id="sec_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" for="per_motiv" >Personal motivation:</label>
+                  <select class="form-control" name="per_motiv" id="per_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+              </div>
+              <!-- Modal footer -->
+                  <div class="modal-footer">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                      <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="tool">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Tool</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <input type="text" class="form-control" name="nm">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Labels:</label>
+                  <select multiple class="form-control" name="labels">
+                        <option>Choose an option</option>
+                        <option value="denial-of-service">denial-of-service</option>
+                        <option value="exploitation">exploitation</option>
+                        <option value=" information-gathering"> information-gathering</option>
+                        <option value="network-capture">network-capture</option>
+                        <option value="credentialexploitation">credential exploitation</option>
+                        <option value="remote-access">remote-access</option>
+                          <option value="vulnerability-scanning">vulnerability-scanning</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Tool version:</label>
+                  <input type="text" class="form-control" name="tool_ver">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >List of kill_chain_phases:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Kill chain name:</label>
+                      <input type="text" class="form-control" name="kcName">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Phase name:</label>
+                      <input type="text" class="form-control" name="phase_name">
+                  </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="vulnerability">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Vulnerability</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <input type="text" class="form-control" name="nm">
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >External_references:</label>
+                  <div class="form-group">
+                      <label class="control-label" >Source name:</label>
+                      <input type="text" class="form-control" name="extref_srcname">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >URL:</label>
+                      <input type="text" class="form-control" name="extref_url">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >Hashes:</label>
+                      <div class="form-group">
+                          <label class="control-label" >Hash type:</label>
+                          <input type="text" class="form-control" name="hash_type">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label" >Hash value:</label>
+                          <input type="text" class="form-control" name="hash_value">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label" >External Id:</label>
+                      <input type="text" class="form-control" name="extref_extid">
+                  </div>
+              </div>
+          </form>
+            <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+
+
+ <!-- SRO Modals-->
+   <!-- The Modal -->
+  <div class="modal fade" id="relationship">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Relationship</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+                  <label class="control-label" >Relationship type:</label>
+                  <input type="text" class="form-control" name="rel_type">
+              </div>
+              <div class="form-group">
+                     <label class="control-label" >Description:</label>
+                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Source Reference:</label>
+                  <input type="text" class="form-control" name="src_ref">
+              </div>
+              <div class="form-group">
+                  <label class="control-label" >Target Reference:</label>
+                  <input type="text" class="form-control" name="tar_ref">
+              </div>
+
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+          </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+   <!-- The Modal -->
+  <div class="modal fade" id="sigting">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Sighting</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+           <form>
+
+           </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Maec Modals-->
+    <!-- The Modal -->
+  <div class="modal fade" id="behaivor">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form>
+                <div class="form-group">
+                  <label class="control-label" >First seen:</label>
+                  <input type="datetime-local" class="form-control" name="first_seen">
+              </div>
+                <div class="form-group">
+                  <label class="control-label" >Last seen:</label>
+                  <input type="datetime-local" class="form-control" name="last_seen">
+              </div>
+                <div class="form-group">
+                  <label class="control-label" >Count:</label>
+                  <input type="number" class="form-control" name="count">
+              </div>
+                <div class="form-group">
+                  <label class="control-label" >Sighting reference:</label>
+                  <input type="text" class="form-control" name="sight_ref">
+              </div>
+                <div class="form-group">
+                  <label class="control-label" >Observed data reference:</label>
+                  <input type="text" class="form-control" name="obs_data_ref">
+              </div>
+                <div class="form-group">
+                  <label class="control-label" >Where sighted reference:</label>
+                  <input type="text" class="form-control" name="where_sight_ref">
+              </div>
+            </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+   <!-- The Modal -->
+  <div class="modal fade" id="collection">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+    <!-- The Modal -->
+  <div class="modal fade" id="Malwareaction">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+   <!-- The Modal -->
+  <div class="modal fade" id="malwarefamily">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+    <!-- The Modal -->
+  <div class="modal fade" id="malwareinstance">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Modal Heading</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          Modal body..
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>

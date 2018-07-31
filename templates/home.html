@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'angular/angular-material.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+
+
+</head>
+<body>
+{% include 'modal_template.html' %}
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#dashboard" id="dashboard-tab" data-toggle="pill" role="tab" aria-controls="home" aria-selected="true">Dashboard</a>
+                    </li>
+                       <li class="nav-item">
+                      <a class="nav-link " href="#feeds" id="feeds-tab" data-toggle="pill" role="tab" aria-controls="feeds" aria-selected="true">Feeds</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row home_bodycontent ">
+        <div class="col-lg-12 tab-content">
+            <div id="dashboard" class="tab-pane active"><br>
+              <h3>HOME</h3>
+              <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div id="feeds" class="tab-pane fade"><br>
+                <div class="row-fluid">
+                    <ul class="nav nav-tabs ">
+                        <li class="nav-item">
+                          <a class="nav-link active" data-toggle="tab" href="#create">Create</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab-content">
+                        <div id="create" class=" tab-pane active"><br>
+                            <div class="row">
+                                <div class="col-lg-4" >
+                                    <div class="card ">
+                                         <div class="card-header">STIX Domain Objects</div>
+                                         <div class="card-body">
+                                              <div class="d-flex flex-wrap align-content-lg-start">
+                                                      <div class="card p-2 border" >
+                                                          <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/attack_pattern.png"
+                                                               alt="Card image" style="width: 90px" >
+                                                          <div class="card-body">
+                                                              <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#attackpattern">Attack Pattern</button>
+                                                          </div>
+
+                                                      </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/campaign.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#campaign">Campaign</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/identity.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#identity">Identity</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/indicator.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#indicator">Indicator</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/intrusion_set.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#intrusionset">Intrusion Set</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/malware.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#malware">Malware</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/report.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#report">Report</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/threat_actor.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#threatactor">Threat Actor</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-2" src="https://oasis-open.github.io/cti-documentation/img/icons/tool.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#tool">Tool</button>
+                                                              </div>
+                                                          </div>
+                                                      <div class="card p-2 border" >
+                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/vulnerability.png"
+                                                                   alt="Card image" style="width: 90px" >
+                                                              <div class="card-body">
+                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#vulnerability">Vulnerability</button>
+                                                              </div>
+                                                          </div>
+
+                                              </div>
+                                         </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4" >
+                                    <div class="card">
+                                  <div class="card-header">STIX Relationship Objects</div>
+                                  <div class="card-body">
+                                      <div class="d-flex flex-wrap align-content-lg-start">
+                                          <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-3" src="https://oasis-open.github.io/cti-documentation/img/icons/relationship.png"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#relationship">Relationship</button>
+                                              </div>
+                                          </div>
+                                           <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-2" src="https://oasis-open.github.io/cti-documentation/img/icons/sighting.png"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sigting">Sighting</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="card">
+                                  <div class="card-header">MAEC Top Level Objects</div>
+                                  <div class="card-body">
+                                      <div class="d-flex flex-wrap align-content-lg-start">
+                                          <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-3" src="{{ url_for('static',filename='icons/maec_behavior.png') }}"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#behaivor">Behavior</button>
+                                              </div>
+                                          </div>
+                                          <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-3" src="{{ url_for('static',filename='icons/maec_collection.png') }}"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#collection">Collection</button>
+                                              </div>
+                                          </div>
+                                          <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-4" src="{{ url_for('static',filename='icons/maec_malwareaction.png') }}"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#Malwareaction">Malware Action</button>
+                                              </div>
+                                          </div>
+                                          <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-4" src="{{ url_for('static',filename='icons/maec_malwarefamily.png') }}"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#malwarefamily">Malware Family</button>
+                                              </div>
+                                          </div>
+                                          <div class="card p-2 border" >
+                                              <img class="card-img-top img-fluid ml-lg-5" src="{{ url_for('static',filename='icons/maec_malwareinstance.png') }}"
+                                                               alt="Card image" style="width: 90px" >
+                                              <div class="card-body">
+                                                  <button type="button" class="btn btn-light " data-toggle="modal" data-target="#malwareinstance">Malware Instance</button>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+
+                                </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                            </div>
+
+                        </div>
+                        <div id="menu1" class=" tab-pane fade"><br>
+                          <h3>Menu 1</h3>
+                          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div>
+                        <div id="menu2" class=" tab-pane fade"><br>
+                          <h3>Menu 2</h3>
+                          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                        </div>
+                    </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+{#        footer section#}
+       <div class="row">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+            <span class="navbar-text"> All rights reserved @ PEASEC </span>
+        </nav>
+</div>
+</div>
+
+
+</body>
+<script src="{{ url_for('static',filename = 'angular/angular.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-animate.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-aria.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-material.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'angular/angular-messages.min.js') }}"></script>
+
+<script></script>
+</html>
