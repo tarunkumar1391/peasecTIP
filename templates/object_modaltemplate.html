@@ -16,56 +16,13 @@
                   <label class="control-label" >Name:</label>
 
                     <input type="text" class="form-control" name="nm">
-
+                     <input type="hidden" class="form-control" name="type" value="attack-pattern">
+                     <input type="hidden" name="created_by" value="{{ session['user'] }}">
               </div>
               <div class="form-group">
                   <label class="control-label" >Description:</label>
-
                     <textarea class="form-control" rows="3" name="desc"></textarea>
-
               </div>
-              <div class="form-group">
-                  <label class="control-label" >List of kill_chain_phases:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Kill chain name:</label>
-                      <input type="text" class="form-control" name="kcName">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Phase name:</label>
-                      <input type="text" class="form-control" name="phase_name">
-                  </div>
-
-
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >External_references:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Source name:</label>
-                      <input type="text" class="form-control" name="extref_srcname">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >URL:</label>
-                      <input type="text" class="form-control" name="extref_url">
-                  </div>
-                  <div class="form-group">
-                  <label class="control-label" >Hashes:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Hash type:</label>
-                      <input type="text" class="form-control" name="hash_type">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Hash value:</label>
-                      <input type="text" class="form-control" name="hash_value">
-                  </div>
-              </div>
-                  <div class="form-group">
-                      <label class="control-label" >External Id:</label>
-                      <input type="text" class="form-control" name="extref_extid">
-                  </div>
-
-
-              </div>
-
                <!-- Modal footer -->
               <div class="modal-footer">
                   <input type="submit" class="btn btn-primary" value="Submit">
@@ -1368,12 +1325,285 @@
         <!-- Modal body -->
         <div class="modal-body">
           <form>
+              <div class="form-group">
+                  <label class="control-label" >Name:</label>
+                  <div class="form-group">
+                      <label class="control-label">Value:</label>
+                      <input type="text" class="form-control" name="nm_val">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Source:</label>
+                      <div class="form-group">
+                          <label class="control-label">Source Name:</label>
+                          <input type="text" class="form-control" name="nm_src">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Description:</label>
+                          <textarea class="form-control" rows="3" name="src_desc"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">URL:</label>
+                          <input type="text" class="form-control" name="src_url">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">External id:</label>
+                          <input type="text" class="form-control" name="src_extid">
+                      </div>
 
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Confidence:</label>
+                      <input type="integer" class="form-control" name="nm_conf">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Aliases:</label>
+                  <input type="text" class="form-control" name="aliases"> <!-- to be edited further-->
+              </div>
+              <div class="form-group">
+                      <label class="control-label">Labels:</label>
+                      <select  class="form-control" name="labels">
+                          <option>Choose an option</option>
+                          <option value="adware">adware</option>
+                          <option value="appender">appender</option>
+                          <option value="backdoor">backdoor</option>
+                          <option value="boot-sector-virus">boot-sector-virus</option>
+                          <option value="bot">bot</option>
+                          <option value="cavity-filler">cavity-filler</option>
+                          <option value="clicker">clicker</option>
+                          <option value="companion-virus">companion-virus</option>
+                          <option value="data-diddler">data-diddler</option>
+                          <option value="ddos">ddos</option>
+                          <option value="downloader">downloader</option>
+                          <option value="dropper">dropper</option>
+                          <option value="exploit-kit">exploit-kit</option>
+                          <option value="file-infector-virus">file-infector-virus</option>
+                          <option value="file-less">file-less</option>
+                          <option value="fork-bomb">fork-bomb</option>
+                          <option value="greyware">greyware</option>
+                          <option value="implant">implant</option>
+                          <option value="keylogger">keylogger</option>
+                          <option value="kleptographic-worm">kleptographic-worm</option>
+                          <option value="macro-virus">macro-virus</option>
+                          <option value="malware-as-a-service">malware-as-a-service</option>
+                          <option value="mass-mailer">mass-mailer</option>
+                          <option value="metamorphic-virus">metamorphic-virus</option>
+                          <option value="mid-infector">mid-infector</option>
+                          <option value="mobile-code">mobile-code</option>
+                          <option value="multipartite-virus">multipartite-virus</option>
+                          <option value="parental-control">parental-control</option>
+                          <option value="password-stealer">password-stealer</option>
+                          <option value="polymorphic-virus">polymorphic-virus</option>
+                          <option value="premium-dialer-smser">premium-dialer-smser</option>
+                          <option value="prepender">prepender</option>
+                          <option value="ransomware">ransomware</option>
+                          <option value="remote-access-trojan">remote-access-trojan</option>
+                          <option value="resource-exploiter">resource-exploiter</option>
+                          <option value="rogue-security-software">rogue-security-software</option>
+                          <option value="rootkit">rootkit</option>
+                          <option value="scareware">scareware</option>
+                          <option value="screen-capture">screen-capture</option>
+                          <option value="security-assessment-tools">security-assessment-tool</option>
+                          <option value="shellcode">shellcode</option>
+                          <option value="spyware">spyware</option>
+                          <option value="trackware">trackware</option>
+                          <option value="trojan">trojan</option>
+                          <option value="virus">virus</option>
+                          <option value="web-bug">web-bug</option>
+                          <option value="worm">worm</option>
+                      </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Description:</label>
+                  <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Field Data:</label>
+                  <div class="form-group">
+                      <label class="control-label">Delivery Vectors:</label>
+                      <select  class="form-control" name="del_vec">
+                          <option>Choose an option</option>
+                          <option value="active-attacker">active-attacker</option>
+                          <option value="auto-executing-media">auto-executing-media</option>
+                          <option value="downloader">downloader</option>
+                          <option value="dropper">dropper</option>
+                          <option value="email-attachment">email-attachment</option>
+                          <option value="exploit-kit-landing-page">exploit-kit-landing-page</option>
+                          <option value="fake-website">fake-website</option>
+                          <option value="janitor-attack">janitor-attack</option>
+                          <option value="malicious-iframes">malicious-iframes</option>
+                          <option value="malvertising">malvertising</option>
+                          <option value="media-baiting">media-baiting</option>
+                          <option value="pharming">pharming</option>
+                          <option value="phishing">phishing</option>
+                          <option value="trojanized-link">trojanized-link</option>
+                          <option value="trojanized-software">trojanized-software</option>
+                          <option value="usb-cable-syncing">usb-cable-syncing</option>
+                          <option value="watering-hole">watering-hole</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">First seen:</label>
+                      <input type="datetime-local" class="form-control" name="fd_fseen">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Last seen:</label>
+                      <input type="datetime-local" class="form-control" name="fd_lseen">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Common strings:</label>
+                  <input type="text" class="form-control" name="comm_str">
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Common capabilities:</label>
+                  <div class="form-group">
+                      <label class="control-label">Name:</label>
+                      <select  class="form-control" name="commcap_name">
+                          <option>Choose an option</option>
+                          <option value="anti-behavioral-analysis">anti-behavioral-analysis</option>
+                          <option value="anti-code-analysis">anti-code-analysis</option>
+                          <option value="anti-detection">anti-detection</option>
+                          <option value="anti-removal">anti-removal</option>
+                          <option value="availability-violation">availability-violation</option>
+                          <option value="collection">collection</option>
+                          <option value="command-and-control">command-and-control</option>
+                          <option value="data-theft">data-theft</option>
+                          <option value="destruction">destruction</option>
+                          <option value="discovery">discovery</option>
+                          <option value="exfiltration">exfiltration</option>
+                          <option value="fraud">fraud</option>
+                          <option value="infection-propagation">infection-propagation</option>
+                          <option value="machine-access-control">machine-access-control</option>
+                          <option value="persistence">persistence</option>
+                          <option value="privilege-escalation">privilege-escalation</option>
+                          <option value="secondary-operation">secondary-operation</option>
+                          <option value="security-degradation">security-degradation</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Refined capabilities:</label>
+                      <div class="form-group">
+                          <label class="control-label">Name:</label>
+                          <select  class="form-control" name="refcap_name">
+                          <option>Choose an option</option>
+                          <option value="access-control-degradation">access-control-degradation</option>
+                          <option value="anti-debugging">anti-debugging</option>
+                          <option value="anti-disassembly">anti-disassembly</option>
+                          <option value="anti-emulation">anti-emulation</option>
+                          <option value="anti-memory-forensics">anti-memory-forensics</option>
+                          <option value="anti-sandbox">anti-sandbox</option>
+                          <option value="anti-virus-evasion">anti-virus-evasion</option>
+                          <option value="anti-vm">anti-vm</option>
+                          <option value="authentication-credentials-theft">authentication-credentials-theft</option>
+                          <option value="clean-traces-of-infection">clean-traces-of-infection</option>
+                          <option value="communicate-with-c2-server">communicate-with-c2-server</option>
+                          <option value="compromise-data-availability">compromise-data-availability</option>
+                          <option value="compromise-system-availability">compromise-system-availability</option>
+                          <option value="consume-system-resources">consume-system-resources</option>
+                          <option value="continuous-execution">continuous-execution</option>
+                          <option value="data-integrity-violation">data-integrity-violation</option>
+                          <option value="data-obfuscation">data-obfuscation</option>
+                          <option value="data-staging">data-staging</option>
+                          <option value="determine-c2-server">determine-c2-server</option>
+                          <option value="email-spam">email-spam</option>
+                          <option value="ensure-compatibility">ensure-compatibility</option>
+                          <option value="environment-awareness">environment-awareness</option>
+                          <option value="file-infection">file-infection</option>
+                          <option value="hide-artifacts">hide-artifacts</option>
+                          <option value="hide-executing-code">hide-executing-code</option>
+                          <option value="hide-non-executing-code">hide-non-executing-code</option>
+                          <option value="host-configuration-probing">host-configuration-probing</option>
+                          <option value="information-gathering-for-improvement">information-gathering-for-improvement</option>
+                          <option value="input-peripheral-capture">input-peripheral-capture</option>
+                          <option value="install-other-components">install-other-components</option>
+                          <option value="local-machine-control">local-machine-control</option>
+                          <option value="network-environment-probing">network-environment-probing</option>
+                          <option value="os-security-feature-degradation">os-security-feature-degradation</option>
+                          <option value="output-peripheral-capture">output-peripheral-capture</option>
+                          <option value="physical-entity-destruction">physical-entity-destruction</option>
+                          <option value="prevent-artifact-access">prevent-artifact-access</option>
+                          <option value="prevent-artifact-deletion">prevent-artifact-deletion</option>
+                          <option value="remote-machine-access">remote-machine-access</option>
+                          <option value="remote-machine-infection">remote-machine-infection</option>
+                          <option value="security-software-degradation">security-software-degradation</option>
+                          <option value="security-software-evasion">security-software-evasion</option>
+                          <option value="self-modification">self-modification</option>
+                          <option value="service-provider-security-feature-degradation">service-provider-security-feature-degradation</option>
+                          <option value="stored-information-theft">stored-information-theft</option>
+                          <option value="system-interface-data-capture">system-interface-data-capture</option>
+                          <option value="system-operational-integrity-violation">system-operational-integrity-violation</option>
+                          <option value="system-re-infection">system-re-infection</option>
+                          <option value="system-state-data-capture">system-state-data-capture</option>
+                          <option value="system-update-degradation">system-update-degradation</option>
+                          <option value="user-data-theft">user-data-theft</option>
+                          <option value="virtual-entity-destruction">virtual-entity-destruction</option>
+                      </select>
+                      </div>
 
-
-
-
-
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Description:</label>
+                      <textarea class="form-control" rows="3" name="commcap_desc"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Attributes:</label>
+                      <textarea class="form-control" rows="3" name="commcap_attr"></textarea><!--required key value feature-->
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Behavior references:</label> <!--should display a list of behavior identifiers-->
+                      <select class="form-control" name="commcap_behref">
+                          <option>Choose an option</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">References:</label>
+                      <div class="form-group">
+                          <label class="control-label">Source name:</label>
+                          <input type="text" class="form-control" name="commcap_refsrcnm">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Description:</label>
+                          <textarea class="form-control" rows="3" name="commcap_ref"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">URL:</label>
+                          <input type="text" class="form-control" name="commcap_refsurl">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">External Id:</label>
+                          <input type="text" class="form-control" name="commcap_refsextid">
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Common code references:</label><!--requires some dynamic features, requires more forms-->
+              </div>
+              <div class="form-group">
+                <label class="control-label">Common behavior references:</label><!--requires some dynamic features, requires list of 'behvior' id's-->
+                  <select class="form-control" name="commbeh_ref">
+                      <option>choose an option</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">References:</label>
+                  <div class="form-group">
+                          <label class="control-label">Source Name:</label>
+                          <input type="text" class="form-control" name="ref_nm">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Description:</label>
+                          <textarea class="form-control" rows="3" name="ref_desc"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">URL:</label>
+                          <input type="text" class="form-control" name="ref_url">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">External id:</label>
+                          <input type="text" class="form-control" name="ref_extid">
+                      </div>
+              </div>
 
               <!-- Modal footer -->
               <div class="modal-footer">
@@ -1396,20 +1626,518 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Modal Heading</h4>
+          <h4 class="modal-title">Malware Instance</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
 
         <!-- Modal body -->
         <div class="modal-body">
-          Modal body..
-        </div>
+          <form>
+              <div class="form-group">
+                  <label class="control-label">Instance object references:</label><!--needs a dynamic feature that requires stix cyber obv type -->
+              </div>
+              <div class="form-group">
+                <label class="control-label">Name:</label>
+                <div class="form-group">
+                      <label class="control-label">Value:</label>
+                      <input type="text" class="form-control" name="nm_val">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Source:</label>
+                      <div class="form-group">
+                          <label class="control-label">Source Name:</label>
+                          <input type="text" class="form-control" name="nm_src">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Description:</label>
+                          <textarea class="form-control" rows="3" name="src_desc"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">URL:</label>
+                          <input type="text" class="form-control" name="src_url">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">External id:</label>
+                          <input type="text" class="form-control" name="src_extid">
+                      </div>
 
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        </div>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Confidence:</label>
+                      <input type="integer" class="form-control" name="nm_conf">
+                  </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Aliases:</label>
+                  <input type="text" class="form-control" name="aliases"> <!-- to be edited further, requires list of type name-->
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Labels:</label>
+                  <select  class="form-control" name="labels">
+                          <option>Choose an option</option>
+                          <option value="adware">adware</option>
+                          <option value="appender">appender</option>
+                          <option value="backdoor">backdoor</option>
+                          <option value="boot-sector-virus">boot-sector-virus</option>
+                          <option value="bot">bot</option>
+                          <option value="cavity-filler">cavity-filler</option>
+                          <option value="clicker">clicker</option>
+                          <option value="companion-virus">companion-virus</option>
+                          <option value="data-diddler">data-diddler</option>
+                          <option value="ddos">ddos</option>
+                          <option value="downloader">downloader</option>
+                          <option value="dropper">dropper</option>
+                          <option value="exploit-kit">exploit-kit</option>
+                          <option value="file-infector-virus">file-infector-virus</option>
+                          <option value="file-less">file-less</option>
+                          <option value="fork-bomb">fork-bomb</option>
+                          <option value="greyware">greyware</option>
+                          <option value="implant">implant</option>
+                          <option value="keylogger">keylogger</option>
+                          <option value="kleptographic-worm">kleptographic-worm</option>
+                          <option value="macro-virus">macro-virus</option>
+                          <option value="malware-as-a-service">malware-as-a-service</option>
+                          <option value="mass-mailer">mass-mailer</option>
+                          <option value="metamorphic-virus">metamorphic-virus</option>
+                          <option value="mid-infector">mid-infector</option>
+                          <option value="mobile-code">mobile-code</option>
+                          <option value="multipartite-virus">multipartite-virus</option>
+                          <option value="parental-control">parental-control</option>
+                          <option value="password-stealer">password-stealer</option>
+                          <option value="polymorphic-virus">polymorphic-virus</option>
+                          <option value="premium-dialer-smser">premium-dialer-smser</option>
+                          <option value="prepender">prepender</option>
+                          <option value="ransomware">ransomware</option>
+                          <option value="remote-access-trojan">remote-access-trojan</option>
+                          <option value="resource-exploiter">resource-exploiter</option>
+                          <option value="rogue-security-software">rogue-security-software</option>
+                          <option value="rootkit">rootkit</option>
+                          <option value="scareware">scareware</option>
+                          <option value="screen-capture">screen-capture</option>
+                          <option value="security-assessment-tools">security-assessment-tool</option>
+                          <option value="shellcode">shellcode</option>
+                          <option value="spyware">spyware</option>
+                          <option value="trackware">trackware</option>
+                          <option value="trojan">trojan</option>
+                          <option value="virus">virus</option>
+                          <option value="web-bug">web-bug</option>
+                          <option value="worm">worm</option>
+                      </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Description:</label>
+                  <textarea class="form-control" rows="3" name="desc"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Field Data:</label>
+                  <div class="form-group">
+                      <label class="control-label">Delivery Vectors:</label>
+                      <select  class="form-control" name="del_vec">
+                          <option>Choose an option</option>
+                          <option value="active-attacker">active-attacker</option>
+                          <option value="auto-executing-media">auto-executing-media</option>
+                          <option value="downloader">downloader</option>
+                          <option value="dropper">dropper</option>
+                          <option value="email-attachment">email-attachment</option>
+                          <option value="exploit-kit-landing-page">exploit-kit-landing-page</option>
+                          <option value="fake-website">fake-website</option>
+                          <option value="janitor-attack">janitor-attack</option>
+                          <option value="malicious-iframes">malicious-iframes</option>
+                          <option value="malvertising">malvertising</option>
+                          <option value="media-baiting">media-baiting</option>
+                          <option value="pharming">pharming</option>
+                          <option value="phishing">phishing</option>
+                          <option value="trojanized-link">trojanized-link</option>
+                          <option value="trojanized-software">trojanized-software</option>
+                          <option value="usb-cable-syncing">usb-cable-syncing</option>
+                          <option value="watering-hole">watering-hole</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">First seen:</label>
+                      <input type="datetime-local" class="form-control" name="fd_fseen">
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Last seen:</label>
+                      <input type="datetime-local" class="form-control" name="fd_lseen">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">OS execution environments:</label>
+                  <select class="form-control" name="osexecenv">
+                      <option>Choose an option</option>
+                      <option value="android-1.0.x">android-1.0.x</option>
+                      <option value="android-1.1.x">android-1.1.x</option>
+                      <option value="android-1.5.x">android-1.5.x</option>
+                      <option value="android-1.6.x">android-1.6.x</option>
+                      <option value="android-2.0.x">android-2.0.x</option>
+                      <option value="android-2.1.x">android-2.1.x</option>
+                      <option value="android-2.2.x">android-2.2.x</option>
+                      <option value="android-2.3.x">android-2.3.x</option>
+                      <option value="android-3.0.x">android-3.0.x</option>
+                      <option value="android-3.1.x">android-3.1.x</option>
+                      <option value="android-3.2.x">android-3.2.x</option>
+                      <option value="android-4.0.x">android-4.0.x</option>
+                      <option value="android-4.1.x">android-4.1.x</option>
+                      <option value="android-4.2.x">android-4.2.x</option>
+                      <option value="android-4.3.x">android-4.3.x</option>
+                      <option value="android-4.4.x">android-4.4.x</option>
+                      <option value="android-5.0.x">android-5.0.x</option>
+                      <option value="android-5.1.x">android-5.1.x</option>
+                      <option value="android-unknown-version">android-unknown-version</option>
+                      <option value="ios-1.0.x">ios-1.0.x</option>
+                      <option value="ios-1.1.x">ios-1.1.x</option>
+                      <option value="ios-2.0.x">ios-2.0.x</option>
+                      <option value="ios-2.1.x">ios-2.1.x</option>
+                      <option value="ios-2.2.x">ios-2.2.x</option>
+                      <option value="ios-3.0.x">ios-3.0.x</option>
+                      <option value="ios-3.1.x">ios-3.1.x</option>
+                      <option value="ios-3.2.x">ios-3.2.x</option>
+                      <option value="ios-4.0.x">ios-4.0.x</option>
+                      <option value="ios-4.1.x">ios-4.1.x</option>
+                      <option value="ios-4.2.x">ios-4.2.x</option>
+                      <option value="ios-4.3.x">ios-4.3.x</option>
+                      <option value="ios-5.0.x">ios-5.0.x</option>
+                      <option value="ios-5.1.x">ios-5.1.x</option>
+                      <option value="ios-6.0.x">ios-6.0.x</option>
+                      <option value="ios-6.1.x">ios-6.1.x</option>
+                      <option value="ios-7.0.x">ios-7.0.x</option>
+                      <option value="ios-7.1.x">ios-7.1.x</option>
+                      <option value="ios-8.0.x">ios-8.0.x</option>
+                      <option value="ios-8.1.x">ios-8.1.x</option>
+                      <option value="ios-8.2.x">ios-8.2.x</option>
+                      <option value="ios-8.3.x">ios-8.3.x</option>
+                      <option value="ios-8.4.x">ios-8.4.x</option>
+                      <option value="ios-9.0.x">ios-9.0.x</option>
+                      <option value="ios-9.1.x">ios-9.1.x</option>
+                      <option value="ios-9.2.x">ios-9.2.x</option>
+                      <option value="ios-9.3.x">ios-9.3.x</option>
+                      <option value="ios-10.0.x">ios-10.0.x</option>
+                      <option value="ios-10.1.x">ios-10.1.x</option>
+                      <option value="ios-unknown-version">ios-unknown-version</option>
+                      <option value="linux-kernel-2.4.x">linux-kernel-2.4.x</option>
+                      <option value="linux-kernel-2.6.x">linux-kernel-2.6.x</option>
+                      <option value="linux-kernel-3.0.x">linux-kernel-3.0.x</option>
+                      <option value="linux-kernel-3.1.x">linux-kernel-3.1.x</option>
+                      <option value="linux-kernel-3.2.x">linux-kernel-3.2.x</option>
+                      <option value="linux-kernel-3.3.x">linux-kernel-3.3.x</option>
+                      <option value="linux-kernel-3.4.x">linux-kernel-3.4.x</option>
+                      <option value="linux-kernel-3.5.x">linux-kernel-3.5.x</option>
+                      <option value="linux-kernel-3.6.x">linux-kernel-3.6.x</option>
+                      <option value="linux-kernel-3.7.x">linux-kernel-3.7.x</option>
+                      <option value="linux-kernel-3.8.x">linux-kernel-3.8.x</option>
+                      <option value="linux-kernel-3.9.x">linux-kernel-3.9.x</option>
+                      <option value="linux-kernel-3.10.x">linux-kernel-3.10.x</option>
+                      <option value="linux-kernel-3.11.x">linux-kernel-3.11.x</option>
+                      <option value="linux-kernel-3.12.x">linux-kernel-3.12.x</option>
+                      <option value="linux-kernel-3.13.x">linux-kernel-3.13.x</option>
+                      <option value="linux-kernel-3.14.x">linux-kernel-3.14.x</option>
+                      <option value="linux-kernel-3.15.x">linux-kernel-3.15.x</option>
+                      <option value="linux-kernel-3.16.x">linux-kernel-3.16.x</option>
+                      <option value="linux-kernel-3.17.x">linux-kernel-3.17.x</option>
+                      <option value="linux-kernel-3.18.x">linux-kernel-3.18.x</option>
+                      <option value="linux-kernel-3.19.x">linux-kernel-3.19.x</option>
+                      <option value="linux-kernel-4.0.x">linux-kernel-4.0.x</option>
+                      <option value="linux-kernel-4.1.x">linux-kernel-4.1.x</option>
+                      <option value="linux-unknown-version">linux-unknown-version</option>
+                      <option value="mac-os-x-10.0.x">mac-os-x-10.0.x</option>
+                      <option value="mac-os-x-10.1.x">mac-os-x-10.1.x</option>
+                      <option value="mac-os-x-10.2.x">mac-os-x-10.2.x</option>
+                      <option value="mac-os-x-10.3.x">mac-os-x-10.3.x</option>
+                      <option value="mac-os-x-10.4.x">mac-os-x-10.4.x</option>
+                      <option value="mac-os-x-10.5.x">mac-os-x-10.5.x</option>
+                      <option value="mac-os-x-10.6.x">mac-os-x-10.6.x</option>
+                      <option value="mac-os-x-10.7.x">mac-os-x-10.7.x</option>
+                      <option value="mac-os-x-10.8.x">mac-os-x-10.8.x</option>
+                      <option value="mac-os-x-10.9.x">mac-os-x-10.9.x</option>
+                      <option value="mac-os-x-10.10.x">mac-os-x-10.10.x</option>
+                      <option value="mac-os-x-10.11.x">mac-os-x-10.11.x</option>
+                      <option value="mac-os-x-unknown-version">mac-os-x-unknown-version</option>
+                      <option value="windows-7">windows-7</option>
+                      <option value="windows-7-sp1">windows-7-sp1</option>
+                      <option value="windows-8">windows-8</option>
+                      <option value="windows-8.1">windows-8.1</option>
+                      <option value="windows-10">windows-10</option>
+                      <option value="windows-server-2003">windows-server-2003</option>
+                      <option value="windows-server-2003-sp1">windows-server-2003-sp1</option>
+                      <option value="windows-server-2003-sp2">windows-server-2003-sp2</option>
+                      <option value="windows-server-2008">windows-server-2008</option>
+                      <option value="windows-server-2008-sp1">windows-server-2008-sp1</option>
+                      <option value="windows-server-2008-sp2">windows-server-2008-sp2</option>
+                      <option value="windows-server-2008-r2">windows-server-2008-r2</option>
+                      <option value="windows-server-2008-r2-sp1">windows-server-2008-r2-sp1</option>
+                      <option value="windows-server-2012">windows-server-2012</option>
+                      <option value="windows-server-2012-r2">windows-server-2012-r2</option>
+                      <option value="windows-vista">windows-vista</option>
+                      <option value="windows-vista-sp1">windows-vista-sp1</option>
+                      <option value="windows-vista-sp2">windows-vista-sp2</option>
+                      <option value="windows-xp">windows-xp</option>
+                      <option value="windows-xp-sp1">windows-xp-sp1</option>
+                      <option value="windows-xp-sp2">windows-xp-sp2</option>
+                      <option value="windows-xp-sp3">windows-xp-sp3</option>
+                      <option value="windows-unknown-version">windows-unknown-version</option>
 
+                  </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Architecture execution environments:</label>
+                  <select class="form-control" name="archexec_env">
+                      <option>Choose an option</option>
+                      <option value="x86">x86</option>
+                      <option value="x86-64">x86-64</option>
+                      <option value="ia-64">ia-64</option>
+                      <option value="powerpc">powerpc</option>
+                      <option value="arm">arm</option>
+                      <option value="alpha">alpha</option>
+                      <option value="sparc">sparc</option>
+                      <option value="mips">mips</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label">Capabilities:</label>
+                  <div class="form-group">
+                      <label class="control-label">Name:</label>
+                      <select  class="form-control" name="commcap_name">
+                          <option>Choose an option</option>
+                          <option value="anti-behavioral-analysis">anti-behavioral-analysis</option>
+                          <option value="anti-code-analysis">anti-code-analysis</option>
+                          <option value="anti-detection">anti-detection</option>
+                          <option value="anti-removal">anti-removal</option>
+                          <option value="availability-violation">availability-violation</option>
+                          <option value="collection">collection</option>
+                          <option value="command-and-control">command-and-control</option>
+                          <option value="data-theft">data-theft</option>
+                          <option value="destruction">destruction</option>
+                          <option value="discovery">discovery</option>
+                          <option value="exfiltration">exfiltration</option>
+                          <option value="fraud">fraud</option>
+                          <option value="infection-propagation">infection-propagation</option>
+                          <option value="machine-access-control">machine-access-control</option>
+                          <option value="persistence">persistence</option>
+                          <option value="privilege-escalation">privilege-escalation</option>
+                          <option value="secondary-operation">secondary-operation</option>
+                          <option value="security-degradation">security-degradation</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Refined capabilities:</label>
+                      <div class="form-group">
+                          <label class="control-label">Name:</label>
+                          <select  class="form-control" name="refcap_name">
+                          <option>Choose an option</option>
+                          <option value="access-control-degradation">access-control-degradation</option>
+                          <option value="anti-debugging">anti-debugging</option>
+                          <option value="anti-disassembly">anti-disassembly</option>
+                          <option value="anti-emulation">anti-emulation</option>
+                          <option value="anti-memory-forensics">anti-memory-forensics</option>
+                          <option value="anti-sandbox">anti-sandbox</option>
+                          <option value="anti-virus-evasion">anti-virus-evasion</option>
+                          <option value="anti-vm">anti-vm</option>
+                          <option value="authentication-credentials-theft">authentication-credentials-theft</option>
+                          <option value="clean-traces-of-infection">clean-traces-of-infection</option>
+                          <option value="communicate-with-c2-server">communicate-with-c2-server</option>
+                          <option value="compromise-data-availability">compromise-data-availability</option>
+                          <option value="compromise-system-availability">compromise-system-availability</option>
+                          <option value="consume-system-resources">consume-system-resources</option>
+                          <option value="continuous-execution">continuous-execution</option>
+                          <option value="data-integrity-violation">data-integrity-violation</option>
+                          <option value="data-obfuscation">data-obfuscation</option>
+                          <option value="data-staging">data-staging</option>
+                          <option value="determine-c2-server">determine-c2-server</option>
+                          <option value="email-spam">email-spam</option>
+                          <option value="ensure-compatibility">ensure-compatibility</option>
+                          <option value="environment-awareness">environment-awareness</option>
+                          <option value="file-infection">file-infection</option>
+                          <option value="hide-artifacts">hide-artifacts</option>
+                          <option value="hide-executing-code">hide-executing-code</option>
+                          <option value="hide-non-executing-code">hide-non-executing-code</option>
+                          <option value="host-configuration-probing">host-configuration-probing</option>
+                          <option value="information-gathering-for-improvement">information-gathering-for-improvement</option>
+                          <option value="input-peripheral-capture">input-peripheral-capture</option>
+                          <option value="install-other-components">install-other-components</option>
+                          <option value="local-machine-control">local-machine-control</option>
+                          <option value="network-environment-probing">network-environment-probing</option>
+                          <option value="os-security-feature-degradation">os-security-feature-degradation</option>
+                          <option value="output-peripheral-capture">output-peripheral-capture</option>
+                          <option value="physical-entity-destruction">physical-entity-destruction</option>
+                          <option value="prevent-artifact-access">prevent-artifact-access</option>
+                          <option value="prevent-artifact-deletion">prevent-artifact-deletion</option>
+                          <option value="remote-machine-access">remote-machine-access</option>
+                          <option value="remote-machine-infection">remote-machine-infection</option>
+                          <option value="security-software-degradation">security-software-degradation</option>
+                          <option value="security-software-evasion">security-software-evasion</option>
+                          <option value="self-modification">self-modification</option>
+                          <option value="service-provider-security-feature-degradation">service-provider-security-feature-degradation</option>
+                          <option value="stored-information-theft">stored-information-theft</option>
+                          <option value="system-interface-data-capture">system-interface-data-capture</option>
+                          <option value="system-operational-integrity-violation">system-operational-integrity-violation</option>
+                          <option value="system-re-infection">system-re-infection</option>
+                          <option value="system-state-data-capture">system-state-data-capture</option>
+                          <option value="system-update-degradation">system-update-degradation</option>
+                          <option value="user-data-theft">user-data-theft</option>
+                          <option value="virtual-entity-destruction">virtual-entity-destruction</option>
+                      </select>
+                      </div>
+
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Description:</label>
+                      <textarea class="form-control" rows="3" name="commcap_desc"></textarea>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Attributes:</label>
+                      <textarea class="form-control" rows="3" name="commcap_attr"></textarea><!--required key value feature-->
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Behavior references:</label> <!--should display a list of behavior identifiers-->
+                      <select class="form-control" name="commcap_behref">
+                          <option>Choose an option</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">References:</label>
+                      <div class="form-group">
+                          <label class="control-label">Source name:</label>
+                          <input type="text" class="form-control" name="commcap_refsrcnm">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">Description:</label>
+                          <textarea class="form-control" rows="3" name="commcap_ref"></textarea>
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">URL:</label>
+                          <input type="text" class="form-control" name="commcap_refsurl">
+                      </div>
+                      <div class="form-group">
+                          <label class="control-label">External Id:</label>
+                          <input type="text" class="form-control" name="commcap_refsextid">
+                      </div>
+                  </div>
+              </div><!--required dynamic feature that displays a list of capabilities(has more than 3 fields-->
+              <div class="form-group">
+                  <label class="control-label">Os features:</label>
+                  <select class="form-control" name="os_feat">
+                      <option>Choose an option</option>
+                      <option value="login-items">login-items</option>
+                      <option value="plist-files">plist-files</option>
+                      <option value="applescript">applescript</option>
+                      <option value="launch-agent">launch-agent</option>
+                      <option value="launch-daemons">launch-daemons</option>
+                      <option value="kext">kext</option>
+                      <option value="login-logout-hooks">login-logout-hooks</option>
+                      <option value="named-pipes">named-pipes</option>
+                      <option value="berkeley-sockets">berkeley-sockets</option>
+                      <option value="cron">cron</option>
+                      <option value="mutexes">mutexes</option>
+                      <option value="registry-keys">registry-keys</option>
+                      <option value="services">services</option>
+                      <option value="powershell">powershell</option>
+                      <option value="ntfs-extended-attributes">ntfs-extended-attributes</option>
+                      <option value="network-shares">network-shares</option>
+                      <option value="hooks">hooks</option>
+                      <option value="wmi">wmi</option>
+                      <option value="task-scheduler">task-scheduler</option>
+                      <option value="critical-sections">critical-sections</option>
+                      <option value="device-drivers">device-drivers</option>
+                      <option value="admin-network-shares">admin-network-shares</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Dynamic features:</label>
+                  <div class="form-group">
+                      <label class="control-label">Behavior references:</label>
+                      <select class="form-control" name="beh_ref">
+                          <option>Choose an option</option><!--should display list of id's of behavior type-->
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Action references:</label>
+                      <select class="form-control" name="act_ref">
+                          <option>Choose an option</option><!--should display list of id's of behavior type-->
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Network traffic references:</label>
+                      <select class="form-control" name="act_ref">
+                          <option>Choose an option</option><!--should display list of obj ref's-->
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Process tree:</label>
+                      <!--should display list of Process tree node -->
+                  </div>
+
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Static features:</label>
+                  <div class="form-group">
+                      <label class="control-label">Strings:</label>
+                      <textarea class="form-control" rows="3" name="strings"></textarea>
+
+                  </div><!--list of strings to be entered-->
+                  <div class="form-group">
+                      <label class="control-label">Obfuscation methods:</label>
+                      <!--dynamic feature: list of obfuscation methods-->
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Certificates:</label>
+                      <!--dynamic feature: list of obj ref-->
+
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">File headers:</label>
+                        <!--dynamic feature: list of obj ref-->
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Configuration parameters:</label>
+                       <select class="form-control" name="conf_params">
+                           <option>Choose an option</option>
+                           <option value="filename">filename</option>
+                           <option value="group-id">group-id</option>
+                           <option value="id">id</option>
+                           <option value="installation-path">installation-path</option>
+                           <option value="magic-number">magic-number</option>
+                           <option value="mutex">mutex</option>
+                           <option value="c2-ip-address">c2-ip-address</option>
+                           <option value="c2-domain">c2-domain</option>
+                           <option value="c2-url">c2-url</option>
+                           <option value="directory">directory</option>
+                           <option value="filepath">filepath</option>
+                           <option value="injection-process">injection-process</option>
+                           <option value="interval">interval</option>
+                           <option value="key">key</option>
+                           <option value="password">password</option>
+                           <option value="useragent">useragent</option>
+                           <option value="version">version</option>
+                       </select>
+                  </div>
+                  <div class="form-group">
+                      <label class="control-label">Development environment:</label>
+                        <div class="form-group">
+                            <label class="control-label">Tool references:</label>
+                            <!--dynamic feature: list of obj ref-->
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Debugging file references:</label>
+                            <!--dynamic feature: list of obj ref-->
+                        </div>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Analysis Metadata:</label>
+                    <!--required dynamic feature that displays a list of analysis metadata(has more than 3 fields-->
+              </div>
+              <div class="form-group">
+                  <label class="control-label">Triggered signatures:</label>
+                    <!--required dynamic feature that displays a list of Triggered signatures(has more than 3 fields-->
+              </div>
+              <!-- Modal footer -->
+              <div class="modal-footer">
+                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+              </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>

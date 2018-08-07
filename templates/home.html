@@ -10,11 +10,11 @@
     <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
-
-
+    <script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
 </head>
 <body>
-{% include 'modal_template.html' %}
+{% include 'object_modaltemplate.html' %}
+
 <div class="container-fluid">
 {#header section#}
         <div class="row">
@@ -59,9 +59,10 @@
                 <div class="row-fluid">
                     <ul class="nav nav-tabs ">
                         <li class="nav-item">
-                          <a class="nav-link active" data-toggle="tab" href="#create">Create</a>
+                            <a class="nav-link active" data-toggle="tab" href="#create">Create</a>
                         </li>
-
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#view">View</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#genfeed">STIX feed</a></li>
                     </ul>
                 </div>
                 <div class="row">
@@ -225,23 +226,43 @@
                             </div>
 
                         </div>
-                        <div id="menu1" class=" tab-pane fade"><br>
-                          <h3>Menu 1</h3>
-                          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        <div id="view" class="tab-pane fade"><br>
+                              <div class="table-responsive">
+                                    <table class="table table-hover">
+                                          <thead>
+                                            <tr>
+                                              <th>#</th>
+                                              <th>Type</th>
+                                              <th>Name</th>
+                                              <th>Description</th>
+                                              <th>Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          {% for dat in data %}
+                                            <tr>
+                                              <td>{{dat.id}}</td>
+                                              <td>{{dat.type}}</td>
+                                              <td>{{dat.name}}</td>
+                                              <td>{{dat.description}}</td>
+                                              <td><button type="button" class="btn btn-primary mr-1">View</button>
+                                                  <button type="button" class="btn btn-success mr-1" onclick="window.location.href='{{ url_for('update_entry',objtype=dat.type, id = dat.id) }}';" >Update</button>
+                                                  <button type="button" class="btn btn-danger">Delete</button></td>
+                                            </tr>
+                                          {% endfor %}
+                                          </tbody>
+                                    </table>
+                              </div>
                         </div>
-                        <div id="menu2" class=" tab-pane fade"><br>
+                        <div id="genfeed" class="tab-pane fade"><br>
                           <h3>Menu 2</h3>
                           <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
                         </div>
                     </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
-
-
     </div>
 {#        footer section#}
        <div class="row">
@@ -250,14 +271,6 @@
         </nav>
 </div>
 </div>
-
-
 </body>
-<script src="{{ url_for('static',filename = 'angular/angular.min.js') }}"></script>
-<script src="{{ url_for('static',filename = 'angular/angular-animate.min.js') }}"></script>
-<script src="{{ url_for('static',filename = 'angular/angular-aria.min.js') }}"></script>
-<script src="{{ url_for('static',filename = 'angular/angular-material.min.js') }}"></script>
-<script src="{{ url_for('static',filename = 'angular/angular-messages.min.js') }}"></script>
-
-<script></script>
+<script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
 </html>
