@@ -71,11 +71,13 @@ def auth():
 def home():
     if g.user:
         user = g.user
+        mainList = []
+        # query for attack pattern
+        query_attkpat = "select * from `attack-pattern`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
-        cur.execute("select * from `attack-pattern`  where created_by='" + user + "'")  # query to be updated in future
-        rows = cur.fetchall()
-        rowList =[]
-        for row in rows:
+        cur.execute(query_attkpat)
+        rows_attkpat = cur.fetchall()
+        for row in rows_attkpat:
             rowdict = {
                 'id': row[0],
                 'type': row[1],
@@ -83,8 +85,22 @@ def home():
                 'description': row[3],
                 'created_by': row[4]
             }
-            rowList.append(rowdict)
-        output = json.dumps(rowList,sort_keys=True, indent=4)
+            mainList.append(rowdict)
+        # query for campaign
+        query_campaign = "select * from `campaign`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_campaign)
+        rows_campaign = cur.fetchall()
+        for row in rows_campaign:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'created_by': row[4]
+            }
+            mainList.append(rowdict)
+        output = json.dumps(mainList,sort_keys=True, indent=4)
         resp = json.loads(output)
         return render_template('home.html', data=resp)
     else:
@@ -158,6 +174,29 @@ def view_additionalinfo(objtype, id):
             output = json.dumps(row_extrefList, sort_keys=True, indent=4)
             resp_extref = json.loads(output)
             return render_template(url, main=resp_main, kclist = resp_kc ,extreflist = resp_extref )
+        elif objtype == "campaign":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'description': row_main[3],
+                'aliases': row_main[4],
+                'first_seen': row_main[5],
+                'last_seen': row_main[6],
+                'objective': row_main[7]
+
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            return render_template(url, main=resp_main)
+
     return redirect(url_for('index'))
 
 
@@ -165,7 +204,7 @@ def view_additionalinfo(objtype, id):
 @app.route('/home/update/<objtype>/<id>', methods=['GET','POST'])
 def update_entry(objtype, id):
     if g.user:
-        if objtype:
+        if objtype == "attack-pattern":
             url = 'update_templates/' + objtype + '.html'
             obj_id = id
             createdBy= g.user
@@ -183,6 +222,28 @@ def update_entry(objtype, id):
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
             return render_template(url, data=resp)
+        elif objtype == "campaign":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'aliases': row[4],
+                'first_seen': row[5],
+                'last_seen': row[6],
+                'objective': row[7]
+            }
+
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+
     else:
         return redirect(url_for('index'))
 
@@ -351,12 +412,47 @@ def update_attkpattern():
 # ********* Campaign ********************
 
 # Campaign - Main object creation - Insert operation
+@app.route('/create_campaign', methods=['POST'])
+def create_campaign():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            name = request.form['nm']
+            description = request.form['desc']
+            aliases = request.form['aliases']
+            fseen = request.form['first_seen']
+            lseen = request.form['last_seen']
+            objective = request.form['objective']
+            created_by = g.user
 
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO campaign (type, name, description, aliases, first_seen, last_seen, objective, created_by) values (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                (type, name, description, aliases, fseen, lseen, objective, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
 
-
-
-
-
+@app.route('/update_campaign',methods=['POST'])
+def update_campagin():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            description = request.form['desc']
+            aliases = request.form['aliases']
+            objective = request.form['objective']
+            created_by = g.user
+            query = "UPDATE campaign SET name=%s, description=%s, aliases=%s, objective=%s where sno=%s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (name, description, aliases,objective, id))
+            mysql.connection.commit()
+            print "successfully Updated"
+            return jsonify({'result': 'success'})
+    else:
+        return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
