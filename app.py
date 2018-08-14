@@ -70,8 +70,9 @@ def auth():
 @app.route('/home',methods=['GET','POST'])
 def home():
     if g.user:
+        user = g.user
         cur = mysql.connection.cursor()
-        cur.execute("select * from `attack-pattern`") # query to be updated in future
+        cur.execute("select * from `attack-pattern`  where created_by='" + user + "'")  # query to be updated in future
         rows = cur.fetchall()
         rowList =[]
         for row in rows:
@@ -79,17 +80,127 @@ def home():
                 'id': row[0],
                 'type': row[1],
                 'name': row[2],
-                'description': row[3]
+                'description': row[3],
+                'created_by': row[4]
             }
             rowList.append(rowdict)
-            output = json.dumps(rowList,sort_keys=True, indent=4)
-            resp = json.loads(output)
+        output = json.dumps(rowList,sort_keys=True, indent=4)
+        resp = json.loads(output)
         return render_template('home.html', data=resp)
     else:
         flash("You are not allowed to access without authorization. Kindly enter your credentials and login!! ",
               'error')
         return redirect(url_for('index'))
 
+
+# Home->View-> View object - route for a new page to view additional info that displays all the corresponding contextual
+# information related to the selected SDO(entry)
+@app.route('/home/view/<objtype>/<id>', methods=['GET','POST'])
+def view_additionalinfo(objtype, id):
+    if g.user:
+        if objtype == "attack-pattern":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main Attack pattern SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'description': row_main[3]
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # kill chain
+            cur = mysql.connection.cursor()
+            query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
+                      FROM `killchainphase` AS KC \
+                      INNER JOIN `attack-pattern` AS AP on KC.obj_id = AP.sno AND KC.obj_id = %s AND KC.created_by=%s"
+            cur.execute(query1, (obj_id, createdBy))
+            row_kc = cur.fetchall()
+            row_kcList = []
+            for row in row_kc:
+                rowdict = {
+                    'id': row[0],
+                    'ref_id': row[1],
+                    'killchain_name': row[2],
+                    'phase_name': row[3],
+                    'created_by': row[4]
+                }
+                row_kcList.append(rowdict)
+            output = json.dumps(row_kcList, sort_keys=True, indent=4)
+            resp_kc = json.loads(output)
+            # External_references
+            cur = mysql.connection.cursor()
+            query2 = "SELECT ER.sno, ER.obj_id, ER.src_name, ER.description, ER.url, ER.hash_type, ER.hash_value, ER.external_id, ER.created_by \
+                      FROM `external_references` AS ER \
+                      INNER JOIN `attack-pattern` AS AP on ER.obj_id = AP.sno AND ER.obj_id = %s AND ER.created_by=%s"
+            cur.execute(query2, (obj_id, createdBy))
+            row_extref = cur.fetchall()
+            row_extrefList = []
+            for row in row_extref:
+                rowdict = {
+                    'id': row[0],
+                    'ref_id': row[1],
+                    'src_name': row[2],
+                    'description': row[3],
+                    'url': row[4],
+                    'hash_type': row[5],
+                    'hash_value': row[6],
+                    'external_id': row[7],
+                    'created_by': row[8]
+
+                }
+                row_extrefList.append(rowdict)
+            output = json.dumps(row_extrefList, sort_keys=True, indent=4)
+            resp_extref = json.loads(output)
+            return render_template(url, main=resp_main, kclist = resp_kc ,extreflist = resp_extref )
+    return redirect(url_for('index'))
+
+
+# Home->View-> update object - route for a new page to add additional info to  a particular selected SDO
+@app.route('/home/update/<objtype>/<id>', methods=['GET','POST'])
+def update_entry(objtype, id):
+    if g.user:
+        if objtype:
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy= g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                 'id': row[0],
+                 'type': row[1],
+                 'name': row[2],
+                 'description': row[3],
+                 'created_by': row[4]
+            }
+
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+    else:
+        return redirect(url_for('index'))
+
+
+# Home->View->additionalinfo-> Delete main obj   ( Deletes the entry from parent table and also the child table)
+@app.route('/home/delete', methods=['POST'])
+def delete_all_entry():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            obj_type = request.form['obj_type']
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+            mysql.connection.commit()
+            print "Entries deleted successfully"
+            return redirect(url_for('home'))
+    return redirect(url_for('index'))
 
 # logout
 @app.route('/logout')
@@ -122,6 +233,8 @@ def attk_pattern():
         return redirect(url_for('index'))
 
 
+
+
 # kill chain - Insert (Ajax post query)
 @app.route('/killchain',methods=['POST'])
 def kill_chain_submit():
@@ -139,6 +252,33 @@ def kill_chain_submit():
             return jsonify({'result': 'success'})
 
 
+# kill chain - update(ajax post query)
+@app.route('/updatekillchaindata',methods=['POST'])
+def update_killchaindata():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            kc_name = request.json['kc_name']
+            phase_name = request.json['kc_phase']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE killchainphase SET killchain_name=%s, phase_name=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+
+# kill chain - delete(ajax post query)
+@app.route('/deletekillchaindata', methods=['POST'])
+def delete_killchaindata():
+    id = request.json['id']
+    query = "delete from killchainphase where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+
 # External References - Insert (Ajax post query)
 @app.route('/insertextref',methods=['POST'])
 def insert_extref():
@@ -152,6 +292,7 @@ def insert_extref():
             hash_val = request.form['hash_value']
             ext_id = request.form['extref_extid']
             created_by = request.form['created_by']
+
             cur = mysql.connection.cursor()
             cur.execute('''INSERT INTO external_references (obj_id, src_name, description, url, hash_type, hash_value, external_id, created_by) values (%s, %s, %s, %s, %s, %s, %s, %s)''',
                         (int(ref_id), src_name, description, ext_url, hash_type, hash_val, ext_id, created_by))
@@ -159,33 +300,37 @@ def insert_extref():
             print('Successfully entered External References!!')
             return jsonify({'result': 'success'})
 
-
-# Attack pattern - SDO Update
-# Attack pattern - route for a new page to add additional info to  a particular selected SDO
-@app.route('/home/update/<objtype>/<id>',methods=['GET','POST'])
-def update_entry(objtype, id):
+# External references - update (Ajax post query)
+@app.route('/updateextrefdata', methods=['POST'])
+def update_extref():
     if g.user:
-        if objtype:
-            url = 'update_templates/' + objtype + '.html'
-            obj_id = id
+        if request.method == 'POST':
+            id = request.json['id']
+            src_name = request.json['src_name']
+            description = request.json['description']
+            ext_id = request.json['ext_id']
+            query = "UPDATE external_references SET src_name=%s, description=%s, external_id=%s where sno=%s"
             cur = mysql.connection.cursor()
-            cur.execute("select * from `" + objtype + "` where sno=%s", (obj_id))
-            row = cur.fetchone()
-            rowdict = {
-                 'id': row[0],
-                 'type': row[1],
-                 'name': row[2],
-                 'description': row[3]
-            }
+            cur.execute(query, (src_name,description,ext_id,id))
+            mysql.connection.commit()
+            print "successfully Updated"
+            return jsonify({'result': 'success'})
 
-            output = json.dumps(rowdict, sort_keys=True, indent=4)
-            resp = json.loads(output)
-            return render_template(url, data=resp)
-    return redirect(url_for('home'))
+# External references - update (Ajax post query)
+@app.route('/deleteextrefdata', methods=['POST'])
+def delete_extrefdata():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            query = "delete from external_references where sno=%s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (id,))
+            mysql.connection.commit()
+            print "successfully deleted"
+            return jsonify({'result': 'success'})
 
 
 # Attack pattern -update (Ajax post query)
-
 @app.route('/update_attk_pattern', methods=['POST'])
 def update_attkpattern():
     if g.user:
@@ -199,6 +344,19 @@ def update_attkpattern():
             mysql.connection.commit()
             print('Successfully updated!!')
             return jsonify({'result': 'success'})
+
+################ End of Attack pattern #####################
+
+
+# ********* Campaign ********************
+
+# Campaign - Main object creation - Insert operation
+
+
+
+
+
+
 
 
 if __name__ == '__main__':
