@@ -159,6 +159,62 @@ def home():
                         'created_by': row[5]
                     }
                     mainList.append(rowdict)
+        # query for report
+        query_report = "select * from `report`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_report)
+        rows_report= cur.fetchall()
+        for row in rows_report:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[4],
+                'created_by': row[5]
+            }
+            mainList.append(rowdict)
+        # query for threat-actor
+        query_report = "select * from `threat-actor`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_report)
+        rows_report= cur.fetchall()
+        for row in rows_report:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[5],
+                'created_by': row[13]
+            }
+            mainList.append(rowdict)
+        # query for tool
+        query_tool = "select * from `tool`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_tool)
+        rows_tool= cur.fetchall()
+        for row in rows_tool:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[4],
+                'created_by': row[5]
+            }
+            mainList.append(rowdict)
+        # query for vulnerability
+        query_vul = "select * from `vulnerability`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_vul)
+        rows_vul= cur.fetchall()
+        for row in rows_vul:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'created_by': row[4]
+            }
+            mainList.append(rowdict)
         output = json.dumps(mainList, sort_keys=True, indent=4)
         resp = json.loads(output)
         return render_template('home.html', data=resp)
@@ -193,8 +249,8 @@ def view_additionalinfo(objtype, id):
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
                       FROM `killchainphase` AS KC \
-                      INNER JOIN `attack-pattern` AS AP on KC.obj_id = AP.sno AND KC.obj_id = %s AND KC.created_by=%s"
-            cur.execute(query1, (obj_id, createdBy))
+                      INNER JOIN `attack-pattern` AS AP on KC.obj_id = AP.sno AND KC.obj_type = AP.type AND  KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
+            cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
             row_kcList = []
             for row in row_kc:
@@ -212,8 +268,8 @@ def view_additionalinfo(objtype, id):
             cur = mysql.connection.cursor()
             query2 = "SELECT ER.sno, ER.obj_id, ER.src_name, ER.description, ER.url, ER.hash_type, ER.hash_value, ER.external_id, ER.created_by \
                       FROM `external_references` AS ER \
-                      INNER JOIN `attack-pattern` AS AP on ER.obj_id = AP.sno AND ER.obj_id = %s AND ER.created_by=%s"
-            cur.execute(query2, (obj_id, createdBy))
+                      INNER JOIN `attack-pattern` AS AP on ER.obj_id = AP.sno AND ER.obj_type = AP.type AND ER.obj_id = %s AND ER.obj_type = %s AND ER.created_by=%s"
+            cur.execute(query2, (obj_id, objtype, createdBy))
             row_extref = cur.fetchall()
             row_extrefList = []
             for row in row_extref:
@@ -231,8 +287,8 @@ def view_additionalinfo(objtype, id):
                 }
                 row_extrefList.append(rowdict)
             output = json.dumps(row_extrefList, sort_keys=True, indent=4)
-            resp_extref = json.loads(output)
-            return render_template(url, main=resp_main, kclist = resp_kc ,extreflist = resp_extref )
+            response_extref = json.loads(output)
+            return render_template(url, main=resp_main, kclist = resp_kc ,extreflist = response_extref )
         elif objtype == "campaign":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -300,8 +356,8 @@ def view_additionalinfo(objtype, id):
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
                                   FROM `killchainphase` AS KC \
-                                  INNER JOIN `indicator` AS IND on KC.obj_id = IND.sno AND KC.obj_id = %s AND KC.created_by=%s"
-            cur.execute(query1, (obj_id, createdBy))
+                                  INNER JOIN `indicator` AS IND on KC.obj_id = IND.sno AND KC.obj_type = IND.type AND KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
+            cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
             row_kcList = []
             for row in row_kc:
@@ -362,8 +418,8 @@ def view_additionalinfo(objtype, id):
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
                                   FROM `killchainphase` AS KC \
-                                  INNER JOIN `malware` AS MAL on KC.obj_id = MAL.sno AND KC.obj_id = %s AND KC.created_by=%s"
-            cur.execute(query1, (obj_id, createdBy))
+                                  INNER JOIN `malware` AS MAL on KC.obj_id = MAL.sno AND KC.obj_type = MAL.type AND KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
+            cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
             row_kcList = []
             for row in row_kc:
@@ -378,6 +434,134 @@ def view_additionalinfo(objtype, id):
             output = json.dumps(row_kcList, sort_keys=True, indent=4)
             resp_kc = json.loads(output)
             return render_template(url, main=resp_main, kclist=resp_kc)
+        elif objtype == "report":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'description': row_main[3],
+                'labels': row_main[4],
+                'published': row_main[5],
+                'obj_references': row_main[6]
+
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            return render_template(url, main=resp_main)
+        elif objtype == "threat-actor":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'labels': row_main[3],
+                'aliases': row_main[4],
+                'description': row_main[5],
+                'roles': row_main[6],
+                'goals': row_main[7],
+                'sophistication': row_main[8],
+                'resource_level': row_main[9],
+                'primary_motivation': row_main[10],
+                'secondary_motivations': row_main[11],
+                'personal_motivations': row_main[12]
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            return render_template(url, main=resp_main)
+
+        elif objtype == "tool":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'labels': row_main[3],
+                'description': row_main[4],
+                'tool_version': row_main[5]
+
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # kill chain
+            cur = mysql.connection.cursor()
+            query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
+                                              FROM `killchainphase` AS KC \
+                                              INNER JOIN `tool` AS TOO on KC.obj_id = TOO.sno AND KC.obj_type= TOO.type AND KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
+            cur.execute(query1, (obj_id, objtype, createdBy))
+            row_kc = cur.fetchall()
+            row_kcList = []
+            for row in row_kc:
+                rowdict = {
+                    'id': row[0],
+                    'ref_id': row[1],
+                    'killchain_name': row[2],
+                    'phase_name': row[3],
+                    'created_by': row[4]
+                }
+                row_kcList.append(rowdict)
+            output = json.dumps(row_kcList, sort_keys=True, indent=4)
+            resp_kc = json.loads(output)
+            return render_template(url, main=resp_main, kclist=resp_kc)
+        elif objtype == "vulnerability":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'description': row_main[3]
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # External_references
+            cur = mysql.connection.cursor()
+            query2 = "SELECT ER.sno, ER.obj_id, ER.src_name, ER.description, ER.url, ER.hash_type, ER.hash_value, ER.external_id, ER.created_by \
+                      FROM `external_references` AS ER \
+                      INNER JOIN `vulnerability` AS VU on ER.obj_id = VU.sno AND  ER.obj_type = VU.type AND ER.obj_id = %s AND ER.obj_type = %s AND ER.created_by=%s"
+            cur.execute(query2, (obj_id, objtype, createdBy))
+            row_extref = cur.fetchall()
+            row_extrefList = []
+            for row in row_extref:
+                rowdict = {
+                    'id': row[0],
+                    'ref_id': row[1],
+                    'src_name': row[2],
+                    'description': row[3],
+                    'url': row[4],
+                    'hash_type': row[5],
+                    'hash_value': row[6],
+                    'external_id': row[7],
+                    'created_by': row[8]
+
+                }
+                row_extrefList.append(rowdict)
+            output = json.dumps(row_extrefList, sort_keys=True, indent=4)
+            response_extref = json.loads(output)
+            return render_template(url, main=resp_main, extreflist = response_extref)
 
     return redirect(url_for('index'))
 
@@ -510,6 +694,87 @@ def update_entry(objtype, id):
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
             return render_template(url, data=resp)
+        elif objtype == "report":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'labels': row[4],
+                'published': row[5].strftime('%Y-%m-%dT%H:%M'),
+                'obj_references': row[6]
+            }
+
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+        elif objtype == "threat-actor":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'labels': row[3],
+                'aliases': row[4],
+                'description': row[5],
+                'roles': row[6],
+                'goals': row[7],
+                'sophistication': row[8],
+                'resource_level': row[9],
+                'primary_motivation': row[10],
+                'secondary_motivations': row[11],
+                'personal_motivations': row[12]
+            }
+
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+        elif objtype == "tool":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'labels': row[3],
+                'description': row[4],
+                'tool_version': row[5]
+            }
+
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+        elif objtype == "vulnerability":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3]
+            }
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
 
     else:
         return redirect(url_for('index'))
@@ -581,6 +846,44 @@ def delete_all_entry():
                 # deleting entries from child table: kill chain phase
                 cur = mysql.connection.cursor()
                 cur.execute("Delete from killchainphase where obj_id=%s and obj_type = %s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'report':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'threat-actor':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+                print "Entry deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'tool':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+                # deleting entries from child table: kill chain phase
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from killchainphase where obj_id=%s and obj_type = %s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'vulnerability':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+                # deleting entries from child table: External references
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from external_references where obj_id=%s and obj_type = %s and created_by=%s",
                             (id, obj_type, createdBy))
                 mysql.connection.commit()
                 print "Entries deleted successfully"
@@ -660,8 +963,8 @@ def insert_extref():
             created_by = request.form['created_by']
 
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO external_references (obj_id, obj_type, src_name, description, url, hash_type, hash_value, external_id, created_by) values (%s, %s, %s, %s, %s, %s, %s, %s)''',
-                        (int(ref_id),ref_type, src_name, description, ext_url, hash_type, hash_val, ext_id, created_by))
+            cur.execute('''INSERT INTO external_references (obj_id, obj_type, src_name, description, url, hash_type, hash_value, external_id, created_by) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                        (ref_id,ref_type, src_name, description, ext_url, hash_type, hash_val, ext_id, created_by))
             mysql.connection.commit()
             print('Successfully entered External References!!')
             return jsonify({'result': 'success'})
@@ -974,6 +1277,204 @@ def update_malware():
                 (name, labels, description, id))
             mysql.connection.commit()
             print "successfully Updated"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+################ End of Malware #####################
+
+# ********* Report ********************
+# Report- Main object creation - Insert operation
+@app.route('/create_report', methods=['POST'])
+def create_report():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            name = request.form['nm']
+            labels = request.form['labels']
+            description = request.form['desc']
+            published = request.form['published']
+            obj_ref = request.form['obj_ref']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `report` (type, name, description , labels, published, obj_references, created_by) 
+                 values (%s, %s, %s, %s, %s, %s, %s)''',
+                (type, name, description, labels, published, obj_ref, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_report', methods=['POST'])
+def update_report():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            labels = request.form['labels']
+            description = request.form['desc']
+            published = request.form['published']
+            obj_ref = request.form['obj_ref']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `report` SET name=%s, description=%s, labels=%s, published=%s, obj_references=%s WHERE sno=%s ''',
+                (name, description,  labels, published, obj_ref, id))
+            mysql.connection.commit()
+            print "successfully Updated"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+################ End of Report #####################
+# ********* Threat actor ********************
+# Threat actor- Main object creation - Insert operation
+
+@app.route('/create_threatactor',methods=['POST'])
+def create_threatactor():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            name = request.form['nm']
+            labels = request.form['labels']
+            description = request.form['desc']
+            aliases = request.form['aliases']
+            roles = request.form['roles']
+            goals = request.form['goals']
+            sophistication = request.form['sophistication']
+            res_level = request.form['res_level']
+            prim_motiv = request.form['prim_motiv']
+            sec_motiv = request.form['sec_motiv']
+            per_motiv = request.form['per_motiv']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `threat-actor` (type, name, labels, aliases, description , roles, goals, sophistication,
+                 resource_level, primary_motivation, secondary_motivations, personal_motivations, created_by) 
+                 values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                (type, name, labels, description, aliases, roles, goals, sophistication, res_level, prim_motiv, sec_motiv, per_motiv, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_threatactor', methods=['POST'])
+def update_threatactor():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            labels = request.form['labels']
+            description = request.form['desc']
+            aliases = request.form['aliases']
+            roles = request.form['roles']
+            goals = request.form['goals']
+            sophistication = request.form['sophistication']
+            res_level = request.form['res_level']
+            prim_motiv = request.form['prim_motiv']
+            sec_motiv = request.form['sec_motiv']
+            per_motiv = request.form['per_motiv']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `threat-actor` SET name=%s, labels=%s, aliases=%s, description=%s , roles=%s, goals=%s, sophistication=%s,
+                 resource_level=%s, primary_motivation=%s, secondary_motivations=%s, personal_motivations=%s WHERE sno=%s ''',
+                (name, labels,aliases, description, roles, goals, sophistication, res_level, prim_motiv, sec_motiv, per_motiv, id))
+            mysql.connection.commit()
+            print "successfully Updated"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+
+
+
+################ End of Threat actor #####################
+# ********* Tool ********************
+# Tool- Main object creation - Insert operation
+@app.route('/create_tool', methods=['POST'])
+def create_tool():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            name = request.form['nm']
+            labels = request.form['labels']
+            description = request.form['desc']
+            tool_ver = request.form['tool_ver']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `tool` (type, name, labels, description, tool_version, created_by) 
+                 values (%s, %s, %s, %s, %s, %s)''',
+                (type, name, labels, description, tool_ver, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_tool', methods=['POST'])
+def update_tool():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            labels = request.form['labels']
+            description = request.form['desc']
+            tool_ver = request.form['tool_ver']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `tool` SET name=%s, labels=%s, description=%s, tool_version=%s WHERE sno=%s ''',
+                (name, labels, description, tool_ver, id))
+            mysql.connection.commit()
+            print "successfully Updated"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+################ End of Tool #####################
+
+# ********* Vulnerability ********************
+# Vulnerability- Main object creation - Insert operation
+@app.route('/create_vulnerability', methods=['POST'])
+def create_vulnerability():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            name = request.form['nm']
+            description = request.form['desc']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `vulnerability` (type, name, description, created_by) 
+                 values (%s, %s, %s, %s)''',
+                (type, name, description, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_vulnerability', methods=['POST'])
+def update_vulnerability():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            description = request.form['desc']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `vulnerability` SET name=%s, description=%s WHERE sno=%s ''',
+                (name, description, id))
+            mysql.connection.commit()
+            print "successfully Updated vulnerability"
         return redirect(url_for('home'))
     else:
         return redirect(url_for('index'))
