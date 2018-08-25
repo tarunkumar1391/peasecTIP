@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, flash, url_for, redirect, session, g, json,jsonify
+from flask import Flask, render_template, request, flash, url_for, redirect, session, g, json, jsonify
 from flask_mysqldb import MySQL
 from flask_moment import Moment
-import datetime
+
 
 # dbconfig
 app = Flask(__name__)
@@ -70,11 +70,11 @@ def auth():
 
 
 # post successful authentication -- Home page
-@app.route('/home',methods=['GET','POST'])
+@app.route('/home', methods=['GET', 'POST'])
 def home():
     if g.user:
         user = g.user
-        mainList = []
+        mainlist = []
         # query for attack pattern
         query_attkpat = "select * from `attack-pattern`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -88,7 +88,7 @@ def home():
                 'description': row[3],
                 'created_by': row[4]
             }
-            mainList.append(rowdict)
+            mainlist.append(rowdict)
         # query for campaign
         query_campaign = "select * from `campaign`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -102,7 +102,7 @@ def home():
                 'description': row[3],
                 'created_by': row[4]
             }
-            mainList.append(rowdict)
+            mainlist.append(rowdict)
         # query for identity
         query_campaign = "select * from `identity`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -116,21 +116,21 @@ def home():
                 'description': row[4],
                 'created_by': row[8]
             }
-            mainList.append(rowdict)
+            mainlist.append(rowdict)
         # query for indicator
         query_indicator = "select * from `indicator`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
         cur.execute(query_indicator)
         rows_indicator = cur.fetchall()
         for row in rows_indicator:
-              rowdict = {
+                rowdict = {
                    'id': row[0],
                    'type': row[1],
                    'name': row[2],
                    'description': row[4],
                    'created_by': row[8]
-               }
-              mainList.append(rowdict)
+                }
+                mainlist.append(rowdict)
         # query for intrusion-set
         query_indicator = "select * from `intrusion-set`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -144,7 +144,7 @@ def home():
                   'description': row[4],
                   'created_by': row[11]
                 }
-                mainList.append(rowdict)
+                mainlist.append(rowdict)
         # query for malware
         query_malware = "select * from `malware`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -158,12 +158,12 @@ def home():
                         'description': row[4],
                         'created_by': row[5]
                     }
-                    mainList.append(rowdict)
+                    mainlist.append(rowdict)
         # query for report
         query_report = "select * from `report`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
         cur.execute(query_report)
-        rows_report= cur.fetchall()
+        rows_report = cur.fetchall()
         for row in rows_report:
             rowdict = {
                 'id': row[0],
@@ -172,7 +172,7 @@ def home():
                 'description': row[4],
                 'created_by': row[5]
             }
-            mainList.append(rowdict)
+            mainlist.append(rowdict)
         # query for threat-actor
         query_report = "select * from `threat-actor`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -186,7 +186,7 @@ def home():
                 'description': row[5],
                 'created_by': row[13]
             }
-            mainList.append(rowdict)
+            mainlist.append(rowdict)
         # query for tool
         query_tool = "select * from `tool`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -200,7 +200,7 @@ def home():
                 'description': row[4],
                 'created_by': row[5]
             }
-            mainList.append(rowdict)
+            mainlist.append(rowdict)
         # query for vulnerability
         query_vul = "select * from `vulnerability`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -214,8 +214,49 @@ def home():
                 'description': row[3],
                 'created_by': row[4]
             }
-            mainList.append(rowdict)
-        output = json.dumps(mainList, sort_keys=True, indent=4)
+            mainlist.append(rowdict)
+        # query for MAEC - Behavior
+        query_beh = "select * from `behavior`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_beh)
+        rows_beh= cur.fetchall()
+        for row in rows_beh:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'created_by': row[4]
+            }
+            mainlist.append(rowdict)
+        # query for MAEC - Collection
+        query_coll = "select * from `collection`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_coll)
+        rows_coll= cur.fetchall()
+        for row in rows_coll:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'description': row[2],
+                'created_by': row[4]
+            }
+            mainlist.append(rowdict)
+        # query for MAEC - Malware action
+        query_malaction = "select * from `malware-action`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_malaction)
+        rows_malaction= cur.fetchall()
+        for row in rows_malaction:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'created_by': row[8]
+            }
+            mainlist.append(rowdict)
+        output = json.dumps(mainlist, sort_keys=True, indent=4)
         resp = json.loads(output)
         return render_template('home.html', data=resp)
     else:
@@ -226,7 +267,7 @@ def home():
 
 # Home->View-> View object - route for a new page to view additional info that displays all the corresponding contextual
 # information related to the selected SDO(entry)
-@app.route('/home/view/<objtype>/<id>', methods=['GET','POST'])
+@app.route('/home/view/<objtype>/<id>', methods=['GET', 'POST'])
 def view_additionalinfo(objtype, id):
     if g.user:
         if objtype == "attack-pattern":
@@ -248,7 +289,7 @@ def view_additionalinfo(objtype, id):
             # kill chain
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
-                      FROM `killchainphase` AS KC \
+                      FROM `kill_chain_phase` AS KC \
                       INNER JOIN `attack-pattern` AS AP on KC.obj_id = AP.sno AND KC.obj_type = AP.type AND  KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
             cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
@@ -355,7 +396,7 @@ def view_additionalinfo(objtype, id):
             # kill chain
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
-                                  FROM `killchainphase` AS KC \
+                                  FROM `kill_chain_phase` AS KC \
                                   INNER JOIN `indicator` AS IND on KC.obj_id = IND.sno AND KC.obj_type = IND.type AND KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
             cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
@@ -417,7 +458,7 @@ def view_additionalinfo(objtype, id):
             # kill chain
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
-                                  FROM `killchainphase` AS KC \
+                                  FROM `kill_chain_phase` AS KC \
                                   INNER JOIN `malware` AS MAL on KC.obj_id = MAL.sno AND KC.obj_type = MAL.type AND KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
             cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
@@ -481,7 +522,6 @@ def view_additionalinfo(objtype, id):
             output = json.dumps(main_SDO, sort_keys=True, indent=4)
             resp_main = json.loads(output)
             return render_template(url, main=resp_main)
-
         elif objtype == "tool":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -504,7 +544,7 @@ def view_additionalinfo(objtype, id):
             # kill chain
             cur = mysql.connection.cursor()
             query1 = "SELECT KC.sno, KC.obj_id, KC.killchain_name, KC.phase_name, KC.created_by \
-                                              FROM `killchainphase` AS KC \
+                                              FROM `kill_chain_phase` AS KC \
                                               INNER JOIN `tool` AS TOO on KC.obj_id = TOO.sno AND KC.obj_type= TOO.type AND KC.obj_id = %s AND KC.obj_type = %s AND KC.created_by=%s"
             cur.execute(query1, (obj_id, objtype, createdBy))
             row_kc = cur.fetchall()
@@ -559,10 +599,117 @@ def view_additionalinfo(objtype, id):
 
                 }
                 row_extrefList.append(rowdict)
+
+
             output = json.dumps(row_extrefList, sort_keys=True, indent=4)
             response_extref = json.loads(output)
             return render_template(url, main=resp_main, extreflist = response_extref)
+        elif objtype == "behavior":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'description': row_main[3],
+                'timestamp': row_main[4],
+                'attributes': row_main[5],
+                'action_refs': row_main[6]
 
+
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # External_references
+            cur = mysql.connection.cursor()
+            query2 = "SELECT ER.sno, ER.obj_id, ER.src_name, ER.description, ER.url, ER.hash_type, ER.hash_value, ER.external_id, ER.created_by \
+                      FROM `external_references` AS ER \
+                      INNER JOIN `behavior` AS BE on ER.obj_id = BE.sno AND  ER.obj_type = BE.type AND ER.obj_id = %s AND ER.obj_type = %s AND ER.created_by=%s"
+            cur.execute(query2, (obj_id, objtype, createdBy))
+            row_extref = cur.fetchall()
+            row_extrefList = []
+            for row in row_extref:
+                rowdict = {
+                    'id': row[0],
+                    'ref_id': row[1],
+                    'src_name': row[2],
+                    'description': row[3],
+                    'url': row[4],
+                    'hash_type': row[5],
+                    'hash_value': row[6],
+                    'external_id': row[7],
+                    'created_by': row[8]
+
+                }
+                row_extrefList.append(rowdict)
+            output = json.dumps(row_extrefList, sort_keys=True, indent=4)
+            response_extref = json.loads(output)
+            return render_template(url, main=resp_main, extreflist=response_extref)
+        elif objtype == "collection":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'description': row_main[2],
+                'association_type': row_main[3],
+                'entity_refs': row_main[4],
+                'observable_refs': row_main[5]
+
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            return render_template(url, main=resp_main)
+        elif objtype == "malware-action":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'name': row_main[2],
+                'description': row_main[3],
+                'is_successful': row_main[4],
+                'timestamp': row_main[5]
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # API call
+            cur = mysql.connection.cursor()
+            query1 = "SELECT API.sno, API.obj_id, API.obj_type, API.address, API.return_value, API.parameters, " \
+                     "API.function_name, API.created_by \
+                      FROM `api-call` AS API \
+                      INNER JOIN `malware-action` AS MACT on API.obj_id = MACT.sno AND API.obj_type= MACT.type " \
+                     "AND API.obj_id = %s AND API.obj_type = %s AND API.created_by=%s"
+            cur.execute(query1, (obj_id, objtype, createdBy))
+            row_apicall = cur.fetchall()
+            row_apicall_list = []
+            for row in row_apicall:
+                rowdict = {
+                    'id': row[0],
+                    'address': row[3],
+                    'return_value': row[4],
+                    'parameters': row[5],
+                    'function_name': row[6]
+                }
+                row_apicall_list.append(rowdict)
+            output = json.dumps(row_apicall_list, sort_keys=True, indent=4)
+            resp_apicall = json.loads(output)
+            return render_template(url, main=resp_main, apidata=resp_apicall)
     return redirect(url_for('index'))
 
 
@@ -570,6 +717,7 @@ def view_additionalinfo(objtype, id):
 @app.route('/home/update/<objtype>/<id>', methods=['GET','POST'])
 def update_entry(objtype, id):
     if g.user:
+        # stix objects
         if objtype == "attack-pattern":
             url = 'update_templates/' + objtype + '.html'
             obj_id = id
@@ -775,7 +923,63 @@ def update_entry(objtype, id):
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
             return render_template(url, data=resp)
+        # MAEC objects
+        elif objtype == "behavior":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'timestamp': row[4].strftime('%Y-%m-%dT%H:%M'),
+                'attributes': row[5],
+                'action_refs': row[6]
 
+            }
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+        elif objtype == "collection":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'description': row[2],
+                'association_type': row[3],
+                'entity_refs': row[4],
+                'observable_refs': row[5]
+            }
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+        elif objtype == "malware-action":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'is_successful': row[4],
+                'timestamp': row[5].strftime('%Y-%m-%dT%H:%M')
+            }
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
     else:
         return redirect(url_for('index'))
 
@@ -795,7 +999,7 @@ def delete_all_entry():
                 mysql.connection.commit()
                 # deleting entries from child table: kill chain phase
                 cur = mysql.connection.cursor()
-                cur.execute("Delete from killchainphase where obj_id=%s and obj_type = %s and created_by=%s",
+                cur.execute("Delete from kill_chain_phase where obj_id=%s and obj_type = %s and created_by=%s",
                             (id, obj_type, createdBy))
                 mysql.connection.commit()
                 # deleting entries from child table: External references
@@ -826,7 +1030,7 @@ def delete_all_entry():
                 mysql.connection.commit()
                 # deleting entries from child table: kill chain phase
                 cur = mysql.connection.cursor()
-                cur.execute("Delete from killchainphase where obj_id=%s and obj_type = %s and created_by=%s",
+                cur.execute("Delete from kill_chain_phase where obj_id=%s and obj_type = %s and created_by=%s",
                             (id, obj_type, createdBy))
                 mysql.connection.commit()
                 print "Entries deleted successfully"
@@ -845,7 +1049,7 @@ def delete_all_entry():
                 mysql.connection.commit()
                 # deleting entries from child table: kill chain phase
                 cur = mysql.connection.cursor()
-                cur.execute("Delete from killchainphase where obj_id=%s and obj_type = %s and created_by=%s",
+                cur.execute("Delete from kill_chain_phase where obj_id=%s and obj_type = %s and created_by=%s",
                             (id, obj_type, createdBy))
                 mysql.connection.commit()
                 print "Entries deleted successfully"
@@ -871,7 +1075,7 @@ def delete_all_entry():
                 mysql.connection.commit()
                 # deleting entries from child table: kill chain phase
                 cur = mysql.connection.cursor()
-                cur.execute("Delete from killchainphase where obj_id=%s and obj_type = %s and created_by=%s",
+                cur.execute("Delete from kill_chain_phase where obj_id=%s and obj_type = %s and created_by=%s",
                             (id, obj_type, createdBy))
                 mysql.connection.commit()
                 print "Entries deleted successfully"
@@ -885,6 +1089,32 @@ def delete_all_entry():
                 cur = mysql.connection.cursor()
                 cur.execute("Delete from external_references where obj_id=%s and obj_type = %s and created_by=%s",
                             (id, obj_type, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'behavior':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+                # deleting entries from child table: External references
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from external_references where obj_id=%s and obj_type = %s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'collection':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'malware-action':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
                 mysql.connection.commit()
                 print "Entries deleted successfully"
                 return redirect(url_for('home'))
@@ -903,7 +1133,7 @@ def logout():
 
 
 # kill chain - Insert (Ajax post query)
-@app.route('/killchain',methods=['POST'])
+@app.route('/killchain', methods=['POST'])
 def kill_chain_submit():
     if g.user:
         if request.method == 'POST':
@@ -913,8 +1143,8 @@ def kill_chain_submit():
             ref_type = request.form['obj_type']
             created_by = request.form['created_by']
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO killchainphase (obj_id, obj_type, killchain_name, phase_name, created_by) values (%s , %s, %s, %s, %s)''',
-                        (ref_id, ref_type, kc_name, ph_name, created_by))
+            cur.execute('''INSERT INTO kill_chain_phase (obj_id, obj_type, killchain_name, phase_name, created_by)
+                        values (%s , %s, %s, %s, %s)''',(ref_id, ref_type, kc_name, ph_name, created_by))
             mysql.connection.commit()
             print('Successfully entered killchain data')
             return jsonify({'result': 'success'})
@@ -929,7 +1159,7 @@ def update_killchaindata():
             kc_name = request.json['kc_name']
             phase_name = request.json['kc_phase']
             cur = mysql.connection.cursor()
-            cur.execute("UPDATE killchainphase SET killchain_name=%s, phase_name=%s where sno=%s ",(kc_name,phase_name,id))
+            cur.execute("UPDATE kill_chain_phase SET killchain_name=%s, phase_name=%s where sno=%s ",(kc_name,phase_name,id))
             mysql.connection.commit()
             print "Successfully update kill chain data"
             return jsonify({'result': 'success'})
@@ -939,7 +1169,7 @@ def update_killchaindata():
 @app.route('/deletekillchaindata', methods=['POST'])
 def delete_killchaindata():
     id = request.json['id']
-    query = "delete from killchainphase where sno=%s"
+    query = "delete from kill_chain_phase where sno=%s"
     cur = mysql.connection.cursor()
     cur.execute(query, (id,))
     mysql.connection.commit()
@@ -948,7 +1178,7 @@ def delete_killchaindata():
 
 
 # External References - Insert (Ajax post query)
-@app.route('/insertextref',methods=['POST'])
+@app.route('/insertextref', methods=['POST'])
 def insert_extref():
     if g.user:
         if request.method == 'POST':
@@ -963,8 +1193,9 @@ def insert_extref():
             created_by = request.form['created_by']
 
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO external_references (obj_id, obj_type, src_name, description, url, hash_type, hash_value, external_id, created_by) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
-                        (ref_id,ref_type, src_name, description, ext_url, hash_type, hash_val, ext_id, created_by))
+            cur.execute('''INSERT INTO external_references (obj_id, obj_type, src_name, description, url, hash_type,
+                        hash_value, external_id, created_by) values (%s, %s, %s, %s, %s, %s, %s, %s, %s)''',
+                        (ref_id, ref_type, src_name, description, ext_url, hash_type, hash_val, ext_id, created_by))
             mysql.connection.commit()
             print('Successfully entered External References!!')
             return jsonify({'result': 'success'})
@@ -980,10 +1211,11 @@ def update_extref():
             ext_id = request.json['ext_id']
             query = "UPDATE external_references SET src_name=%s, description=%s, external_id=%s where sno=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (src_name,description,ext_id,id))
+            cur.execute(query, (src_name, description, ext_id, id))
             mysql.connection.commit()
             print "successfully Updated"
             return jsonify({'result': 'success'})
+
 
 # External references - update (Ajax post query)
 @app.route('/deleteextrefdata', methods=['POST'])
@@ -992,6 +1224,59 @@ def delete_extrefdata():
         if request.method == 'POST':
             id = request.json['id']
             query = "delete from external_references where sno=%s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (id,))
+            mysql.connection.commit()
+            print "successfully deleted"
+            return jsonify({'result': 'success'})
+
+
+# API call - Insert (Ajax post query)
+@app.route('/insert_apicall', methods=['POST'])
+def insert_apicall():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['ref_id']
+            ref_type = request.form['obj_type']
+            address = request.form['address']
+            return_value = request.form['return_val']
+            parameters = request.form['parameters']
+            function_name = request.form['func_name']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            query = '''INSERT INTO `api-call` (obj_id, obj_type, address, return_value, parameters, function_name, created_by)
+                             values (%s, %s, %s, %s, %s, %s, %s)'''
+            cur.execute(query, (ref_id, ref_type, address, return_value, parameters, function_name, created_by))
+            mysql.connection.commit()
+            print('Successfully entered API call !!')
+            return jsonify({'result': 'success'})
+
+
+# API call - Update (Ajax post query)
+@app.route('/update_apicall', methods=['POST'])
+def update_apicall():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            address = request.json['api_address']
+            return_value = request.json['api_retval']
+
+            function_name = request.json['api_funcname']
+            query = "UPDATE `api-call` SET address=%s, return_value=%s, function_name=%s where sno=%s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (address, return_value, function_name, id))
+            mysql.connection.commit()
+            print "successfully Updated"
+            return jsonify({'result': 'success'})
+
+
+# API call - delete (Ajax post query)
+@app.route('/delete_apicall', methods=['POST'])
+def delete_apicall():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            query = "delete from `api-call` where sno=%s"
             cur = mysql.connection.cursor()
             cur.execute(query, (id,))
             mysql.connection.commit()
@@ -1475,6 +1760,139 @@ def update_vulnerability():
                 (name, description, id))
             mysql.connection.commit()
             print "successfully Updated vulnerability"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+################ End of vulnerability #####################
+
+# ********* MAEC objects  ********************
+
+# ********* MAEC Behavior  ********************
+@app.route('/create_behavior',methods=['POST'])
+def create_behavior():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            name = request.form['nm']
+            description = request.form['desc']
+            timestamp = request.form['timestmp']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `behavior` (type, name, description, timestamp, created_by) 
+                 values (%s, %s, %s, %s, %s)''',
+                (type, name, description, timestamp, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_behavior', methods=['POST'])
+def update_behavior():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            description = request.form['desc']
+            timestamp = request.form['timestmp']
+            attributes = request.form['attr_val_final']
+            action_refs = request.form['action_refs']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `behavior` SET name=%s, description=%s, timestamp=%s, attributes=%s, action_refs=%s  WHERE sno=%s ''',
+                (name, description, timestamp, attributes, action_refs,  id))
+            mysql.connection.commit()
+            print "successfully Updated behavior"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+################ End of Behavior #####################
+
+# ********* MAEC Collection  ********************
+
+@app.route('/create_collection',methods=['POST'])
+def create_collection():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            description = request.form['desc']
+            association_type = request.form['assoc_type']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `collection` (type, description, association_type, created_by) 
+                 values (%s, %s, %s, %s)''',
+                (type, description, association_type, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/update_collection', methods=['POST'])
+def update_collection():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            description = request.form['desc']
+            association_type = request.form['assoc_type']
+            entity_refs = request.form['entity_refs']
+            observable_refs = request.form['observ_refs']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `collection` SET description=%s, association_type=%s, entity_refs=%s, observable_refs=%s  WHERE sno=%s ''',
+                (description, association_type, entity_refs, observable_refs,  id))
+            mysql.connection.commit()
+            print "successfully Updated collection"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+################ End of Collection #####################
+# ********* MAEC Malware action  ********************
+
+
+@app.route('/create_malwareaction',methods=['POST'])
+def create_malaction():
+    if g.user:
+        if request.method == 'POST':
+            name = request.form['nm']
+            type = request.form['type']
+            description = request.form['desc']
+            is_successful = request.form['is_successful']
+            timestmp = request.form['timestmp']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `malware-action` (type, name,  description, is_successful, timestamp, created_by) 
+                 values (%s, %s, %s, %s, %s, %s)''',
+                (type, name,  description, is_successful, timestmp, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_malwareaction', methods=['POST'])
+def update_malaction():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            name = request.form['nm']
+            description = request.form['desc']
+            is_successful = request.form['is_successful']
+            timestamp = request.form['timestamp']
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `malware-action` SET name=%s, description=%s, is_successful=%s, timestamp=%s  WHERE sno=%s ''',
+                (name, description, is_successful, timestamp,  id))
+            mysql.connection.commit()
+            print "successfully Updated collection"
         return redirect(url_for('home'))
     else:
         return redirect(url_for('index'))
