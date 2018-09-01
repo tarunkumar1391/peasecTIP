@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="{{ url_for('static',filename = 'angular/angular-material.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
 </head>
 <body>
@@ -26,10 +27,10 @@
                 <div class="navbar-collapse">
                     <ul class=" nav nav-pills" id="myTab" role="tablist">
                     <li class="nav-item">
-                      <a class="nav-link active" href="#dashboard" id="dashboard-tab" data-toggle="pill" role="tab" aria-controls="home" aria-selected="true">Dashboard</a>
+                      <a class="nav-link " href="#dashboard" id="dashboard-tab" data-toggle="pill" role="tab" aria-controls="home" aria-selected="true">Dashboard</a>
                     </li>
                        <li class="nav-item">
-                      <a class="nav-link " href="#feeds" id="feeds-tab" data-toggle="pill" role="tab" aria-controls="feeds" aria-selected="true">Feeds</a>
+                      <a class="nav-link active" href="#feeds" id="feeds-tab" data-toggle="pill" role="tab" aria-controls="feeds" aria-selected="true">Feeds</a>
                     </li>
                   </ul>
                 </div>
@@ -51,24 +52,24 @@
 {#    body content section#}
     <div class="row home_bodycontent ">
         <div class="col-lg-12 tab-content">
-            <div id="dashboard" class="tab-pane active"><br>
+            <div id="dashboard" class="tab-pane fade"><br>
               <h3>HOME</h3>
               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             </div>
-            <div id="feeds" class="tab-pane fade"><br>
+            <div id="feeds" class="tab-pane  active"><br>
                 <div class="row-fluid">
                     <ul class="nav nav-tabs ">
                         <li class="nav-item">
                             <a class="nav-link active" data-toggle="tab" href="#create">Create</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#view">View</a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#view">View</a></li>
                         <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#genfeed">STIX feed</a></li>
                     </ul>
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="tab-content">
-                        <div id="create" class=" tab-pane active"><br>
+                        <div id="create" class=" tab-pane active "><br>
                             <div class="row">
                                 <div class="col-lg-4" >
                                     <div class="card ">
@@ -230,24 +231,28 @@
                               <div class="table-responsive">
                                     <table class="table table-hover">
                                           <thead>
-                                            <tr>
-                                              <th>#</th>
-                                              <th>Type</th>
-                                              <th>Name</th>
-                                              <th>Description</th>
-                                              <th>Actions</th>
+                                            <tr class="d-flex">
+                                              <th class="col-lg-1">Id</th>
+                                              <th class="col-lg-2">Type</th>
+                                              <th class="col-lg-2">Name</th>
+                                              <th class="col-lg-5">Description</th>
+                                              <th  class="col-lg-2">Actions</th>
                                             </tr>
                                           </thead>
                                           <tbody>
                                           {% for dat in data %}
-                                            <tr>
-                                              <td>{{dat.id}}</td>
-                                              <td>{{dat.type}}</td>
-                                              <td>{{dat.name}}</td>
-                                              <td>{{dat.description}}</td>
-                                              <td><button type="button" class="btn btn-primary mr-1">View</button>
-                                                  <button type="button" class="btn btn-success mr-1" onclick="window.location.href='{{ url_for('update_entry',objtype=dat.type, id = dat.id) }}';" >Update</button>
-                                                  <button type="button" class="btn btn-danger">Delete</button></td>
+                                            <tr class="d-flex">
+                                              <td class="col-lg-1">{{dat.id}}</td>
+                                              <td class="col-lg-2">{{dat.type}}</td>
+                                              <td class="col-lg-2">{{dat.name}}</td>
+                                              <td class="col-lg-5">{{dat.description}}</td>
+                                              <td class="col-lg-2"><button data-toggle="tooltip" title="View all info" type="button" class="btn btn-primary btn-sm mr-1"
+                                                          onclick="window.location.href='{{ url_for('view_additionalinfo',objtype=dat.type, id = dat.id) }}';">
+                                                  <i class="material-icons">info</i></button>
+                                                  <button data-toggle="tooltip" title="Add additional info" type="button" class="btn btn-warning btn-sm mr-1"
+                                                          onclick="window.location.href='{{ url_for('update_entry',objtype=dat.type, id = dat.id) }}';" >
+                                                      <i class="material-icons">update</i></button>
+                                              </td>
                                             </tr>
                                           {% endfor %}
                                           </tbody>
@@ -272,5 +277,4 @@
 </div>
 </div>
 </body>
-<script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
 </html>

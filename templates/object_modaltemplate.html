@@ -12,29 +12,31 @@
         <!-- Modal body -->
         <div class="modal-body">
           <form action="{{ url_for('attk_pattern') }}" method="POST">
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control form-control-sm" name="nm">
+                        <input type="hidden"  name="type" value="attack-pattern">
+                        <input type="hidden" name="created_by" value="{{ session['user'] }}">
+                    </div>
 
-                    <input type="text" class="form-control" name="nm">
-                     <input type="hidden" class="form-control" name="type" value="attack-pattern">
-                     <input type="hidden" name="created_by" value="{{ session['user'] }}">
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Description:</label>
-                    <textarea class="form-control" rows="3" name="desc"></textarea>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
               </div>
                <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
+              <div class="form-group row">
+                  <div class="offset-lg-3 col-lg-6">
+                      <input type="submit" class="btn btn-primary" value="Submit">
                   <input type="reset" class="btn btn-light" value="Reset">
-
-
+                  </div>
               </div>
           </form>
         </div>
-
-
-
       </div>
     </div>
   </div>
@@ -51,49 +53,46 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form action="" method="POST">
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-
-                    <input type="text" class="form-control" name="nm">
-
+          <form action="{{ url_for('create_campaign') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9" >
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                      <input type="hidden" name="type" value="campaign">
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Description:</label>
-
-                    <textarea class="form-control" rows="3" name="desc"></textarea>
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9" > <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea></div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Aliases:</label>
-
-                    <input type="text" class="form-control" name="aliases">
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Aliases:</label>
+                  <div class="col-lg-9" >
+                      <input type="text" class="form-control form-control-sm" name="aliases">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple alias names to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >First seen:</label>
-
-                    <input type="datetime-local" class="form-control" name="first_seen">
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >First seen:</label>
+                  <div class="col-lg-9" ><input type="datetime-local" class="form-control form-control-sm" name="first_seen"></div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Last seen:</label>
-
-                    <input type="datetime-local" class="form-control" name="last_seen">
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Last seen:</label>
+                  <div class="col-lg-9" ><input type="datetime-local" class="form-control form-control-sm" name="last_seen"></div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Objective:</label>
-
-                    <input type="text" class="form-control" name="objective">
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Objective:</label>
+                  <div class="col-lg-9" ><input type="text" class="form-control form-control-sm" name="objective"></div>
               </div>
 
-        <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
+                  <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
                   <input type="reset" class="btn btn-light" value="Reset">
-              </div>
+                      </div>
+                  </div>
        </form>
       </div>
     </div>
@@ -112,28 +111,33 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-
-                    <input type="text" class="form-control" name="nm">
-
+          <form action="{{ url_for('create_identity') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="hidden" name="type" value="identity">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Labels:</label>
-
-                    <input type="text" class="form-control" name="labels">
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="labels">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple labels to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Description:</label>
-
-                    <textarea class="form-control" rows="3" name="desc"></textarea>
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
               </div>
-              <div class="form-group">
-                    <label class="control-label" for="select_id_class" >Identity class:</label>
-                    <select class="form-control" name="id_class" id="select_id_class">
+              <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="select_id_class" >Identity class:</label>
+                    <div class="col-lg-9">
+                        <select class="form-control form-control-sm" name="id_class" id="select_id_class" required>
                         <option value="">Choose an option</option>
                         <option value="individual">Individual</option>
                         <option value="group">Group</option>
@@ -141,12 +145,12 @@
                         <option value="class">Class</option>
                         <option value="unknown">Unknown</option>
                     </select>
-
+                    </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" for="select_sector" >Sectors:</label>
-
-                    <select class="form-control" name="id_class" id="select_sector">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="select_sector" >Sectors:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" multiple="multiple"  id="select_sector">
                         <option value="">Choose an option</option>
                         <option value="agriculture">Agriculture</option>
                         <option value="aerospace">Aerospace</option>
@@ -176,23 +180,24 @@
                         <option value="transportation">Transportation</option>
                         <option value="utilities">Utilities</option>
                     </select>
-
+                      <input type="hidden" name="sectors" id="selectors">
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Contact Information:</label>
-
-                    <textarea class="form-control" rows="3" name="contactinfor"></textarea>
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Contact Information:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="contactinfo"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <div class="offset-lg-3 col-lg-4">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
               </div>
           </form>
+
         </div>
-
-       <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
-              </div>
-
       </div>
     </div>
   </div>
@@ -209,14 +214,18 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-             <form>
-                 <div class="form-group">
-                      <label class="control-label" >Name:</label>
-                      <input type="text" class="form-control" name="nm">
+             <form role="form" action="{{ url_for('create_indicator') }}" method="post">
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Name:</label>
+                     <div class="col-lg-9">
+                         <input type="hidden" value="indicator" name="type">
+                      <input type="text" class="form-control form-control-sm" name="nm">
+                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="control-label" for="select_label" >Labels:</label>
-                    <select class="form-control" name="id_class" id="select_label">
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="select_label" >Labels:</label>
+                      <div class="col-lg-9">
+                          <select class="form-control form-control-sm" name="id_class" multiple="multiple" required id="select_label">
                         <option value="">Choose an option</option>
                         <option value="anomalous-activity">Anomalous activity</option>
                         <option value="anonymization">Anonymization</option>
@@ -225,41 +234,44 @@
                         <option value="malicious-activity">Malicious activity</option>
                         <option value="attribution">Attribution</option>
                     </select>
-                  </div>
-                 <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
-                 </div>
-                 <div class="form-group">
-                      <label class="control-label" >Pattern:</label>
-                      <input type="text" class="form-control" name="pattern">
-                 </div>
-                 <div class="form-group">
-                      <label class="control-label" >Valid from:</label>
-                      <input type="datetime-local" class="form-control" name="valid_from">
-                 </div>
-                 <div class="form-group">
-                      <label class="control-label" >Valid untill:</label>
-                      <input type="datetime-local" class="form-control" name="valid_untill">
-                 </div>
-                 <div class="form-group">
-                  <label class="control-label" >List of kill_chain_phases:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Kill chain name:</label>
-                      <input type="text" class="form-control" name="kcName">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Phase name:</label>
-                      <input type="text" class="form-control" name="phase_name">
-                  </div>
-              </div>
+                      <input type="hidden" name="labels" id="label_final">
+                      </div>
 
+                  </div>
+                 <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                     <div class="col-lg-9">
+                         <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                     </div>
 
+                 </div>
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Pattern:</label>
+                     <div class="col-lg-9">
+                         <input type="text" class="form-control form-control-sm" name="pattern" required>
+                     </div>
 
-               <!-- Modal footer -->
-                  <div class="modal-footer">
-                      <input type="submit" class="btn btn-primary" value="Submit">
-                      <input type="reset" class="btn btn-light" value="Reset">
+                 </div>
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Valid from:</label>
+                     <div class="col-lg-9">
+                         <input type="datetime-local" class="form-control form-control-sm" name="valid_from" required>
+                     </div>
+
+                 </div>
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Valid untill:</label>
+                     <div class="col-lg-9">
+                         <input type="datetime-local" class="form-control form-control-sm" name="valid_untill">
+                     </div>
+
+                 </div>
+
+                  <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                          <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
                   </div>
              </form>
         </div>
@@ -282,34 +294,53 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <input type="text" class="form-control" name="nm">
+          <form action="{{ url_for('create_intrusionset') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" value="intrusion-set" name="type">
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Aliases:</label>
-                  <input type="text" class="form-control" name="aliases">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Aliases:</label>
+                  <div class="col-lg-9">
+                       <input type="text" class="form-control form-control-sm" name="aliases">
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Description:</label>
-                  <textarea class="form-control" rows="3" name="desc"></textarea>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >First seen:</label>
-                  <input type="datetime-local" class="form-control" name="first_seen">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >First seen:</label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control form-control-sm" name="first_seen" required>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Last seen:</label>
-                  <input type="datetime-local" class="form-control" name="last_seen">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Last seen:</label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control form-control-sm" name="last_seen" required>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Goals:</label>
-                  <textarea class="form-control" rows="3" name="goals"></textarea>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Goals:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="goals"></textarea>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" for="resource_lev" >Resource level:</label>
-                  <select class="form-control" name="res_level" id="resource_lev">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="resource_lev" >Resource level:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="res_level" id="resource_lev">
                         <option value="">Choose an option</option>
                         <option value="individual">Individual</option>
                         <option value="club">Club</option>
@@ -318,10 +349,13 @@
                         <option value="organization">Organization</option>
                         <option value="government">Government</option>
                     </select>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" for="primary_motiv" >Primary motivation:</label>
-                  <select class="form-control" name="prim_motiv" id="primary_motiv">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="primary_motiv" >Primary motivation:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="prim_motiv" id="primary_motiv">
                         <option value="">Choose an option</option>
                         <option value="accidental">Accidental</option>
                         <option value="coercion">Coercion</option>
@@ -334,10 +368,13 @@
                         <option value="revenge">Revenge</option>
                         <option value="unpredictable">Unpredictable</option>
                     </select>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" for="secondary_motiv" >Secondary motivation:</label>
-                  <select multiple class="form-control" name="sec_motiv" id="secondary_motiv">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="secondary_motiv" >Secondary motivation:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" name="" id="secondary_motiv">
                         <option value="">Choose an option</option>
                         <option value="accidental">Accidental</option>
                         <option value="coercion">Coercion</option>
@@ -350,11 +387,15 @@
                         <option value="revenge">Revenge</option>
                         <option value="unpredictable">Unpredictable</option>
                     </select>
+                  <input type="hidden" name="sec_motiv" id="secondary_motiv_final">
+                  </div>
+
               </div>
-               <!-- Modal footer -->
-                  <div class="modal-footer">
-                      <input type="submit" class="btn btn-primary" value="Submit">
-                      <input type="reset" class="btn btn-light" value="Reset">
+              <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                          <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
                   </div>
           </form>
         </div>
@@ -377,15 +418,19 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-               <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <input type="text" class="form-control" name="nm">
+          <form action="{{ url_for('create_malware') }}" method="POST">
+               <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                   <div class="col-lg-9">
+                       <input type="text" class="form-control form-control-sm" name="nm" required>
+                       <input type="hidden" value="malware" name="type">
+                   </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Labels:</label>
-                  <select multiple class="form-control" name="labels">
-
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" id="labels" required>
+                        <option >Choose an option</option>
                         <option value="adware">Adware</option>
                         <option value="backdoor">Backdoor</option>
                         <option value="bot">Bot</option>
@@ -401,25 +446,22 @@
                           <option value="screen-capture">Screen capture</option>
 
                     </select>
-              </div>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >kill_chain_phases:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Kill chain name:</label>
-                      <input type="text" class="form-control" name="kcName">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Phase name:</label>
-                      <input type="text" class="form-control" name="phase_name">
+                      <input type="hidden" name="labels" id="labels_final">
                   </div>
 
-
               </div>
-
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                          <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
+                  </div>
           </form>
         </div>
       </div>
@@ -438,14 +480,19 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <input type="text" class="form-control" name="nm">
+          <form action="{{ url_for('create_report') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" name="type" value="report">
+                  </div>
+
               </div>
-              <div class="form-group">
-                    <label class="control-label" for="select_label" >Labels:</label>
-                    <select class="form-control" name="labels" >
+              <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="select_label" >Labels:</label>
+                    <div class="col-lg-9">
+                        <select class="form-control form-control-sm" required id="reportlabels" >
                         <option value="">Choose an option</option>
                         <option value="threat-report">Threat report</option>
                         <option value="attack-pattern">Attack pattern</option>
@@ -458,27 +505,45 @@
                         <option value="tool">Tool</option>
                         <option value="vulnerability">Vulnerability</option>
                     </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Description:</label>
-                  <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Published:</label>
-                  <input type="datetime-local" class="form-control" name="published">
-              </div>
-              <div class="form-group">
-                    <label class="control-label" for="obj_refs" >Object Ref's:</label>
-                    <select class="form-control" name="obj_ref" >
-                        <option value="">Choose an option</option>
+                  <input type="hidden" value="" name="labels" id="final_label">
+                    </div>
 
-                    </select>
               </div>
-               <!-- Modal footer -->
-                  <div class="modal-footer">
-                      <input type="submit" class="btn btn-primary" value="Submit">
-                      <input type="reset" class="btn btn-light" value="Reset">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
                   </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Published:</label>
+                  <div class="col-lg-9">
+                       <input type="datetime-local" class="form-control form-control-sm" name="published" required>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="obj_refs" >Object Ref's:</label>
+                    <div class="col-lg-9">
+                        <select  multiple class="form-control form-control-sm" id="obj_ref" required >
+                        <option value="">Choose an option</option>
+                        {% for dat in data %}
+                        <option value="{{ dat.id }}-{{ dat.type }}">{{ dat.type }}--{{ dat.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" value="" name="obj_ref" id="final_objref">
+                    </div>
+
+              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+
+
           </form>
         </div>
       </div>
@@ -497,14 +562,18 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <input type="text" class="form-control" name="nm">
+          <form action="{{ url_for('create_threatactor') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" name="type" value="threat-actor">
+                  </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Labels:</label>
-                  <select multiple class="form-control" name="labels">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" required id="ta_labels">
                         <option value="activist">Activist</option>
                         <option value="competitor">Competitor</option>
                         <option value="crime-syndicate">Crime syndicate</option>
@@ -517,18 +586,28 @@
                         <option value="spy">Spy</option>
                         <option value="terrorist">Terrorist</option>
                   </select>
+                      <input type="hidden" name="labels" id="ta_label_final">
+                  </div>
+
               </div>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Aliases:</label>
-                  <input type="text" class="form-control" name="aliases">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Aliases:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="aliases">
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Roles:</label>
-                  <select multiple class="form-control" name="roles">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Roles:</label>
+                  <div class="col-lg-9">
+                        <select multiple class="form-control form-control-sm" id="ta_roles">
                       <option> Choose an option</option>
                         <option value="agent">agent</option>
                         <option value="director">director</option>
@@ -539,14 +618,21 @@
                         <option value="sponsor">sponsor</option>
 
                   </select>
+                      <input type="hidden" name="roles" id="ta_role_final">
+                  </div>
+
               </div>
-              <div class="form-group">
-                     <label class="control-label" >Goals:</label>
-                     <textarea class="form-control" rows="3" name="goals"></textarea>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Goals:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="goals"></textarea>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Sophistication:</label>
-                  <select multiple class="form-control" name="sophistication">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Sophistication:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="sophistication">
                       <option> Choose an option</option>
                         <option value="none">None</option>
                         <option value="minimal">Minimal</option>
@@ -557,10 +643,13 @@
                         <option value="strategic">Strategic</option>
 
                   </select>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Resource level:</label>
-                  <select multiple class="form-control" name="res_level">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Resource level:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="res_level">
                       <option> Choose an option</option>
                         <option value="individual">Individual</option>
                         <option value="club">Club</option>
@@ -569,60 +658,75 @@
                         <option value="organization">Organization</option>
                         <option value="government">Government</option>
                   </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" for="primary_motiv" >Primary motivation:</label>
-                  <select class="form-control" name="prim_motiv" id="primary_motiv">
-                        <option value="">Choose an option</option>
-                        <option value="accidental">Accidental</option>
-                        <option value="coercion">Coercion</option>
-                        <option value="dominance">Dominance</option>
-                        <option value="ideology">Ideology</option>
-                        <option value="notoriety">Notoriety</option>
-                        <option value="organizational-gain">Organizational-gain</option>
-                        <option value="personal-gain">Personal gain</option>
-                        <option value="personal-satisfaction">Personal satisfaction</option>
-                        <option value="revenge">Revenge</option>
-                        <option value="unpredictable">Unpredictable</option>
-                    </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" for="sec_motiv" >Secondary motivation:</label>
-                  <select class="form-control" name="sec_motiv" id="sec_motiv">
-                        <option value="">Choose an option</option>
-                        <option value="accidental">Accidental</option>
-                        <option value="coercion">Coercion</option>
-                        <option value="dominance">Dominance</option>
-                        <option value="ideology">Ideology</option>
-                        <option value="notoriety">Notoriety</option>
-                        <option value="organizational-gain">Organizational-gain</option>
-                        <option value="personal-gain">Personal gain</option>
-                        <option value="personal-satisfaction">Personal satisfaction</option>
-                        <option value="revenge">Revenge</option>
-                        <option value="unpredictable">Unpredictable</option>
-                    </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" for="per_motiv" >Personal motivation:</label>
-                  <select class="form-control" name="per_motiv" id="per_motiv">
-                        <option value="">Choose an option</option>
-                        <option value="accidental">Accidental</option>
-                        <option value="coercion">Coercion</option>
-                        <option value="dominance">Dominance</option>
-                        <option value="ideology">Ideology</option>
-                        <option value="notoriety">Notoriety</option>
-                        <option value="organizational-gain">Organizational-gain</option>
-                        <option value="personal-gain">Personal gain</option>
-                        <option value="personal-satisfaction">Personal satisfaction</option>
-                        <option value="revenge">Revenge</option>
-                        <option value="unpredictable">Unpredictable</option>
-                    </select>
-              </div>
-              <!-- Modal footer -->
-                  <div class="modal-footer">
-                      <input type="submit" class="btn btn-primary" value="Submit">
-                      <input type="reset" class="btn btn-light" value="Reset">
                   </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="primary_motiv" >Primary motivation:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="prim_motiv" id="primary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="sec_motiv" >Secondary motivations:</label>
+                  <div class="col-lg-9">
+                       <select class="form-control form-control-sm"  id="sec_motiv" multiple>
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                      <input type="hidden" name="sec_motiv" id="ta_sec_motiv_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="per_motiv" >Personal motivation:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm"  id="per_motiv" multiple>
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                      <input type="hidden" name="per_motiv" id="ta_per_motiv_final">
+
+                  </div>
+
+              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
         </div>
       </div>
@@ -641,14 +745,19 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <input type="text" class="form-control" name="nm">
+          <form action="{{ url_for('create_tool') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                      <input type="hidden" name="type" value="tool">
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Labels:</label>
-                  <select multiple class="form-control" name="labels">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" id="tool_label" required>
                         <option>Choose an option</option>
                         <option value="denial-of-service">denial-of-service</option>
                         <option value="exploitation">exploitation</option>
@@ -656,33 +765,32 @@
                         <option value="network-capture">network-capture</option>
                         <option value="credentialexploitation">credential exploitation</option>
                         <option value="remote-access">remote-access</option>
-                          <option value="vulnerability-scanning">vulnerability-scanning</option>
+                        <option value="vulnerability-scanning">vulnerability-scanning</option>
                   </select>
-              </div>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Tool version:</label>
-                  <input type="text" class="form-control" name="tool_ver">
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >List of kill_chain_phases:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Kill chain name:</label>
-                      <input type="text" class="form-control" name="kcName">
+                      <input type="hidden" value="" name="labels" id="tool_label_final">
                   </div>
-                  <div class="form-group">
-                      <label class="control-label" >Phase name:</label>
-                      <input type="text" class="form-control" name="phase_name">
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
                   </div>
+
               </div>
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Tool version:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="tool_ver">
+                  </div>
+
               </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
         </div>
       </div>
@@ -701,47 +809,30 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <input type="text" class="form-control" name="nm">
+          <form action="{{ url_for('create_vulnerability') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label " >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm">
+                  <input type="hidden" name="type" value="vulnerability">
+                  </div>
+
               </div>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label " >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >External_references:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Source name:</label>
-                      <input type="text" class="form-control" name="extref_srcname">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >URL:</label>
-                      <input type="text" class="form-control" name="extref_url">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Hashes:</label>
-                      <div class="form-group">
-                          <label class="control-label" >Hash type:</label>
-                          <input type="text" class="form-control" name="hash_type">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label" >Hash value:</label>
-                          <input type="text" class="form-control" name="hash_value">
-                      </div>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >External Id:</label>
-                      <input type="text" class="form-control" name="extref_extid">
-                  </div>
-              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
-            <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
-              </div>
+
         </div>
 
 
@@ -794,7 +885,7 @@
     </div>
   </div>
    <!-- The Modal -->
-  <div class="modal fade" id="sigting">
+  <div class="modal fade" id="sighting">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
 
@@ -870,36 +961,190 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-            <form>
-                <div class="form-group">
-                  <label class="control-label" >First seen:</label>
-                  <input type="datetime-local" class="form-control" name="first_seen">
+            <form action="{{ url_for('create_behavior') }}" method="post">
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                    <div class="col-lg-9">
+                        <select name="nm" class="form-control form-control-sm" required>
+                            <option>Choose an option</option>
+                            <option value="access-premium-service">access-premium-service</option>
+                            <option value="autonomous-remote-infection">autonomous-remote-infection</option>
+                            <option value="block-security-websites">block-security-websites</option>
+                            <option value="capture-camera-input">capture-camera-input</option>
+                            <option value="capture-file-system-data">capture-file-system-data</option>
+                            <option value="capture-gps-data">capture-gps-data</option>
+                            <option value="capture-keyboard-input">capture-keyboard-input</option>
+                            <option value="capture-microphone-input">capture-microphone-input</option>
+                            <option value="capture-mouse-input">capture-mouse-input</option>
+                            <option value="capture-printer-output">capture-printer-output</option>
+                            <option value="capture-system-memory">capture-system-memory</option>
+                            <option value="capture-system-network-traffic">capture-system-network-traffic</option>
+                            <option value="capture-system-screenshot">capture-system-screenshot</option>
+                            <option value="capture-touchscreen-input">capture-touchscreen-input</option>
+                            <option value="check-for-payload">check-for-payload</option>
+                            <option value="check-language">check-language</option>
+                            <option value="click-fraud">click-fraud</option>
+                            <option value="compare-host-fingerprints">compare-host-fingerprints</option>
+                            <option value="compromise-remote-machine">compromise-remote-machine</option>
+                            <option value="control-local-machine-via-remote-command">control-local-machine-via-remote-command</option>
+                            <option value="control-malware-via-remote-command">control-malware-via-remote-command</option>
+                            <option value="crack-passwords">crack-passwords</option>
+                            <option value="defeat-call-graph-generation">defeat-call-graph-generation</option>
+                            <option value="defeat-emulator">defeat-emulator</option>
+                            <option value="defeat-flow-oriented-disassembler">defeat-flow-oriented-disassembler</option>
+                            <option value="defeat-linear-disassembler">defeat-linear-disassembler</option>
+                            <option value="degrade-security-program">degrade-security-program</option>
+                            <option value="denial-of-service">denial-of-service</option>
+                            <option value="destroy-hardware">destroy-hardware</option>
+                            <option value="detect-debugging">detect-debugging</option>
+                            <option value="detect-emulator">detect-emulator</option>
+                            <option value="detect-installed-analysis-tools">detect-installed-analysis-tools</option>
+                            <option value="detect-installed-av-tools">detect-installed-av-tools</option>
+                            <option value="detect-sandbox-environment">detect-sandbox-environment</option>
+                            <option value="detect-vm-environment">detect-vm-environment</option>
+                            <option value="determine-host-ip-address">determine-host-ip-address</option>
+                            <option value="disable-access-rights-checking">disable-access-rights-checking</option>
+                            <option value="disable-firewall">disable-firewall</option>
+                            <option value="disable-kernel-patch-protection">disable-kernel-patch-protection</option>
+                            <option value="disable-os-security-alerts">disable-os-security-alerts</option>
+                            <option value="disable-privilege-limiting">disable-privilege-limiting</option>
+                            <option value="disable-service-pack-patch-installation">disable-service-pack-patch-installation</option>
+                            <option value="disable-system-file-overwrite-protection">disable-system-file-overwrite-protection</option>
+                            <option value="disable-update-services-daemons">disable-update-services-daemons</option>
+                            <option value="disable-user-account-control">disable-user-account-control</option>
+                            <option value="drop-retrieve-debug-log-file">drop-retrieve-debug-log-file</option>
+                            <option value="elevate-privilege">elevate-privilege</option>
+                            <option value="encrypt-data">encrypt-data</option>
+                            <option value="encrypt-files">encrypt-files</option>
+                            <option value="encrypt-self">encrypt-self</option>
+                            <option value="erase-data">erase-data</option>
+                            <option value="evade-static-heuristic">evade-static-heuristic</option>
+                            <option value="execute-before-external-to-kernel-hypervisor">execute-before-external-to-kernel-hypervisor</option>
+                            <option value="execute-non-main-cpu-code">execute-non-main-cpu-code</option>
+                            <option value="execute-stealthy-code">execute-stealthy-code</option>
+                            <option value="exfiltrate-data-via-covert channel">exfiltrate-data-via-covert channel</option>
+                            <option value="exfiltrate-data-via- -dumpster-dive">exfiltrate-data-via- -dumpster-dive</option>
+                            <option value="exfiltrate-data-via-fax">exfiltrate-data-via-fax</option>
+                            <option value="exfiltrate-data-via-network">exfiltrate-data-via-network</option>
+                            <option value="exfiltrate-data-via-physical-media">exfiltrate-data-via-physical-media</option>
+                            <option value="exfiltrate-data-via-voip-phone">exfiltrate-data-via-voip-phone</option>
+                            <option value="feed-misinformation-during-physical-memory-acquisition">feed-misinformation-during-physical-memory-acquisition</option>
+                            <option value="file-system-instantiation">file-system-instantiation</option>
+                            <option value="fingerprint-host">fingerprint-host</option>
+                            <option value="generate-c2-domain-names">generate-c2-domain-names</option>
+                            <option value="hide-arbitrary-virtual-memory">hide-arbitrary-virtual-memory</option>
+                            <option value="hide-data-in-other-formats">hide-data-in-other-formats</option>
+                            <option value="hide-file-system-artifacts">hide-file-system-artifacts</option>
+                            <option value="hide-kernel-modules">hide-kernel-modules</option>
+                            <option value="hide-network-traffic">hide-network-traffic</option>
+                            <option value="hide-open-network-ports">hide-open-network-ports</option>
+                            <option value="hide-processes">hide-processes</option>
+                            <option value="hide-registry-artifacts">hide-registry-artifacts</option>
+                            <option value="hide-services">hide-services</option>
+                            <option value="hide-threads">hide-threads</option>
+                            <option value="hide-userspace-libraries">hide-userspace-libraries</option>
+                            <option value="identify-file">identify-file</option>
+                            <option value="identify-os">identify-os</option>
+                            <option value="identify-target-machines">identify-target-machines</option>
+                            <option value="impersonate-user">impersonate-user</option>
+                            <option value="install-backdoor">install-backdoor</option>
+                            <option value="install-legitimate-software">install-legitimate-software</option>
+                            <option value="install-secondary-malware">install-secondary-malware</option>
+                            <option value="install-secondary-module">install-secondary-module</option>
+                            <option value="intercept-manipulate-network-traffic">intercept-manipulate-network-traffic</option>
+                            <option value="inventory-security-products">inventory-security-products</option>
+                            <option value="inventory-system-applications">inventory-system-applications</option>
+                            <option value="inventory-victims">inventory-victims</option>
+                            <option value="limit-application-type-version">limit-application-type-version</option>
+                            <option value="log-activity">log-activity</option>
+                            <option value="manipulate-file-system-data">manipulate-file-system-data</option>
+                            <option value="map-local-network">map-local-network</option>
+                            <option value="mine-for-cryptocurrency">mine-for-cryptocurrency</option>
+                            <option value="modify-file">modify-file</option>
+                            <option value="modify-security-software-configuration">modify-security-software-configuration</option>
+                            <option value="move-data-to-staging-server">move-data-to-staging-server</option>
+                            <option value="obfuscate-artifact-properties">obfuscate-artifact-properties</option>
+                            <option value="overload-sandbox">overload-sandbox</option>
+                            <option value="package-data">package-data</option>
+                            <option value="persist-after-hardware-changes">persist-after-hardware-changes</option>
+                            <option value="persist-after-os-changes">persist-after-os-changes</option>
+                            <option value="persist-after-system-reboot">persist-after-system-reboot</option>
+                            <option value="prevent-api-unhooking">prevent-api-unhooking</option>
+                            <option value="prevent-concurrent-execution">prevent-concurrent-execution</option>
+                            <option value="prevent-debugging">prevent-debugging</option>
+                            <option value="prevent-file-access">prevent-file-access</option>
+                            <option value="prevent-file-deletion">prevent-file-deletion</option>
+                            <option value="prevent-memory-access">prevent-memory-access</option>
+                            <option value="prevent-native-api-hooking">prevent-native-api-hooking</option>
+                            <option value="prevent-physical-memory-acquisition">prevent-physical-memory-acquisition</option>
+                            <option value="prevent-registry-access">prevent-registry-access</option>
+                            <option value="prevent-registry-deletion">prevent-registry-deletion</option>
+                            <option value="prevent-security-software- -from-executing">prevent-security-software- -from-executing</option>
+                            <option value="re-instantiate-self">re-instantiate-self</option>
+                            <option value="remove-self">remove-self</option>
+                            <option value="remove-sms-warning-messages">remove-sms-warning-messages</option>
+                            <option value="remove-system-artifacts">remove-system-artifacts</option>
+                            <option value="request-email-address-list">request-email-address-list</option>
+                            <option value="request-email-template">request-email-template</option>
+                            <option value="search-for-remote-machines">search-for-remote-machines</option>
+                            <option value="send-beacon">send-beacon</option>
+                            <option value="send-email-message">send-email-message</option>
+                            <option value="send-system-information">send-system-information</option>
+                            <option value="social-engineering-based-remote-infection">social-engineering-based-remote-infection</option>
+                            <option value="steal-browser-cache">steal-browser-cache</option>
+                            <option value="steal-browser-cookies">steal-browser-cookies</option>
+                            <option value="steal-browser-history">steal-browser-history</option>
+                            <option value="steal-contact-list-data">steal-contact-list-data</option>
+                            <option value="steal-cryptocurrency-data">steal-cryptocurrency-data</option>
+                            <option value="steal-database-content">steal-database-content</option>
+                            <option value="steal-dialed-phone-numbers">steal-dialed-phone-numbers</option>
+                            <option value="steal-digital-certificates">steal-digital-certificates</option>
+                            <option value="steal-documents">steal-documents</option>
+                            <option value="steal-email-data">steal-email-data</option>
+                            <option value="steal-images">steal-images</option>
+                            <option value="steal-password-hashes">steal-password-hashes</option>
+                            <option value="steal-pki-key">steal-pki-key</option>
+                            <option value="steal-referrer-urls">steal-referrer-urls</option>
+                            <option value="steal-serial-numbers">steal-serial-numbers</option>
+                            <option value="steal-sms-database">steal-sms-database</option>
+                            <option value="steal-web-network-credential">steal-web-network-credential</option>
+                            <option value="stop-execution-of-security-software">stop-execution-of-security-software</option>
+                            <option value="suicide-exit">suicide-exit</option>
+                            <option value="test-for-firewall">test-for-firewall</option>
+                            <option value="test-for-internet-connectivity">test-for-internet-connectivity</option>
+                            <option value="test-for-network-drives">test-for-network-drives</option>
+                            <option value="test-for-proxy">test-for-proxy</option>
+                            <option value="test-smtp-connection">test-smtp-connection</option>
+                            <option value="update-configuration">update-configuration</option>
+                            <option value="validate-data">validate-data</option>
+                            <option value="write-code-into-file">write-code-into-file</option>
+                        </select>
+                        <input type="hidden" name="type" value="behavior">
+                    </div>
+
               </div>
-                <div class="form-group">
-                  <label class="control-label" >Last seen:</label>
-                  <input type="datetime-local" class="form-control" name="last_seen">
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                    <div class="col-lg-9">
+
+                        <textarea name="desc" class="form-control form-control-sm"></textarea>
+                    </div>
+
               </div>
-                <div class="form-group">
-                  <label class="control-label" >Count:</label>
-                  <input type="number" class="form-control" name="count">
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Timestamp:</label>
+                    <div class="col-lg-9">
+                        <input type="datetime-local" class="form-control form-control-sm" name="timestmp">
+                    </div>
+
               </div>
-                <div class="form-group">
-                  <label class="control-label" >Sighting reference:</label>
-                  <input type="text" class="form-control" name="sight_ref">
-              </div>
-                <div class="form-group">
-                  <label class="control-label" >Observed data reference:</label>
-                  <input type="text" class="form-control" name="obs_data_ref">
-              </div>
-                <div class="form-group">
-                  <label class="control-label" >Where sighted reference:</label>
-                  <input type="text" class="form-control" name="where_sight_ref">
-              </div>
-                <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
-              </div>
+
+               <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
             </form>
         </div>
       </div>
@@ -918,14 +1163,18 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
+          <form action="{{ url_for('create_collection') }}" method="post">
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                      <div class="col-lg-9">
+                          <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                          <input type="hidden" name="type" value="collection">
+                      </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Association type:</label>
-                  <select  class="form-control" name="assoc_type">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Association type:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="assoc_type" required>
                         <option>Choose an option</option>
                         <option value="file-system-entities">File system entities</option>
                         <option value="network-entities">Network entities</option>
@@ -940,40 +1189,15 @@
                       <option value="observed-together">Observed together</option>
                       <option value="same-malware-toolkit">Same malware toolkit</option>
                   </select>
+                  </div>
+
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Entity references:</label>
-                  <select  class="form-control" name="entity_refs">
-                        <option>Choose an option</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Observable references:</label>
-                  <select  class="form-control" name="observ_refs">
-                        <option>Choose an option</option>
-                      <option value="artifact">Artifact</option>
-                      <option value="autonomous-system">Autonomous system</option>
-                      <option value="directory">Directory</option>
-                      <option value="domain-name">Domain name</option>
-                      <option value="email-addr">Email addr</option>
-                      <option value="email-message">Email message</option>
-                      <option value="file">File</option>
-                      <option value="ipv4-addr">Ipv4 addr</option>
-                      <option value="ipv6-addr">Ipv6 addr</option>
-                      <option value="mac-addr">MAC addr</option>
-                      <option value="network-traffic">Network traffic</option>
-                      <option value="process">Process</option>
-                      <option value="software">Software</option>
-                      <option value="url">Url</option>
-                      <option value="user-account">User account</option>
-                      <option value="windows-registry-key">Windows registry key</option>
-                  </select>
-              </div>
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
-              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
         </div>
       </div>
@@ -993,10 +1217,11 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <select  class="form-control" name="nm">
+          <form action="{{ url_for('create_malaction') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm"  required name="nm">
                         <option>Choose an option</option>
                         <option value="accept-socket-connection">accept-socket-connection</option>
                         <option value="add-connection-to-network-share">add-connection-to-network-share</option>
@@ -1203,106 +1428,41 @@
                       <option value="write-to-mailslot">write-to-mailslot</option>
                       <option value="write-to-named-pipe">write-to-named-pipe</option>
                       <option value="write-to-process-memory">write-to-process-memory</option>
-
-
-
-
-
-
-
-
                   </select>
-              </div>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Is successful:</label>
-                  <div class="form-check-inline">
-                      <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" id="radio1" name="is_succ" value="True" > True
-                      </label>
-                  </div>
-                  <div class="form-check-inline">
-                      <label class="form-check-label" for="radio1">
-                        <input type="radio" class="form-check-input" id="radio1" name="is_succ" value="False" > False
-                      </label>
+                      <input type="hidden" name="type" value="malware-action">
                   </div>
 
               </div>
-              <div class="form-group">
-                  <label class="control-label" >Timestamp:</label>
-                  <input type="datetime-local" class="form-control" name="timestmp">
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Input object references:</label>
-                  <select multiple class="form-control" name="input_obj_refs">
-                        <option>Choose an option</option>
-                      <option value="artifact">Artifact</option>
-                      <option value="autonomous-system">Autonomous system</option>
-                      <option value="directory">Directory</option>
-                      <option value="domain-name">Domain name</option>
-                      <option value="email-addr">Email addr</option>
-                      <option value="email-message">Email message</option>
-                      <option value="file">File</option>
-                      <option value="ipv4-addr">Ipv4 addr</option>
-                      <option value="ipv6-addr">Ipv6 addr</option>
-                      <option value="mac-addr">MAC addr</option>
-                      <option value="network-traffic">Network traffic</option>
-                      <option value="process">Process</option>
-                      <option value="software">Software</option>
-                      <option value="url">Url</option>
-                      <option value="user-account">User account</option>
-                      <option value="windows-registry-key">Windows registry key</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Output object references:</label>
-                  <select multiple class="form-control" name="output_obj_refs">
-                        <option>Choose an option</option>
-                      <option value="artifact">Artifact</option>
-                      <option value="autonomous-system">Autonomous system</option>
-                      <option value="directory">Directory</option>
-                      <option value="domain-name">Domain name</option>
-                      <option value="email-addr">Email addr</option>
-                      <option value="email-message">Email message</option>
-                      <option value="file">File</option>
-                      <option value="ipv4-addr">Ipv4 addr</option>
-                      <option value="ipv6-addr">Ipv6 addr</option>
-                      <option value="mac-addr">MAC addr</option>
-                      <option value="network-traffic">Network traffic</option>
-                      <option value="process">Process</option>
-                      <option value="software">Software</option>
-                      <option value="url">Url</option>
-                      <option value="user-account">User account</option>
-                      <option value="windows-registry-key">Windows registry key</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >API call:</label>
-                  <div class="form-group">
-                      <label class="control-label" >Address:</label>
-                      <input type="text" class="form-control" name="addr">
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
                   </div>
-                  <div class="form-group">
-                      <label class="control-label" >Return value:</label>
-                      <input type="text" class="form-control" name="ret_val">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Parameters:</label>
-                      <textarea class="form-control" rows="3" name="params"></textarea>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label" >Function name:</label>
-                      <input type="text" class="form-control" name="fun_name">
+
+              </div>
+              <div class="form-group row">
+                  <label class=" col-lg-3 col-form-label" >Is successful:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="is_successful">
+                          <option>Choose an option</option>
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                      </select>
                   </div>
               </div>
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Timestamp:</label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control form-control-sm" name="timestmp">
+                  </div>
+
               </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
         </div>
 
@@ -1324,45 +1484,12 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label" >Name:</label>
-                  <div class="form-group">
-                      <label class="control-label">Value:</label>
-                      <input type="text" class="form-control" name="nm_val">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Source:</label>
-                      <div class="form-group">
-                          <label class="control-label">Source Name:</label>
-                          <input type="text" class="form-control" name="nm_src">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">Description:</label>
-                          <textarea class="form-control" rows="3" name="src_desc"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">URL:</label>
-                          <input type="text" class="form-control" name="src_url">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">External id:</label>
-                          <input type="text" class="form-control" name="src_extid">
-                      </div>
-
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Confidence:</label>
-                      <input type="integer" class="form-control" name="nm_conf">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Aliases:</label>
-                  <input type="text" class="form-control" name="aliases"> <!-- to be edited further-->
-              </div>
-              <div class="form-group">
-                      <label class="control-label">Labels:</label>
-                      <select  class="form-control" name="labels">
+          <form action="{{ url_for('create_malwarefamily') }}" method="post">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" >Labels:</label>
+                    <div class="col-lg-9">
+                      <input type="hidden" name="type" value="malware-family">
+                      <select  class="form-control form-control-sm" multiple name="labels">
                           <option>Choose an option</option>
                           <option value="adware">adware</option>
                           <option value="appender">appender</option>
@@ -1412,209 +1539,31 @@
                           <option value="web-bug">web-bug</option>
                           <option value="worm">worm</option>
                       </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Description:</label>
-                  <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Field Data:</label>
-                  <div class="form-group">
-                      <label class="control-label">Delivery Vectors:</label>
-                      <select  class="form-control" name="del_vec">
-                          <option>Choose an option</option>
-                          <option value="active-attacker">active-attacker</option>
-                          <option value="auto-executing-media">auto-executing-media</option>
-                          <option value="downloader">downloader</option>
-                          <option value="dropper">dropper</option>
-                          <option value="email-attachment">email-attachment</option>
-                          <option value="exploit-kit-landing-page">exploit-kit-landing-page</option>
-                          <option value="fake-website">fake-website</option>
-                          <option value="janitor-attack">janitor-attack</option>
-                          <option value="malicious-iframes">malicious-iframes</option>
-                          <option value="malvertising">malvertising</option>
-                          <option value="media-baiting">media-baiting</option>
-                          <option value="pharming">pharming</option>
-                          <option value="phishing">phishing</option>
-                          <option value="trojanized-link">trojanized-link</option>
-                          <option value="trojanized-software">trojanized-software</option>
-                          <option value="usb-cable-syncing">usb-cable-syncing</option>
-                          <option value="watering-hole">watering-hole</option>
-                      </select>
                   </div>
-                  <div class="form-group">
-                      <label class="control-label">First seen:</label>
-                      <input type="datetime-local" class="form-control" name="fd_fseen">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Last seen:</label>
-                      <input type="datetime-local" class="form-control" name="fd_lseen">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Common strings:</label>
-                  <input type="text" class="form-control" name="comm_str">
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Common capabilities:</label>
-                  <div class="form-group">
-                      <label class="control-label">Name:</label>
-                      <select  class="form-control" name="commcap_name">
-                          <option>Choose an option</option>
-                          <option value="anti-behavioral-analysis">anti-behavioral-analysis</option>
-                          <option value="anti-code-analysis">anti-code-analysis</option>
-                          <option value="anti-detection">anti-detection</option>
-                          <option value="anti-removal">anti-removal</option>
-                          <option value="availability-violation">availability-violation</option>
-                          <option value="collection">collection</option>
-                          <option value="command-and-control">command-and-control</option>
-                          <option value="data-theft">data-theft</option>
-                          <option value="destruction">destruction</option>
-                          <option value="discovery">discovery</option>
-                          <option value="exfiltration">exfiltration</option>
-                          <option value="fraud">fraud</option>
-                          <option value="infection-propagation">infection-propagation</option>
-                          <option value="machine-access-control">machine-access-control</option>
-                          <option value="persistence">persistence</option>
-                          <option value="privilege-escalation">privilege-escalation</option>
-                          <option value="secondary-operation">secondary-operation</option>
-                          <option value="security-degradation">security-degradation</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Refined capabilities:</label>
-                      <div class="form-group">
-                          <label class="control-label">Name:</label>
-                          <select  class="form-control" name="refcap_name">
-                          <option>Choose an option</option>
-                          <option value="access-control-degradation">access-control-degradation</option>
-                          <option value="anti-debugging">anti-debugging</option>
-                          <option value="anti-disassembly">anti-disassembly</option>
-                          <option value="anti-emulation">anti-emulation</option>
-                          <option value="anti-memory-forensics">anti-memory-forensics</option>
-                          <option value="anti-sandbox">anti-sandbox</option>
-                          <option value="anti-virus-evasion">anti-virus-evasion</option>
-                          <option value="anti-vm">anti-vm</option>
-                          <option value="authentication-credentials-theft">authentication-credentials-theft</option>
-                          <option value="clean-traces-of-infection">clean-traces-of-infection</option>
-                          <option value="communicate-with-c2-server">communicate-with-c2-server</option>
-                          <option value="compromise-data-availability">compromise-data-availability</option>
-                          <option value="compromise-system-availability">compromise-system-availability</option>
-                          <option value="consume-system-resources">consume-system-resources</option>
-                          <option value="continuous-execution">continuous-execution</option>
-                          <option value="data-integrity-violation">data-integrity-violation</option>
-                          <option value="data-obfuscation">data-obfuscation</option>
-                          <option value="data-staging">data-staging</option>
-                          <option value="determine-c2-server">determine-c2-server</option>
-                          <option value="email-spam">email-spam</option>
-                          <option value="ensure-compatibility">ensure-compatibility</option>
-                          <option value="environment-awareness">environment-awareness</option>
-                          <option value="file-infection">file-infection</option>
-                          <option value="hide-artifacts">hide-artifacts</option>
-                          <option value="hide-executing-code">hide-executing-code</option>
-                          <option value="hide-non-executing-code">hide-non-executing-code</option>
-                          <option value="host-configuration-probing">host-configuration-probing</option>
-                          <option value="information-gathering-for-improvement">information-gathering-for-improvement</option>
-                          <option value="input-peripheral-capture">input-peripheral-capture</option>
-                          <option value="install-other-components">install-other-components</option>
-                          <option value="local-machine-control">local-machine-control</option>
-                          <option value="network-environment-probing">network-environment-probing</option>
-                          <option value="os-security-feature-degradation">os-security-feature-degradation</option>
-                          <option value="output-peripheral-capture">output-peripheral-capture</option>
-                          <option value="physical-entity-destruction">physical-entity-destruction</option>
-                          <option value="prevent-artifact-access">prevent-artifact-access</option>
-                          <option value="prevent-artifact-deletion">prevent-artifact-deletion</option>
-                          <option value="remote-machine-access">remote-machine-access</option>
-                          <option value="remote-machine-infection">remote-machine-infection</option>
-                          <option value="security-software-degradation">security-software-degradation</option>
-                          <option value="security-software-evasion">security-software-evasion</option>
-                          <option value="self-modification">self-modification</option>
-                          <option value="service-provider-security-feature-degradation">service-provider-security-feature-degradation</option>
-                          <option value="stored-information-theft">stored-information-theft</option>
-                          <option value="system-interface-data-capture">system-interface-data-capture</option>
-                          <option value="system-operational-integrity-violation">system-operational-integrity-violation</option>
-                          <option value="system-re-infection">system-re-infection</option>
-                          <option value="system-state-data-capture">system-state-data-capture</option>
-                          <option value="system-update-degradation">system-update-degradation</option>
-                          <option value="user-data-theft">user-data-theft</option>
-                          <option value="virtual-entity-destruction">virtual-entity-destruction</option>
-                      </select>
-                      </div>
 
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Description:</label>
-                      <textarea class="form-control" rows="3" name="commcap_desc"></textarea>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Attributes:</label>
-                      <textarea class="form-control" rows="3" name="commcap_attr"></textarea><!--required key value feature-->
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Behavior references:</label> <!--should display a list of behavior identifiers-->
-                      <select class="form-control" name="commcap_behref">
-                          <option>Choose an option</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">References:</label>
-                      <div class="form-group">
-                          <label class="control-label">Source name:</label>
-                          <input type="text" class="form-control" name="commcap_refsrcnm">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">Description:</label>
-                          <textarea class="form-control" rows="3" name="commcap_ref"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">URL:</label>
-                          <input type="text" class="form-control" name="commcap_refsurl">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">External Id:</label>
-                          <input type="text" class="form-control" name="commcap_refsextid">
-                      </div>
-                  </div>
               </div>
-              <div class="form-group">
-                <label class="control-label">Common code references:</label><!--requires some dynamic features, requires more forms-->
-              </div>
-              <div class="form-group">
-                <label class="control-label">Common behavior references:</label><!--requires some dynamic features, requires list of 'behvior' id's-->
-                  <select class="form-control" name="commbeh_ref">
-                      <option>choose an option</option>
-                  </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">References:</label>
-                  <div class="form-group">
-                          <label class="control-label">Source Name:</label>
-                          <input type="text" class="form-control" name="ref_nm">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">Description:</label>
-                          <textarea class="form-control" rows="3" name="ref_desc"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">URL:</label>
-                          <input type="text" class="form-control" name="ref_url">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">External id:</label>
-                          <input type="text" class="form-control" name="ref_extid">
-                      </div>
-              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" name="desc" rows="4"></textarea> <!-- to be edited further-->
+                  </div>
 
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
               </div>
+              <div class="form-group row">
+                      <label class="col-lg-3 col-form-label">Common strings:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="comm_strings">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
         </div>
-
-
-
       </div>
     </div>
   </div>
@@ -1632,48 +1581,18 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-              <div class="form-group">
-                  <label class="control-label">Instance object references:</label><!--needs a dynamic feature that requires stix cyber obv type -->
+          <form action="" method="post">
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Name:</label>
+                <div class="col-lg-9">
+                    <input type="text" class="form-control form-control-sm" name="nm">
+                    <input type="hidden" name="type" value="malware-instance">
+                </div>
               </div>
-              <div class="form-group">
-                <label class="control-label">Name:</label>
-                <div class="form-group">
-                      <label class="control-label">Value:</label>
-                      <input type="text" class="form-control" name="nm_val">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Source:</label>
-                      <div class="form-group">
-                          <label class="control-label">Source Name:</label>
-                          <input type="text" class="form-control" name="nm_src">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">Description:</label>
-                          <textarea class="form-control" rows="3" name="src_desc"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">URL:</label>
-                          <input type="text" class="form-control" name="src_url">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">External id:</label>
-                          <input type="text" class="form-control" name="src_extid">
-                      </div>
-
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Confidence:</label>
-                      <input type="integer" class="form-control" name="nm_conf">
-                  </div>
-              </div>
-              <div class="form-group">
-                <label class="control-label">Aliases:</label>
-                  <input type="text" class="form-control" name="aliases"> <!-- to be edited further, requires list of type name-->
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Labels:</label>
-                  <select  class="form-control" name="labels">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Labels:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="labels">
                           <option>Choose an option</option>
                           <option value="adware">adware</option>
                           <option value="appender">appender</option>
@@ -1723,48 +1642,18 @@
                           <option value="web-bug">web-bug</option>
                           <option value="worm">worm</option>
                       </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Description:</label>
-                  <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                <label class="control-label">Field Data:</label>
-                  <div class="form-group">
-                      <label class="control-label">Delivery Vectors:</label>
-                      <select  class="form-control" name="del_vec">
-                          <option>Choose an option</option>
-                          <option value="active-attacker">active-attacker</option>
-                          <option value="auto-executing-media">auto-executing-media</option>
-                          <option value="downloader">downloader</option>
-                          <option value="dropper">dropper</option>
-                          <option value="email-attachment">email-attachment</option>
-                          <option value="exploit-kit-landing-page">exploit-kit-landing-page</option>
-                          <option value="fake-website">fake-website</option>
-                          <option value="janitor-attack">janitor-attack</option>
-                          <option value="malicious-iframes">malicious-iframes</option>
-                          <option value="malvertising">malvertising</option>
-                          <option value="media-baiting">media-baiting</option>
-                          <option value="pharming">pharming</option>
-                          <option value="phishing">phishing</option>
-                          <option value="trojanized-link">trojanized-link</option>
-                          <option value="trojanized-software">trojanized-software</option>
-                          <option value="usb-cable-syncing">usb-cable-syncing</option>
-                          <option value="watering-hole">watering-hole</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">First seen:</label>
-                      <input type="datetime-local" class="form-control" name="fd_fseen">
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Last seen:</label>
-                      <input type="datetime-local" class="form-control" name="fd_lseen">
                   </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label">OS execution environments:</label>
-                  <select class="form-control" name="osexecenv">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="4" name="desc"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">OS execution environments:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="osexecenv">
                       <option>Choose an option</option>
                       <option value="android-1.0.x">android-1.0.x</option>
                       <option value="android-1.1.x">android-1.1.x</option>
@@ -1878,10 +1767,12 @@
                       <option value="windows-unknown-version">windows-unknown-version</option>
 
                   </select>
+                  </div>
               </div>
-              <div class="form-group">
-                <label class="control-label">Architecture execution environments:</label>
-                  <select class="form-control" name="archexec_env">
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Architecture execution environments:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="archexec_env">
                       <option>Choose an option</option>
                       <option value="x86">x86</option>
                       <option value="x86-64">x86-64</option>
@@ -1892,131 +1783,12 @@
                       <option value="sparc">sparc</option>
                       <option value="mips">mips</option>
                   </select>
+                  </div>
               </div>
-              <div class="form-group">
-                <label class="control-label">Capabilities:</label>
-                  <div class="form-group">
-                      <label class="control-label">Name:</label>
-                      <select  class="form-control" name="commcap_name">
-                          <option>Choose an option</option>
-                          <option value="anti-behavioral-analysis">anti-behavioral-analysis</option>
-                          <option value="anti-code-analysis">anti-code-analysis</option>
-                          <option value="anti-detection">anti-detection</option>
-                          <option value="anti-removal">anti-removal</option>
-                          <option value="availability-violation">availability-violation</option>
-                          <option value="collection">collection</option>
-                          <option value="command-and-control">command-and-control</option>
-                          <option value="data-theft">data-theft</option>
-                          <option value="destruction">destruction</option>
-                          <option value="discovery">discovery</option>
-                          <option value="exfiltration">exfiltration</option>
-                          <option value="fraud">fraud</option>
-                          <option value="infection-propagation">infection-propagation</option>
-                          <option value="machine-access-control">machine-access-control</option>
-                          <option value="persistence">persistence</option>
-                          <option value="privilege-escalation">privilege-escalation</option>
-                          <option value="secondary-operation">secondary-operation</option>
-                          <option value="security-degradation">security-degradation</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Refined capabilities:</label>
-                      <div class="form-group">
-                          <label class="control-label">Name:</label>
-                          <select  class="form-control" name="refcap_name">
-                          <option>Choose an option</option>
-                          <option value="access-control-degradation">access-control-degradation</option>
-                          <option value="anti-debugging">anti-debugging</option>
-                          <option value="anti-disassembly">anti-disassembly</option>
-                          <option value="anti-emulation">anti-emulation</option>
-                          <option value="anti-memory-forensics">anti-memory-forensics</option>
-                          <option value="anti-sandbox">anti-sandbox</option>
-                          <option value="anti-virus-evasion">anti-virus-evasion</option>
-                          <option value="anti-vm">anti-vm</option>
-                          <option value="authentication-credentials-theft">authentication-credentials-theft</option>
-                          <option value="clean-traces-of-infection">clean-traces-of-infection</option>
-                          <option value="communicate-with-c2-server">communicate-with-c2-server</option>
-                          <option value="compromise-data-availability">compromise-data-availability</option>
-                          <option value="compromise-system-availability">compromise-system-availability</option>
-                          <option value="consume-system-resources">consume-system-resources</option>
-                          <option value="continuous-execution">continuous-execution</option>
-                          <option value="data-integrity-violation">data-integrity-violation</option>
-                          <option value="data-obfuscation">data-obfuscation</option>
-                          <option value="data-staging">data-staging</option>
-                          <option value="determine-c2-server">determine-c2-server</option>
-                          <option value="email-spam">email-spam</option>
-                          <option value="ensure-compatibility">ensure-compatibility</option>
-                          <option value="environment-awareness">environment-awareness</option>
-                          <option value="file-infection">file-infection</option>
-                          <option value="hide-artifacts">hide-artifacts</option>
-                          <option value="hide-executing-code">hide-executing-code</option>
-                          <option value="hide-non-executing-code">hide-non-executing-code</option>
-                          <option value="host-configuration-probing">host-configuration-probing</option>
-                          <option value="information-gathering-for-improvement">information-gathering-for-improvement</option>
-                          <option value="input-peripheral-capture">input-peripheral-capture</option>
-                          <option value="install-other-components">install-other-components</option>
-                          <option value="local-machine-control">local-machine-control</option>
-                          <option value="network-environment-probing">network-environment-probing</option>
-                          <option value="os-security-feature-degradation">os-security-feature-degradation</option>
-                          <option value="output-peripheral-capture">output-peripheral-capture</option>
-                          <option value="physical-entity-destruction">physical-entity-destruction</option>
-                          <option value="prevent-artifact-access">prevent-artifact-access</option>
-                          <option value="prevent-artifact-deletion">prevent-artifact-deletion</option>
-                          <option value="remote-machine-access">remote-machine-access</option>
-                          <option value="remote-machine-infection">remote-machine-infection</option>
-                          <option value="security-software-degradation">security-software-degradation</option>
-                          <option value="security-software-evasion">security-software-evasion</option>
-                          <option value="self-modification">self-modification</option>
-                          <option value="service-provider-security-feature-degradation">service-provider-security-feature-degradation</option>
-                          <option value="stored-information-theft">stored-information-theft</option>
-                          <option value="system-interface-data-capture">system-interface-data-capture</option>
-                          <option value="system-operational-integrity-violation">system-operational-integrity-violation</option>
-                          <option value="system-re-infection">system-re-infection</option>
-                          <option value="system-state-data-capture">system-state-data-capture</option>
-                          <option value="system-update-degradation">system-update-degradation</option>
-                          <option value="user-data-theft">user-data-theft</option>
-                          <option value="virtual-entity-destruction">virtual-entity-destruction</option>
-                      </select>
-                      </div>
-
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Description:</label>
-                      <textarea class="form-control" rows="3" name="commcap_desc"></textarea>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Attributes:</label>
-                      <textarea class="form-control" rows="3" name="commcap_attr"></textarea><!--required key value feature-->
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Behavior references:</label> <!--should display a list of behavior identifiers-->
-                      <select class="form-control" name="commcap_behref">
-                          <option>Choose an option</option>
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">References:</label>
-                      <div class="form-group">
-                          <label class="control-label">Source name:</label>
-                          <input type="text" class="form-control" name="commcap_refsrcnm">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">Description:</label>
-                          <textarea class="form-control" rows="3" name="commcap_ref"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">URL:</label>
-                          <input type="text" class="form-control" name="commcap_refsurl">
-                      </div>
-                      <div class="form-group">
-                          <label class="control-label">External Id:</label>
-                          <input type="text" class="form-control" name="commcap_refsextid">
-                      </div>
-                  </div>
-              </div><!--required dynamic feature that displays a list of capabilities(has more than 3 fields-->
-              <div class="form-group">
-                  <label class="control-label">Os features:</label>
-                  <select class="form-control" name="os_feat">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Os features:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="os_feat">
                       <option>Choose an option</option>
                       <option value="login-items">login-items</option>
                       <option value="plist-files">plist-files</option>
@@ -2041,101 +1813,14 @@
                       <option value="device-drivers">device-drivers</option>
                       <option value="admin-network-shares">admin-network-shares</option>
                   </select>
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Dynamic features:</label>
-                  <div class="form-group">
-                      <label class="control-label">Behavior references:</label>
-                      <select class="form-control" name="beh_ref">
-                          <option>Choose an option</option><!--should display list of id's of behavior type-->
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Action references:</label>
-                      <select class="form-control" name="act_ref">
-                          <option>Choose an option</option><!--should display list of id's of behavior type-->
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Network traffic references:</label>
-                      <select class="form-control" name="act_ref">
-                          <option>Choose an option</option><!--should display list of obj ref's-->
-                      </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Process tree:</label>
-                      <!--should display list of Process tree node -->
-                  </div>
-
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Static features:</label>
-                  <div class="form-group">
-                      <label class="control-label">Strings:</label>
-                      <textarea class="form-control" rows="3" name="strings"></textarea>
-
-                  </div><!--list of strings to be entered-->
-                  <div class="form-group">
-                      <label class="control-label">Obfuscation methods:</label>
-                      <!--dynamic feature: list of obfuscation methods-->
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Certificates:</label>
-                      <!--dynamic feature: list of obj ref-->
-
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">File headers:</label>
-                        <!--dynamic feature: list of obj ref-->
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Configuration parameters:</label>
-                       <select class="form-control" name="conf_params">
-                           <option>Choose an option</option>
-                           <option value="filename">filename</option>
-                           <option value="group-id">group-id</option>
-                           <option value="id">id</option>
-                           <option value="installation-path">installation-path</option>
-                           <option value="magic-number">magic-number</option>
-                           <option value="mutex">mutex</option>
-                           <option value="c2-ip-address">c2-ip-address</option>
-                           <option value="c2-domain">c2-domain</option>
-                           <option value="c2-url">c2-url</option>
-                           <option value="directory">directory</option>
-                           <option value="filepath">filepath</option>
-                           <option value="injection-process">injection-process</option>
-                           <option value="interval">interval</option>
-                           <option value="key">key</option>
-                           <option value="password">password</option>
-                           <option value="useragent">useragent</option>
-                           <option value="version">version</option>
-                       </select>
-                  </div>
-                  <div class="form-group">
-                      <label class="control-label">Development environment:</label>
-                        <div class="form-group">
-                            <label class="control-label">Tool references:</label>
-                            <!--dynamic feature: list of obj ref-->
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label">Debugging file references:</label>
-                            <!--dynamic feature: list of obj ref-->
-                        </div>
                   </div>
               </div>
-              <div class="form-group">
-                  <label class="control-label">Analysis Metadata:</label>
-                    <!--required dynamic feature that displays a list of analysis metadata(has more than 3 fields-->
-              </div>
-              <div class="form-group">
-                  <label class="control-label">Triggered signatures:</label>
-                    <!--required dynamic feature that displays a list of Triggered signatures(has more than 3 fields-->
-              </div>
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
-              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
           </form>
         </div>
       </div>

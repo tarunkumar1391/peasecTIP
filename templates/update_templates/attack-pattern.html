@@ -9,13 +9,13 @@
     <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static',filename = 'custom/attackpattern.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'custom/attack_pattern/update_attackpattern.js') }}"></script>
 </head>
 <body>
 
 <div class="container-fluid">
 {#header section#}
-        <div class="row">
+    <div class="row">
             <!--Navbar-->
             <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
                 <a class="navbar-brand" href="#">
@@ -99,6 +99,7 @@
                           <div class="col-lg-8">
                             <input type="text" class="form-control form-control-sm" name="kcName">
                               <input type="hidden" class="form-control form-control-sm" name="obj_id" value="{{ data.id }}">
+                              <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ data.type }}">
                               <input type="hidden" name="created_by" value="{{ session['user'] }}">
                           </div>
                          </div>
@@ -142,6 +143,7 @@
                       <div class="col-lg-9">
                           <input type="text" class="form-control form-control-sm" name="extref_srcname">
                           <input type="hidden" name="ref_id" value="{{ data.id }}">
+                          <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ data.type }}">
                            <input type="hidden" name="created_by" value="{{ session['user'] }}">
                       </div>
                   </div>

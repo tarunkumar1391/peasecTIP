@@ -2,9 +2,154 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'custom/indicator/view_indicator.js') }}"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-$END$
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            {#    delete function #}
+            <div class="alert alert-info">
+            <form method="POST" action="{{ url_for('delete_all_entry') }}">
+                <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
+                <input type="hidden" name="obj_type" value="{{ main.type }}">
+                <strong>If you wish to delete the main object and all other associated information</strong>
+              <button type="submit" class="btn btn-primary">Click here</button>
+            </form>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">{{ main.type }}</div>
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                              <tr>
+                                <th>#</th>
+                                <th>Values</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>Id:</b></td>
+                                <td>{{main.id}}</td>
+                              </tr>
+                              <tr>
+                                <td><b>Name:</b></td>
+                                <td>{{main.name}}</td>
+                              </tr>
+                              <tr>
+                                <td><b>Desciption:</b></td>
+                                <td>{{main.description}}</td>
+                              </tr>
+                              <tr>
+                                <td><b>Labels:</b></td>
+                                <td>{{main.labels}}</td>
+                              </tr>
+                            <tr>
+                                <td><b>Pattern:</b></td>
+                                <td>{{main.pattern}}</td>
+                              </tr>
+                            <tr>
+                                <td><b>Valid From:</b></td>
+                                <td>{{main.valid_from}}</td>
+                              </tr>
+                            <tr>
+                                <td><b>Valid Untill:</b></td>
+                                <td>{{main.valid_untill}}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">List of kill_chain_phases</div>
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table class="table table-hover table-sm">
+                                              <thead>
+                                                <tr>
+                                                  <th>#</th>
+                                                  <th>Kill chain name</th>
+                                                  <th>Phase name</th>
+                                                  <th >Action</th>
+
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                              {% for dat in kclist %}
+                                                <tr row_id="{{ dat.id }}">
+                                                    <td><div col_name="id">{{dat.id}}</div></td>
+                                                    <td><div class="row_data" edit_type="click" col_name="kc_name">{{dat.killchain_name}}</div></td>
+                                                    <td><div class="row_data" edit_type="click" col_name="kc_phase">{{dat.phase_name}}</div></td>
+                                                    <td><span class="btn_edit" > <a href="#" class="btn btn-link " row_id="{{ dat.id }}" > Edit</a> </span>
+                                                        <span class="btn_delete" > <a href="#" class="btn btn-link " row_id="{{ dat.id }}" > Delete</a> </span>
+                                                        <span class="btn_save"> <a href="#" class="btn btn-link"  row_id="{{ dat.id }}"> Save</a> | </span>
+                                                        <span class="btn_cancel"> <a href="#" class="btn btn-link" row_id="{{ dat.id }}"> Cancel</a> | </span>
+                                                    </td>
+                                                </tr>
+                                              {% endfor %}
+                                              </tbody>
+                                        </table>
+                                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
 </body>
 </html>

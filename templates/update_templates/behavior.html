@@ -2,9 +2,548 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'custom/behavior/update_behavior.js') }}"></script>
 </head>
 <body>
-$END$
+
+<div class="container-fluid">
+{#header section#}
+    <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">{{ data.type }}</div>
+                <div class="card-body">
+                    <div class="container">
+                        <form role="form" method="POST" id="update_behaviorform">
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label" >Name:</label>
+                          <div class="col-lg-9">
+                              <select  class="form-control form-control-sm" id="name" required>
+                            <option>Choose an option</option>
+                            <option value="access-premium-service">access-premium-service</option>
+                            <option value="autonomous-remote-infection">autonomous-remote-infection</option>
+                            <option value="block-security-websites">block-security-websites</option>
+                            <option value="capture-camera-input">capture-camera-input</option>
+                            <option value="capture-file-system-data">capture-file-system-data</option>
+                            <option value="capture-gps-data">capture-gps-data</option>
+                            <option value="capture-keyboard-input">capture-keyboard-input</option>
+                            <option value="capture-microphone-input">capture-microphone-input</option>
+                            <option value="capture-mouse-input">capture-mouse-input</option>
+                            <option value="capture-printer-output">capture-printer-output</option>
+                            <option value="capture-system-memory">capture-system-memory</option>
+                            <option value="capture-system-network-traffic">capture-system-network-traffic</option>
+                            <option value="capture-system-screenshot">capture-system-screenshot</option>
+                            <option value="capture-touchscreen-input">capture-touchscreen-input</option>
+                            <option value="check-for-payload">check-for-payload</option>
+                            <option value="check-language">check-language</option>
+                            <option value="click-fraud">click-fraud</option>
+                            <option value="compare-host-fingerprints">compare-host-fingerprints</option>
+                            <option value="compromise-remote-machine">compromise-remote-machine</option>
+                            <option value="control-local-machine-via-remote-command">control-local-machine-via-remote-command</option>
+                            <option value="control-malware-via-remote-command">control-malware-via-remote-command</option>
+                            <option value="crack-passwords">crack-passwords</option>
+                            <option value="defeat-call-graph-generation">defeat-call-graph-generation</option>
+                            <option value="defeat-emulator">defeat-emulator</option>
+                            <option value="defeat-flow-oriented-disassembler">defeat-flow-oriented-disassembler</option>
+                            <option value="defeat-linear-disassembler">defeat-linear-disassembler</option>
+                            <option value="degrade-security-program">degrade-security-program</option>
+                            <option value="denial-of-service">denial-of-service</option>
+                            <option value="destroy-hardware">destroy-hardware</option>
+                            <option value="detect-debugging">detect-debugging</option>
+                            <option value="detect-emulator">detect-emulator</option>
+                            <option value="detect-installed-analysis-tools">detect-installed-analysis-tools</option>
+                            <option value="detect-installed-av-tools">detect-installed-av-tools</option>
+                            <option value="detect-sandbox-environment">detect-sandbox-environment</option>
+                            <option value="detect-vm-environment">detect-vm-environment</option>
+                            <option value="determine-host-ip-address">determine-host-ip-address</option>
+                            <option value="disable-access-rights-checking">disable-access-rights-checking</option>
+                            <option value="disable-firewall">disable-firewall</option>
+                            <option value="disable-kernel-patch-protection">disable-kernel-patch-protection</option>
+                            <option value="disable-os-security-alerts">disable-os-security-alerts</option>
+                            <option value="disable-privilege-limiting">disable-privilege-limiting</option>
+                            <option value="disable-service-pack-patch-installation">disable-service-pack-patch-installation</option>
+                            <option value="disable-system-file-overwrite-protection">disable-system-file-overwrite-protection</option>
+                            <option value="disable-update-services-daemons">disable-update-services-daemons</option>
+                            <option value="disable-user-account-control">disable-user-account-control</option>
+                            <option value="drop-retrieve-debug-log-file">drop-retrieve-debug-log-file</option>
+                            <option value="elevate-privilege">elevate-privilege</option>
+                            <option value="encrypt-data">encrypt-data</option>
+                            <option value="encrypt-files">encrypt-files</option>
+                            <option value="encrypt-self">encrypt-self</option>
+                            <option value="erase-data">erase-data</option>
+                            <option value="evade-static-heuristic">evade-static-heuristic</option>
+                            <option value="execute-before-external-to-kernel-hypervisor">execute-before-external-to-kernel-hypervisor</option>
+                            <option value="execute-non-main-cpu-code">execute-non-main-cpu-code</option>
+                            <option value="execute-stealthy-code">execute-stealthy-code</option>
+                            <option value="exfiltrate-data-via-covert channel">exfiltrate-data-via-covert channel</option>
+                            <option value="exfiltrate-data-via- -dumpster-dive">exfiltrate-data-via- -dumpster-dive</option>
+                            <option value="exfiltrate-data-via-fax">exfiltrate-data-via-fax</option>
+                            <option value="exfiltrate-data-via-network">exfiltrate-data-via-network</option>
+                            <option value="exfiltrate-data-via-physical-media">exfiltrate-data-via-physical-media</option>
+                            <option value="exfiltrate-data-via-voip-phone">exfiltrate-data-via-voip-phone</option>
+                            <option value="feed-misinformation-during-physical-memory-acquisition">feed-misinformation-during-physical-memory-acquisition</option>
+                            <option value="file-system-instantiation">file-system-instantiation</option>
+                            <option value="fingerprint-host">fingerprint-host</option>
+                            <option value="generate-c2-domain-names">generate-c2-domain-names</option>
+                            <option value="hide-arbitrary-virtual-memory">hide-arbitrary-virtual-memory</option>
+                            <option value="hide-data-in-other-formats">hide-data-in-other-formats</option>
+                            <option value="hide-file-system-artifacts">hide-file-system-artifacts</option>
+                            <option value="hide-kernel-modules">hide-kernel-modules</option>
+                            <option value="hide-network-traffic">hide-network-traffic</option>
+                            <option value="hide-open-network-ports">hide-open-network-ports</option>
+                            <option value="hide-processes">hide-processes</option>
+                            <option value="hide-registry-artifacts">hide-registry-artifacts</option>
+                            <option value="hide-services">hide-services</option>
+                            <option value="hide-threads">hide-threads</option>
+                            <option value="hide-userspace-libraries">hide-userspace-libraries</option>
+                            <option value="identify-file">identify-file</option>
+                            <option value="identify-os">identify-os</option>
+                            <option value="identify-target-machines">identify-target-machines</option>
+                            <option value="impersonate-user">impersonate-user</option>
+                            <option value="install-backdoor">install-backdoor</option>
+                            <option value="install-legitimate-software">install-legitimate-software</option>
+                            <option value="install-secondary-malware">install-secondary-malware</option>
+                            <option value="install-secondary-module">install-secondary-module</option>
+                            <option value="intercept-manipulate-network-traffic">intercept-manipulate-network-traffic</option>
+                            <option value="inventory-security-products">inventory-security-products</option>
+                            <option value="inventory-system-applications">inventory-system-applications</option>
+                            <option value="inventory-victims">inventory-victims</option>
+                            <option value="limit-application-type-version">limit-application-type-version</option>
+                            <option value="log-activity">log-activity</option>
+                            <option value="manipulate-file-system-data">manipulate-file-system-data</option>
+                            <option value="map-local-network">map-local-network</option>
+                            <option value="mine-for-cryptocurrency">mine-for-cryptocurrency</option>
+                            <option value="modify-file">modify-file</option>
+                            <option value="modify-security-software-configuration">modify-security-software-configuration</option>
+                            <option value="move-data-to-staging-server">move-data-to-staging-server</option>
+                            <option value="obfuscate-artifact-properties">obfuscate-artifact-properties</option>
+                            <option value="overload-sandbox">overload-sandbox</option>
+                            <option value="package-data">package-data</option>
+                            <option value="persist-after-hardware-changes">persist-after-hardware-changes</option>
+                            <option value="persist-after-os-changes">persist-after-os-changes</option>
+                            <option value="persist-after-system-reboot">persist-after-system-reboot</option>
+                            <option value="prevent-api-unhooking">prevent-api-unhooking</option>
+                            <option value="prevent-concurrent-execution">prevent-concurrent-execution</option>
+                            <option value="prevent-debugging">prevent-debugging</option>
+                            <option value="prevent-file-access">prevent-file-access</option>
+                            <option value="prevent-file-deletion">prevent-file-deletion</option>
+                            <option value="prevent-memory-access">prevent-memory-access</option>
+                            <option value="prevent-native-api-hooking">prevent-native-api-hooking</option>
+                            <option value="prevent-physical-memory-acquisition">prevent-physical-memory-acquisition</option>
+                            <option value="prevent-registry-access">prevent-registry-access</option>
+                            <option value="prevent-registry-deletion">prevent-registry-deletion</option>
+                            <option value="prevent-security-software- -from-executing">prevent-security-software- -from-executing</option>
+                            <option value="re-instantiate-self">re-instantiate-self</option>
+                            <option value="remove-self">remove-self</option>
+                            <option value="remove-sms-warning-messages">remove-sms-warning-messages</option>
+                            <option value="remove-system-artifacts">remove-system-artifacts</option>
+                            <option value="request-email-address-list">request-email-address-list</option>
+                            <option value="request-email-template">request-email-template</option>
+                            <option value="search-for-remote-machines">search-for-remote-machines</option>
+                            <option value="send-beacon">send-beacon</option>
+                            <option value="send-email-message">send-email-message</option>
+                            <option value="send-system-information">send-system-information</option>
+                            <option value="social-engineering-based-remote-infection">social-engineering-based-remote-infection</option>
+                            <option value="steal-browser-cache">steal-browser-cache</option>
+                            <option value="steal-browser-cookies">steal-browser-cookies</option>
+                            <option value="steal-browser-history">steal-browser-history</option>
+                            <option value="steal-contact-list-data">steal-contact-list-data</option>
+                            <option value="steal-cryptocurrency-data">steal-cryptocurrency-data</option>
+                            <option value="steal-database-content">steal-database-content</option>
+                            <option value="steal-dialed-phone-numbers">steal-dialed-phone-numbers</option>
+                            <option value="steal-digital-certificates">steal-digital-certificates</option>
+                            <option value="steal-documents">steal-documents</option>
+                            <option value="steal-email-data">steal-email-data</option>
+                            <option value="steal-images">steal-images</option>
+                            <option value="steal-password-hashes">steal-password-hashes</option>
+                            <option value="steal-pki-key">steal-pki-key</option>
+                            <option value="steal-referrer-urls">steal-referrer-urls</option>
+                            <option value="steal-serial-numbers">steal-serial-numbers</option>
+                            <option value="steal-sms-database">steal-sms-database</option>
+                            <option value="steal-web-network-credential">steal-web-network-credential</option>
+                            <option value="stop-execution-of-security-software">stop-execution-of-security-software</option>
+                            <option value="suicide-exit">suicide-exit</option>
+                            <option value="test-for-firewall">test-for-firewall</option>
+                            <option value="test-for-internet-connectivity">test-for-internet-connectivity</option>
+                            <option value="test-for-network-drives">test-for-network-drives</option>
+                            <option value="test-for-proxy">test-for-proxy</option>
+                            <option value="test-smtp-connection">test-smtp-connection</option>
+                            <option value="update-configuration">update-configuration</option>
+                            <option value="validate-data">validate-data</option>
+                            <option value="write-code-into-file">write-code-into-file</option>
+                        </select>
+                              <small id="nameHelpBlock" class="form-text text-muted">
+                                your previously selected value was '<b>{{ data.name }}</b>'. If you wish to change, choose a different value from the dropdown above.
+                          </small>
+                              <input type="hidden" class="form-control " name="id" value="{{ data.id }}">
+                              <input type="hidden" class="form-control form-control-sm" id="name_final" name="nm" value="{{ data.name }}">
+                          </div>
+                      </div>
+                      <div class="form-group row">
+                          <label class="col-lg-3 col-form-label " >Description:</label>
+                          <div class="col-lg-9">
+                              <textarea class="form-control form-control-sm" rows="4" name="desc">{{ data.description }}</textarea>
+                          </div>
+                      </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Timestamp:</label>
+                        <div class="col-lg-9">
+                            <input type="datetime-local" class="form-control form-control-sm" name="timestmp" value="{{ data.timestamp }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Attributes:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control form-control-sm " id="attr_key"  name="attr_key">
+                                <option> Choose an attribute</option>
+                                <option value="applicable-platform">applicable-platform</option>
+                                <option value="archive-type">archive-type</option>
+                                <option value="autonomy">autonomy</option>
+                                <option value="backdoor-type">backdoor-type</option>
+                                <option value="cryptocurrency-type">cryptocurrency-type</option>
+                                <option value="encryption-algorithm">encryption-algorithm</option>
+                                <option value="erasure-scope">erasure-scope</option>
+                                <option value="file-infection-type">file-infection-type</option>
+                                <option value="file-modification-type">file-modification-type</option>
+                                <option value="file-type">file-type</option>
+                                <option value="frequency">frequency</option>
+                                <option value="infection-targeting">infection-targeting</option>
+                                <option value="network-protocol">network-protocol</option>
+                                <option value="port-number">port-number</option>
+                                <option value="persistence-scope">persistence-scope</option>
+                                <option value="propagation-scope">propagation-scope</option>
+                                <option value="targeted-application">targeted-application</option>
+                                <option value="targeted-file-architecture type">targeted-file-architecture type</option>
+                                <option value="targeted-file-type">targeted-file-type</option>
+                                <option value="targeted-program">targeted-program</option>
+                                <option value="targeted-sandbox">targeted-sandbox</option>
+                                <option value="targeted-vm">targeted-vm</option>
+                                <option value="targeted-website">targeted-website</option>
+                                <option value="technique">technique</option>
+                                <option value="trigger-type">trigger-type</option>
+                                <option value="user-privilege-escalation type">user-privilege-escalation type</option>
+                                <option value="vulnerability-id-cve">vulnerability-id-cve</option>
+                                <option value="vulnerability-id-osvdb">vulnerability-id-osvdb</option>
+                            </select>
+                            <input type="hidden" id="att_key_final">
+                            <select class="form-control form-control-sm mt-1" id="attr_val1"  name="attr_value1" >
+                                <option>Choose a value</option>
+                                <!-- attack-motivation-ov -->
+                                <option value="accidental">accidental</option>
+                                <option value="coercion">coercion</option>
+                                <option value="dominance">dominance</option>
+                                <option value="ideology">ideology</option>
+                                <option value="notoriety">notoriety</option>
+                                <option value="organizational-gain">organizational-gain</option>
+                                <option value="personal-gain">personal-gain</option>
+                                <option value="personal-satisfaction">personal-satisfaction</option>
+                                <option value="revenge">revenge</option>
+                                <option value="unpredictable">unpredictable</option>
+                                <!-- attack-resource-level-ov -->
+                                <option value="individual">individual</option>
+                                <option value="club">club</option>
+                                <option value="contest">contest</option>
+                                <option value="team">team</option>
+                                <option value="organization">organization</option>
+                                <option value="government">government</option>
+                                <!-- hash-algorithm-ov -->
+                                <option value="MD5">MD5</option>
+                                <option value="MD6">MD6</option>
+                                <option value="RIPEMD-160">RIPEMD-160</option>
+                                <option value="SHA-1">SHA-1</option>
+                                <option value="SHA-224">SHA-224</option>
+                                <option value="SHA-256">SHA-256</option>
+                                <option value="SHA-384">SHA-384</option>
+                                <option value="SHA-512">SHA-512</option>
+                                <option value="SHA3-224">SHA3-224</option>
+                                <option value="SHA3-256">SHA3-256</option>
+                                <option value="SHA3-384">SHA3-384</option>
+                                <option value="SHA3-512">SHA3-512</option>
+                                <option value="SSDEEP">SSDEEP</option>
+                                <option value="WHIRLPOOL">WHIRLPOOL</option>
+                                <!-- identity-class-ov -->
+                                <option value="individual">individual</option>
+                                <option value="group">group</option>
+                                <option value="organization">organization</option>
+                                <option value="class">class</option>
+                                <option value="unknown">unknown</option>
+                                <!-- indicator-label-ov -->
+                                <option value="anomalous-activity">anomalous-activity</option>
+                                <option value="anonymization">anonymization</option>
+                                <option value="benign">benign</option>
+                                <option value="compromised">compromised</option>
+                                <option value="malicious-activity">malicious-activity</option>
+                                <option value="attribution">attribution</option>
+                                <!-- industry-sector-ov -->
+                                <option value="agriculture">agriculture</option>
+                                <option value="aerospace">aerospace</option>
+                                <option value="automotive">automotive</option>
+                                <option value="communications">communications</option>
+                                <option value="construction">construction</option>
+                                <option value="defence">defence</option>
+                                <option value="education">education</option>
+                                <option value="energy">energy</option>
+                                <option value="entertainment">entertainment</option>
+                                <option value="financial-services">financial-services</option>
+                                <option value="government-national">government-national</option>
+                                <option value="government-regional">government-regional</option>
+                                <option value="government-local">government-local</option>
+                                <option value="government-public-services">government-public-services</option>
+                                <option value="healthcare">healthcare</option>
+                                <option value="hospitality-leisure">hospitality-leisure</option>
+                                <option value="infrastructure">infrastructure</option>
+                                <option value="insurance">insurance</option>
+                                <option value="manufacturing">manufacturing</option>
+                                <option value="mining">mining</option>
+                                <option value="non-profit">non-profit</option>
+                                <option value="pharmaceuticals">pharmaceuticals</option>
+                                <option value="retail">retail</option>
+                                <option value="technology">technology</option>
+                                <option value="telecommunications">telecommunications</option>
+                                <option value="transportation">transportation</option>
+                                <option value="utilities">utilities</option>
+                                <!-- malware-label-ov -->
+                                <option value="adware">adware</option>
+                                <option value="backdoor">backdoor</option>
+                                <option value="bot">bot</option>
+                                <option value="ddos">ddos</option>
+                                <option value="dropper">dropper</option>
+                                <option value="exploit-kit">exploit-kit</option>
+                                <option value="keylogger">keylogger</option>
+                                <option value="ransomware">ransomware</option>
+                                <option value="remote-access-trojan">remote-access-trojan</option>
+                                <option value="resource-exploitation">resource-exploitation</option>
+                                <option value="rogue-security-software">rogue-security-software</option>
+                                <option value="rootkit">rootkit</option>
+                                <option value="screen-capture">screen-capture</option>
+                                <option value="spyware">spyware</option>
+                                <option value="trojan">trojan</option>
+                                <option value="virus">virus</option>
+                                <option value="worm">worm</option>
+                                <!-- report-label-ov -->
+                                <option value="threat-report">threat-report</option>
+                                <option value="attack-pattern">attack-pattern</option>
+                                <option value="campaign">campaign</option>
+                                <option value="identity">identity</option>
+                                <option value="indicator">indicator</option>
+                                <option value="malware">malware</option>
+                                <option value="observed-data">observed-data</option>
+                                <option value="threat-actor">threat-actor</option>
+                                <option value="tool">tool</option>
+                                <option value="vulnerability">vulnerability</option>
+                                <!-- threat-actor-label-ov -->
+                                <option value="activist">activist</option>
+                                <option value="competitor">competitor</option>
+                                <option value="crime-syndicate">crime-syndicate</option>
+                                <option value="criminal">criminal</option>
+                                <option value="hacker">hacker</option>
+                                <option value="insider-accidental">insider-accidental</option>
+                                <option value="insider-disgruntled">insider-disgruntled</option>
+                                <option value="nation-state">nation-state</option>
+                                <option value="sensationalist">sensationalist</option>
+                                <option value="spy">spy</option>
+                                <option value="terrorist">terrorist</option>
+                                <!-- threat-actor-role-ov -->
+                                <option value="agent">agent</option>
+                                <option value="director">director</option>
+                                <option value="independent">independent</option>
+                                <option value="infrastructure-architect">infrastructure-architect</option>
+                                <option value="infrastructure-operator">infrastructure-operator</option>
+                                <option value="malware-author">malware-author</option>
+                                <option value="sponsor">sponsor</option>
+                                <!-- threat-actor-sophistication-ov -->
+                                <option value="none">none</option>
+                                <option value="minimal">minimal</option>
+                                <option value="intermediate">intermediate</option>
+                                <option value="advanced">advanced</option>
+                                <option value="expert">expert</option>
+                                <option value="innovator">innovator</option>
+                                <option value="strategic">strategic</option>
+                                <!-- tool-label-ov -->
+                                <option value="denial-of-service">denial-of-service</option>
+                                <option value="exploitation">exploitation</option>
+                                <option value="information-gathering">information-gathering</option>
+                                <option value="network-capture">network-capture</option>
+                                <option value="credential-exploitation">credential-exploitation</option>
+                                <option value="remote-access">remote-access</option>
+                                <option value="vulnerability-scanning">vulnerability-scanning</option>
+                            </select>
+                            <input type="hidden" id="attr_val1_final">
+                            <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="checkbox" id="enableInput" class="form-check-input" value="">Click here to enter a custom value if there is no appropriate value in the dropdown above
+                              </label>
+                            </div>
+                            <input type="text" name="attr_value2" id="attr_val2" disabled class="form-control form-control-sm mt-1">
+                            <input type="hidden" value="{{ data.attributes }}" id="attr_val_final" name="attr_val_final">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Action references:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control form-control-sm" name="action_refs">
+                                <option>Choose an option</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="offset-lg-4 col-lg-8">
+                          <button type="button" class="btn btn-sm btn-secondary" id="update_behavior">Update</button>
+                          <button type="reset" class="btn btn-sm btn-light">Reset</button>
+                      </div>
+                    </div>
+                </form>
+                        <div class="alert alert-success" id="success-alert1">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>Success! </strong>
+                            Data has been updated.
+                        </div>
+                        <div class="alert alert-danger" id="error-alert1">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>Error! </strong>
+                            Data was not updated :(
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Technical references: External References</div>
+                <div class="card-body">
+                    <div class="container">
+                        <form role="form" id="ext_refform" method="POST">
+                  <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Source name:</label>
+                      <div class="col-lg-9">
+                          <input type="text" class="form-control form-control-sm" name="extref_srcname">
+                          <input type="hidden" name="ref_id" value="{{ data.id }}">
+                          <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ data.type }}">
+                           <input type="hidden" name="created_by" value="{{ session['user'] }}">
+                      </div>
+                  </div>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Description:</label>
+                      <div class="col-lg-9">
+                          <textarea type="" class="form-control form-control-sm" rows="3" name="extref_desc"></textarea>
+                      </div>
+                  </div>
+                  <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >URL:</label>
+                      <div class="col-lg-9">
+                          <input type="text" class="form-control form-control-sm" id="extUrl" name="extref_url" disabled>
+                          <small id="passwordHelpBlock" class="form-text text-muted">
+                                In order to add URL information, enable the check box below to also add the hash type and value information, else, leave the box unchecked.
+                          </small>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input"  id="enableURL">Submit URL along with Hash type and value
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Hash type:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control form-control-sm" id="hashType" disabled name="hash_type">
+                                          <option>--Choose a hash type--</option>
+                                          <option value="MD5">MD5</option>
+                                          <option value="MD6">MD6</option>
+                                          <option value="RIPEMD-160">RIPEMD-160</option>
+                                          <option value="SHA-1">SHA-1</option>
+                                          <option value="SHA-224">SHA-224</option>
+                                          <option value="SHA-256">SHA-256</option>
+                                          <option value="SHA-384">SHA-384</option>
+                                          <option value="SHA-512">SHA-512</option>
+                                          <option value="SHA3-224">SHA3-224</option>
+                                          <option value="SHA3-256">SHA3-256</option>
+                                          <option value="SHA3-384">SHA3-384</option>
+                                          <option value="SHA3-512">SHA3-512</option>
+                                          <option value="ssdeep">ssdeep</option>
+                                          <option value="WHIRLPOOL">WHIRLPOOL</option>
+                                      </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Hash value:</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control form-control-sm" id="hashVal" disabled name="hash_value">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >External Id:</label>
+                      <div class="col-lg-9">
+                          <input type="text" class="form-control form-control-sm" name="extref_extid">
+                      </div>
+                  </div>
+                     <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-9">
+                          <input type="submit" class="btn btn-sm btn-secondary" id="add_extref" value="Add">
+                          <input type="reset" class="btn btn-sm btn-light" value="Reset">
+                      </div>
+                  </div>
+                </form>
+                        <div class="alert alert-success" id="success-alert3">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>Success! </strong>
+                            Data has been updated.
+                        </div>
+                        <div class="alert alert-danger" id="error-alert3">
+                            <button type="button" class="close" data-dismiss="alert">x</button>
+                            <strong>Error! </strong>
+                            Data was not updated :(
+                        </div>
+            </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+{#        footer section#}
+       <div class="row">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+            <span class="navbar-text"> All rights reserved @ PEASEC </span>
+        </nav>
+</div>
+</div>
 </body>
 </html>
