@@ -141,7 +141,7 @@
                   <div class="form-group row">
                       <label class="col-lg-3 col-form-label" >Source name:</label>
                       <div class="col-lg-9">
-                          <input type="text" class="form-control form-control-sm" name="extref_srcname">
+                          <input type="text" class="form-control form-control-sm" name="extref_srcname" required>
                           <input type="hidden" name="ref_id" value="{{ data.id }}">
                           <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ data.type }}">
                            <input type="hidden" name="created_by" value="{{ session['user'] }}">

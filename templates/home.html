@@ -7,18 +7,22 @@
     <link rel="stylesheet" href="{{ url_for('static',filename = 'angular/angular-material.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
     <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename = 'nbextensions/application.css')}}" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}" ></script>
     <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename= 'nbextensions/require.js') }}" data-main="static/nbextensions/application"></script>
     <script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
+
+
 </head>
 <body>
 {% include 'object_modaltemplate.html' %}
 
 <div class="container-fluid">
 {#header section#}
-        <div class="row">
+    <div class="row">
             <!--Navbar-->
             <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
                 <a class="navbar-brand" href="#">
@@ -48,7 +52,7 @@
                     </div>
             </nav>
             <!--/.Navbar-->
-       </div>
+        </div>
 {#    body content section#}
     <div class="row home_bodycontent ">
         <div class="col-lg-12 tab-content">
@@ -59,222 +63,583 @@
             <div id="feeds" class="tab-pane  active"><br>
                 <div class="row-fluid">
                     <ul class="nav nav-tabs ">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#create">Create</a>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Data</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item " data-toggle="tab" href="#create">Create</a>
+                                <a class="dropdown-item" data-toggle="tab" href="#view">View</a>
+                            </div>
+
                         </li>
-                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#view">View</a></li>
-                        <li class="nav-item"><a class="nav-link " data-toggle="tab" href="#genfeed">STIX feed</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">STIX</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" data-toggle="tab" href="#viewstixfeed">View Feeds</a>
+                                <a class="dropdown-item" data-toggle="tab" href="#visualizefeed">Visualize</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
                 <div class="row">
-                    <div class="col-lg-12">
-                        <div class="tab-content">
-                        <div id="create" class=" tab-pane active "><br>
-                            <div class="row">
-                                <div class="col-lg-4" >
-                                    <div class="card ">
-                                         <div class="card-header">STIX Domain Objects</div>
-                                         <div class="card-body">
-                                              <div class="d-flex flex-wrap align-content-lg-start">
-                                                      <div class="card p-2 border" >
-                                                          <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/attack_pattern.png"
-                                                               alt="Card image" style="width: 90px" >
-                                                          <div class="card-body">
-                                                              <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#attackpattern">Attack Pattern</button>
-                                                          </div>
+                        <div class="col-lg-12">
+                            <div class="tab-content" >
+                                <div id="welcome-board" class="tab-pane active " data-toggle="tab" >
+                                    <h3>Welcome to PEASEC-TIP</h3>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                                </div>
+                                <div id="create" class=" tab-pane fade"><br>
+                                    <div class="row">
+                                        <div class="col-lg-6" >
+                                            <div class="card ">
+                                                 <div class="card-header">STIX Domain Objects</div>
+                                                 <div class="card-body">
+                                                      <div class="d-flex flex-wrap align-content-lg-start">
+                                                              <div class="card p-2 border" >
+                                                                  <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/attack_pattern.png"
+                                                                       alt="Card image" style="width: 90px" >
+                                                                  <div class="card-body">
+                                                                      <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#attackpattern">Attack Pattern</button>
+                                                                  </div>
+
+                                                              </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/campaign.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#campaign">Campaign</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/identity.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#identity">Identity</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/indicator.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                         <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#indicator">Indicator</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/intrusion_set.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#intrusionset">Intrusion Set</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/malware.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#malware">Malware</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/report.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#report">Report</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/threat_actor.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#threatactor">Threat Actor</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-2" src="https://oasis-open.github.io/cti-documentation/img/icons/tool.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#tool">Tool</button>
+                                                                      </div>
+                                                                  </div>
+                                                              <div class="card p-2 border" >
+                                                                      <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/vulnerability.png"
+                                                                           alt="Card image" style="width: 90px" >
+                                                                      <div class="card-body">
+                                                                          <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#vulnerability">Vulnerability</button>
+                                                                      </div>
+                                                                  </div>
 
                                                       </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/campaign.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#campaign">Campaign</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/identity.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#identity">Identity</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/indicator.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                 <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#indicator">Indicator</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/intrusion_set.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#intrusionset">Intrusion Set</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/malware.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#malware">Malware</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/report.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#report">Report</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-4" src="https://oasis-open.github.io/cti-documentation/img/icons/threat_actor.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#threatactor">Threat Actor</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-2" src="https://oasis-open.github.io/cti-documentation/img/icons/tool.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#tool">Tool</button>
-                                                              </div>
-                                                          </div>
-                                                      <div class="card p-2 border" >
-                                                              <img class="card-img-top img-fluid ml-3" src="https://oasis-open.github.io/cti-documentation/img/icons/vulnerability.png"
-                                                                   alt="Card image" style="width: 90px" >
-                                                              <div class="card-body">
-                                                                  <button type="button" class="btn btn-light btn-sm" data-toggle="modal" data-target="#vulnerability">Vulnerability</button>
-                                                              </div>
-                                                          </div>
-
+                                                 </div>
+                                            </div>
+                                        </div>
+                                      <!-- <div class="col-lg-4" >
+                                            <div class="card">
+                                          <div class="card-header">STIX Relationship Objects</div>
+                                          <div class="card-body">
+                                              <div class="d-flex flex-wrap align-content-lg-start">
+                                                  <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-3" src="https://oasis-open.github.io/cti-documentation/img/icons/relationship.png"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#relationship">Relationship</button>
+                                                      </div>
+                                                  </div>
+                                                   <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-2" src="https://oasis-open.github.io/cti-documentation/img/icons/sighting.png"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sigting">Sighting</button>
+                                                      </div>
+                                                  </div>
                                               </div>
-                                         </div>
+                                          </div>
+
+                                        </div>
+                                        </div> -->
+                                        <div class="col-lg-6">
+                                            <div class="card">
+                                          <div class="card-header">MAEC Top Level Objects</div>
+                                          <div class="card-body">
+                                              <div class="d-flex flex-wrap align-content-lg-start">
+                                                  <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-3" src="{{ url_for('static',filename='icons/maec_behavior.png') }}"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#behavior">Behavior</button>
+                                                      </div>
+                                                  </div>
+                                                  <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-3" src="{{ url_for('static',filename='icons/maec_collection.png') }}"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#collection">Collection</button>
+                                                      </div>
+                                                  </div>
+                                                  <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-4" src="{{ url_for('static',filename='icons/maec_malwareaction.png') }}"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#Malwareaction">Malware Action</button>
+                                                      </div>
+                                                  </div>
+                                                  <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-4" src="{{ url_for('static',filename='icons/maec_malwarefamily.png') }}"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light" data-toggle="modal" data-target="#malwarefamily">Malware Family</button>
+                                                      </div>
+                                                  </div>
+                                                  <div class="card p-2 border" >
+                                                      <img class="card-img-top img-fluid ml-lg-5" src="{{ url_for('static',filename='icons/maec_malwareinstance.png') }}"
+                                                                       alt="Card image" style="width: 90px" >
+                                                      <div class="card-body">
+                                                          <button type="button" class="btn btn-light " data-toggle="modal" data-target="#malwareinstance">Malware Instance</button>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+
+                                        </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4" >
+                                <div id="view" class="tab-pane fade pb-lg-5"><br>
+                                <div class="row">
+                                    <div class="col-lg-8">
                                     <div class="card">
-                                  <div class="card-header">STIX Relationship Objects</div>
-                                  <div class="card-body">
-                                      <div class="d-flex flex-wrap align-content-lg-start">
-                                          <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-3" src="https://oasis-open.github.io/cti-documentation/img/icons/relationship.png"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#relationship">Relationship</button>
-                                              </div>
-                                          </div>
-                                           <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-2" src="https://oasis-open.github.io/cti-documentation/img/icons/sighting.png"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#sigting">Sighting</button>
-                                              </div>
-                                          </div>
+                                        <div class="card-header">Main objects</div>
+                                        <div class="card-body">
+                                            <div class="container">
+                                                <div class="table-responsive ">
+                                            <table class="table table-hover table-sm">
+                                                  <thead>
+                                                    <tr class="d-flex">
+                                                      <th class="col-lg-1">Id</th>
+                                                      <th class="col-lg-2">Type</th>
+                                                      <th class="col-lg-2">Name</th>
+                                                      <th class="col-lg-5">Description</th>
+                                                      <th  class="col-lg-2">Actions</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                  {% for dat in data %}
+                                                    <tr class="d-flex">
+                                                      <td class="col-lg-1">{{dat.id}}</td>
+                                                      <td class="col-lg-2">{{dat.type}}</td>
+                                                      <td class="col-lg-2">{{dat.name}}</td>
+                                                      <td class="col-lg-5">{{dat.description}}</td>
+                                                      <td class="col-lg-2"><button data-toggle="tooltip" title="View all info" type="button" class="btn btn-primary btn-sm mr-1"
+                                                                  onclick="window.location.href='{{ url_for('view_additionalinfo',objtype=dat.type, id = dat.id) }}';">
+                                                          <i class="material-icons">info</i></button>
+                                                          <button data-toggle="tooltip" title="Add additional info" type="button" class="btn btn-warning btn-sm mr-1"
+                                                                  onclick="window.location.href='{{ url_for('update_entry',objtype=dat.type, id = dat.id) }}';" >
+                                                              <i class="material-icons">update</i></button>
+                                                      </td>
+                                                    </tr>
+                                                  {% endfor %}
+                                                  </tbody>
+                                            </table>
                                       </div>
-                                  </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="card">
-                                  <div class="card-header">MAEC Top Level Objects</div>
-                                  <div class="card-body">
-                                      <div class="d-flex flex-wrap align-content-lg-start">
-                                          <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-3" src="{{ url_for('static',filename='icons/maec_behavior.png') }}"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#behavior">Behavior</button>
-                                              </div>
-                                          </div>
-                                          <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-3" src="{{ url_for('static',filename='icons/maec_collection.png') }}"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#collection">Collection</button>
-                                              </div>
-                                          </div>
-                                          <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-4" src="{{ url_for('static',filename='icons/maec_malwareaction.png') }}"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#Malwareaction">Malware Action</button>
-                                              </div>
-                                          </div>
-                                          <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-4" src="{{ url_for('static',filename='icons/maec_malwarefamily.png') }}"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light" data-toggle="modal" data-target="#malwarefamily">Malware Family</button>
-                                              </div>
-                                          </div>
-                                          <div class="card p-2 border" >
-                                              <img class="card-img-top img-fluid ml-lg-5" src="{{ url_for('static',filename='icons/maec_malwareinstance.png') }}"
-                                                               alt="Card image" style="width: 90px" >
-                                              <div class="card-body">
-                                                  <button type="button" class="btn btn-light " data-toggle="modal" data-target="#malwareinstance">Malware Instance</button>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="card">
+                                            <div class="card-header">Define Relationships</div>
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <form method="post" id="relationshipform">
+                                                            <div class="form-group row">
+                                                                  <label class="col-lg-3  col-form-label" >Source Reference:</label>
+                                                                  <div class="col-lg-9">
+                                                                      <div class="form-row">
+                                                                            <div class="form-group col-md-6">
+                                                                              <label >Source Type:</label>
+                                                                              <select class="form-control form-control-sm" name ="src_type" id="source_type" required>
+                                                                                  <option value="None" selected>Choose an option</option>
+                                                                                  <option value="attack-pattern">attack-pattern</option>
+                                                                                  <option value="campaign">campaign</option>
+                                                                                  <option value="indicator">indicator</option>
+                                                                                  <option value="intrusion-set">intrusion-set</option>
+                                                                                  <option value="malware">malware</option>
+                                                                                  <option value="threat-actor">threat-actor</option>
+                                                                                  <option value="tool">tool</option>
+                                                                              </select>
+                                                                                <input type="hidden" name="type" value="relationship">
+                                                                            </div>
+                                                                          <div class="form-group col-lg-3">
+                                                                              <label>Source Id:</label>
+                                                                              <input type="number" min="1" class="form-control form-control-sm"  name="src_id" placeholder="Source ID" required>
+                                                                            </div>
 
+                                                                      </div>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                              <label class="col-lg-3  col-form-label" >Relationship type:</label>
+                                                                <div class="col-lg-9">
+                                                                    <select class="form-control form-control-sm" name="rel_type" id="relationshipType" required>
+                                                                          <option value="None" selected> Choose an option</option>
+                                                                      </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                  <label class="col-lg-3  col-form-label" >Target Reference:</label>
+                                                                  <div class="col-lg-9">
+                                                                      <div class="form-row">
+                                                                           <div class="form-group col-md-6">
+                                                                              <label for="inputPassword4">Target Type:</label>
+                                                                               <select class="form-control form-control-sm" name="tar_type" id="target_type" required>
+                                                                                   <option value="None" selected>Choose an option</option>
+                                                                               </select>
+                                                                            </div>
+                                                                            <div class="form-group col-lg-3">
+                                                                              <label for="inputEmail4">Target Id:</label>
+                                                                              <input type="number" min="1" class="form-control form-control-sm" name="tar_id" placeholder="Target ID" required>
+                                                                            </div>
+
+                                                                      </div>
+                                                                  </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                 <label class="col-lg-3  col-form-label" >Description:</label>
+                                                                <div class="col-lg-9">
+                                                                    <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="offset-lg-3 col-lg-4">
+                                                                    <button type="button" class="btn btn-sm btn-secondary" id="create_relationship" >Create</button>
+                                                                    <button type="reset" class="btn btn-sm btn-light">Reset</button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                        <div class="alert alert-success" id="success-alert1">
+                                                            <button type="button" class="close" data-dismiss="alert">x</button>
+                                                            <strong>Success! </strong>
+                                                            Data has been added.
+                                                        </div>
+                                                        <div class="alert alert-danger" id="error-alert1">
+                                                            <button type="button" class="close" data-dismiss="alert">x</button>
+                                                            <strong>Error! </strong>
+                                                            Data was not updated :(
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                 </div>
+                                <div class="row mt-2 pb-lg-5">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-header"> Relationship objects</div>
+                                            <div class="card-body">
+                                                <div class="">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-hover table-sm">
+                                                              <thead>
+                                                                <tr class="d-flex">
+                                                                  <th class="col-lg-1">Id</th>
+                                                                  <th class="col-lg-1">Source ID</th>
+                                                                  <th class="col-lg-1">Source Type</th>
+                                                                  <th class="col-lg-2">Relationship Type</th>
+                                                                  <th class="col-lg-1">Target ID</th>
+                                                                  <th class="col-lg-1">Target Type</th>
+                                                                  <th class="col-lg-3">Description</th>
+                                                                  <th  class="col-lg-2">Actions</th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody>
+                                                              {% for dat in relationshipdata %}
+                                                                <tr class="d-flex">
+                                                                  <td class="col-lg-1">{{dat.id}}</td>
+                                                                    <td class="col-lg-1">{{dat.src_id}}</td>
+                                                                    <td class="col-lg-1">{{dat.src_type}}</td>
+                                                                    <td class="col-lg-2">{{dat.relationship_type}}</td>
+                                                                    <td class="col-lg-1">{{dat.target_id}}</td>
+                                                                    <td class="col-lg-1">{{dat.target_type}}</td>
+                                                                    <td class="col-lg-3">{{dat.description}}</td>
+                                                                  <td class="col-lg-2"><button data-toggle="tooltip" title="View all info" type="button" class="btn btn-primary btn-sm mr-1"
+                                                                  onclick="window.location.href='{{ url_for('view_additionalinfo',objtype=dat.type, id = dat.id) }}';">
+                                                          <i class="material-icons">info</i></button>
+                                                          <button data-toggle="tooltip" title="Add additional info" type="button" class="btn btn-warning btn-sm mr-1"
+                                                                  onclick="window.location.href='{{ url_for('update_entry',objtype=dat.type, id = dat.id) }}';" >
+                                                              <i class="material-icons">update</i></button>
+                                                      </td>
+                                                                </tr>
+                                                              {% endfor %}
+                                                              </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                </div>
+                                <div id="viewstixfeed" class="tab-pane fade"><br>
+                                    <div class="row pb-lg-5">
+                                        <div class="col-lg-6">
+                                          <div class="card">
+                                                <div class="card-header"> STIX</div>
+                                                <div class="card-body" style="height: auto;">
+                                                    <div class="table-responsive-sm">
+                                                            <table class="table table-hover table-sm" style="overflow-y: scroll">
+                                                                  <thead>
+                                                                    <tr class="d-flex">
+                                                                      <th class="col-lg-1">Id</th>
+                                                                      <th class="col-lg-2">Type</th>
+                                                                      <th class="col-lg-3">STIX ID</th>
+                                                                      <th class="col-lg-2">Reference ID</th>
+                                                                      <th class="col-lg-2">Timestamp</th>
+                                                                      <th  class="col-lg-2">Actions</th>
+                                                                    </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                  {% for dat in stixcontentdata %}
+                                                                    <tr class="d-flex" row_id="{{ dat.id }}">
+                                                                      <td class="col-lg-1">{{dat.id}}</td>
+                                                                        <td class="col-lg-2" id="stix_type">{{dat.type}}</td>
+                                                                        <td class="col-lg-3" id="stix_id">{{dat.stix_id}}</td>
+                                                                        <td class="col-lg-2">{{dat.reference_id}}</td>
+                                                                        <td class="col-lg-2">{{dat.timestamp}}</td>
+                                                                      <td class="col-lg-2"><button data-toggle="modal" data-target="#view_stixcontent" data-toggle="tooltip" title="View feed"
+                                                                                                   type="button" id="view_content"
+                                                                                                   class="btn btn-primary btn-sm mr-1">
+                                                                              <i class="material-icons">info</i></button>
+                                                                          </td>
+                                                                    </tr>
+                                                                  {% endfor %}
+                                                                  </tbody>
+                                                            </table>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="card ">
+                                                <div class="card-header">Create Bundle</div>
+                                                <div class="card-body">
+                                                    <form method="post" id="bundleform">
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-12 col-form-label">Allows creation of bundle which puts together all the objects and their relationships.
+                                                            Can be used for visualization and further analysis.
+                                                            </label>
+                                                            <div class="col-lg-12">
+                                                                <select multiple class="form-control form-control-sm" size="8" id="bundle" required>
+                                                                    <option>Choose an option</option>
+                                                                    {% for data in stixcontentdata %}
+                                                                    <option value="" reftype="{{ data.type }}" refstix="{{ data.stix_id }}">{{ data.id }}--{{ data.stix_id }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            <input type="hidden" id="final_bundle" name="bundle">
+                                                            </div>
+                                                        </div>
+                                                    <div class="form-group row">
+                                                        <div class="offset-lg-1">
+                                                            <input type="submit" class="btn btn-primary" id="create_bundle" value="Submit">
+                                                            <input type="reset" class="btn btn-light" value="Reset">
+                                                        </div>
+
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="card mt-lg-1" >
+                                                <div class="card-header">List of bundles</div>
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <div class="table-responsive-sm">
+                                                        <table class="table table-hover table-sm" style="overflow-y: scroll">
+                                                              <thead>
+                                                                <tr>
+                                                                  <th>Id</th>
+                                                                  <th>Bundle Id</th>
+                                                                  <th >Actions</th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody>
+                                                              {% for dat in bundledata %}
+                                                                <tr  row_id="{{ dat.id }}">
+                                                                  <td >{{dat.id}}</td>
+                                                                    <td  id="bundle_id">{{dat.bundle_id}}</td>
+                                                                  <td><button data-toggle="modal" data-target="#view_bundlecontent" data-toggle="tooltip" title="View bundle"
+                                                                                               type="button" id="view_bundledata"
+                                                                                               class="btn btn-primary btn-sm mr-1">
+                                                                          <i class="material-icons">info</i></button>
+                                                                      </td>
+                                                                </tr>
+                                                              {% endfor %}
+                                                              </tbody>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="visualizefeed" class="tab-pane fade pb-lg-5">
+                                    <div class="row mt-lg-1">
+                                        <div class="col-lg-12">
+                                            <div class="card">
+                                                <div class="card-header">Visualize a bundle</div>
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <div class="form" id="bundleid_form">
+                                                            <div class="form group row">
+                                                                <label class="col-lg-3 col-form-label">Choose a bundle:</label>
+                                                                <div class="col-lg-6">
+                                                                    <select class="form-control form-control-sm" id="bundle_dropdown">
+                                                                        <option value="none">Choose a bundle</option>
+                                                                        {% for data in bundledata %}
+                                                                        <option value="{{ data.bundle_id }}">{{ data.bundle_id }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <button type="reset" id="bundleform_reset" class="btn btn-light">Reset</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row mt-lg-1">
+                                        <div class="col-lg-3">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    JSON
+                                                </div>
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <div id="uploader">
+                                                        <div class="form-group row">
+                                                            <div class="col-lg-12">
+                                                                <textarea id="paste-area" name="pasted" class="form-control form-control-sm" rows="15"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row clearfix">
+                                                            <div class="col-lg-3 ">
+                                                                <button  id="paste-parser" class="btn btn-primary float-lg-left">Parse</button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="col-lg-9">
+                                            <div class="card">
+                                                <div class="card-header">Visualize <span id="chosen-files"></span></div>
+                                                <div class="card-body clearfix">
+                                                    <div class="row">
+                                                        <div class="col-lg-8 float-left">
+                                                            <div class="container">
+                                                            <div id="canvas-container" class="hidden">
+                                                              <div id="canvas-wrapper">
+                                                                <svg id="canvas"></svg>
+                                                              </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div class="col-lg-4 float-right">
+                                                            <div class="container">
+                                                                <ul class="list-group ">
+                                                                  <li class="">Nodes are draggable! (Node will 'pin' on mouseup)</li>
+                                                                  <li class="">Double-click a pinned node to unpin it!</li>
+                                                                  <li class="">Click the 'Selected Node' area to expand/shrink it.</li>
+                                                              </ul>
+                                                            </div>
+                                                            <div class="container ml-lg-5">
+                                                                <div class="col-lg-offset-5 col-lg-3 ">
+                                                                    <button type="button" id="header" class="btn btn-light ">Reset Graph</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="container">
+                                                                <div id="legend" class="sidebar">
+                                                                    <h3>Nodes</h3>
+                                                                    <ul id="legend-content"></ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="container">
+                                                                <div id="selected" class="sidebar">
+                                                                    <h3>Selected Node</h3>
+                                                                    <div id="selection"> </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="row">
-
-                            </div>
-
                         </div>
-                        <div id="view" class="tab-pane fade"><br>
-                              <div class="table-responsive">
-                                    <table class="table table-hover">
-                                          <thead>
-                                            <tr class="d-flex">
-                                              <th class="col-lg-1">Id</th>
-                                              <th class="col-lg-2">Type</th>
-                                              <th class="col-lg-2">Name</th>
-                                              <th class="col-lg-5">Description</th>
-                                              <th  class="col-lg-2">Actions</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                          {% for dat in data %}
-                                            <tr class="d-flex">
-                                              <td class="col-lg-1">{{dat.id}}</td>
-                                              <td class="col-lg-2">{{dat.type}}</td>
-                                              <td class="col-lg-2">{{dat.name}}</td>
-                                              <td class="col-lg-5">{{dat.description}}</td>
-                                              <td class="col-lg-2"><button data-toggle="tooltip" title="View all info" type="button" class="btn btn-primary btn-sm mr-1"
-                                                          onclick="window.location.href='{{ url_for('view_additionalinfo',objtype=dat.type, id = dat.id) }}';">
-                                                  <i class="material-icons">info</i></button>
-                                                  <button data-toggle="tooltip" title="Add additional info" type="button" class="btn btn-warning btn-sm mr-1"
-                                                          onclick="window.location.href='{{ url_for('update_entry',objtype=dat.type, id = dat.id) }}';" >
-                                                      <i class="material-icons">update</i></button>
-                                              </td>
-                                            </tr>
-                                          {% endfor %}
-                                          </tbody>
-                                    </table>
-                              </div>
-                        </div>
-                        <div id="genfeed" class="tab-pane fade"><br>
-                          <h3>Menu 2</h3>
-                          <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
-                        </div>
-                    </div>
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 {#        footer section#}
-       <div class="row">
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
-            <span class="navbar-text"> All rights reserved @ PEASEC </span>
-        </nav>
-</div>
+    <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom ">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+       </div>
 </div>
 </body>
 </html>

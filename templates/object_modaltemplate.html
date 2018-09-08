@@ -306,6 +306,9 @@
                   <label class="col-lg-3 col-form-label" >Aliases:</label>
                   <div class="col-lg-9">
                        <input type="text" class="form-control form-control-sm" name="aliases">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple aliases to be entered, kindly separate them with a semicolon(;).
+                          </small>
                   </div>
 
               </div>
@@ -333,7 +336,11 @@
               <div class="form-group row">
                   <label class="col-lg-3 col-form-label" >Goals:</label>
                   <div class="col-lg-9">
-                      <textarea class="form-control form-control-sm" rows="3" name="goals"></textarea>
+
+                      <input type="text" class="form-control form-control-sm" name="goals">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple goals to be entered, kindly separate them with a semicolon(;).
+                          </small>
                   </div>
 
               </div>
@@ -492,7 +499,7 @@
               <div class="form-group row">
                     <label class="col-lg-3 col-form-label" for="select_label" >Labels:</label>
                     <div class="col-lg-9">
-                        <select class="form-control form-control-sm" required id="reportlabels" >
+                        <select class="form-control form-control-sm" multiple required id="reportlabels" >
                         <option value="">Choose an option</option>
                         <option value="threat-report">Threat report</option>
                         <option value="attack-pattern">Attack pattern</option>
@@ -528,8 +535,8 @@
                     <div class="col-lg-9">
                         <select  multiple class="form-control form-control-sm" id="obj_ref" required >
                         <option value="">Choose an option</option>
-                        {% for dat in data %}
-                        <option value="{{ dat.id }}-{{ dat.type }}">{{ dat.type }}--{{ dat.name }}</option>
+                        {% for dat in stixdata %}
+                        <option value="{objid:{{ dat.id }},objtype:{{ dat.type }}}" objid="{{ dat.id }}" objtype="{{ dat.type }}">{{ dat.type }}--{{ dat.name }}</option>
                         {% endfor %}
                     </select>
                     <input type="hidden" value="" name="obj_ref" id="final_objref">
@@ -601,6 +608,9 @@
                   <label class="col-lg-3 col-form-label" >Aliases:</label>
                   <div class="col-lg-9">
                       <input type="text" class="form-control form-control-sm" name="aliases">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple aliases to be entered, kindly separate them with a semicolon(;).
+                          </small>
                   </div>
 
               </div>
@@ -625,7 +635,10 @@
               <div class="form-group row">
                      <label class="col-lg-3 col-form-label" >Goals:</label>
                   <div class="col-lg-9">
-                      <textarea class="form-control form-control-sm" rows="3" name="goals"></textarea>
+                      <input type="text" class="form-control form-control-sm" name="goals">
+                      <small id="goalsHelpBlock" class="form-text text-muted">
+                                If you have multiple goals to be entered, kindly separate them with a semicolon(;).
+                          </small>
                   </div>
 
               </div>
@@ -856,29 +869,45 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form>
-            <div class="form-group">
-                  <label class="control-label" >Relationship type:</label>
-                  <input type="text" class="form-control" name="rel_type">
-              </div>
-              <div class="form-group">
-                     <label class="control-label" >Description:</label>
-                     <textarea class="form-control" rows="3" name="desc"></textarea>
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Source Reference:</label>
-                  <input type="text" class="form-control" name="src_ref">
-              </div>
-              <div class="form-group">
-                  <label class="control-label" >Target Reference:</label>
-                  <input type="text" class="form-control" name="tar_ref">
-              </div>
+          <form action="" method="post">
+                <div class="form-group row">
+                      <label class="col-lg-3  col-form-label" >Source Reference:</label>
+                      <div class="col-lg-9">
 
-              <!-- Modal footer -->
-              <div class="modal-footer">
-                  <input type="submit" class="btn btn-primary" value="Submit">
-                  <input type="reset" class="btn btn-light" value="Reset">
-              </div>
+                          <select class="form-control form-control-sm" name="src_ref" id="src_refobj" required>
+                              <option value="None"> Choose an option</option>
+
+                          </select>
+                      </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-3  col-form-label" >Relationship type:</label>
+                    <div class="col-lg-9">
+                        <select class="form-control form-control-sm" name="rel_type" required>
+                              <option value="None"> Choose an option</option>
+                          </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                      <label class="col-lg-3  col-form-label" >Target Reference:</label>
+                      <div class="col-lg-9">
+                          <select class="form-control form-control-sm" name="target_ref" required>
+                              <option value="None"> Choose an option</option>
+                          </select>
+                      </div>
+                </div>
+                <div class="form-group row">
+                     <label class="col-lg-3  col-form-label" >Description:</label>
+                    <div class="col-lg-9">
+                        <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+                </div>
           </form>
         </div>
       </div>
@@ -1489,7 +1518,7 @@
                     <label class="col-lg-3 col-form-label" >Labels:</label>
                     <div class="col-lg-9">
                       <input type="hidden" name="type" value="malware-family">
-                      <select  class="form-control form-control-sm" multiple name="labels">
+                      <select  class="form-control form-control-sm" multiple id="familylabels">
                           <option>Choose an option</option>
                           <option value="adware">adware</option>
                           <option value="appender">appender</option>
@@ -1539,6 +1568,7 @@
                           <option value="web-bug">web-bug</option>
                           <option value="worm">worm</option>
                       </select>
+                        <input type="hidden" name="labels" id="familylabels_final">
                   </div>
 
               </div>
@@ -1581,18 +1611,13 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-          <form action="" method="post">
-              <div class="form-group row">
-                <label class="col-lg-3 col-form-label">Name:</label>
-                <div class="col-lg-9">
-                    <input type="text" class="form-control form-control-sm" name="nm">
-                    <input type="hidden" name="type" value="malware-instance">
-                </div>
-              </div>
+          <form action="{{ url_for('create_malwareinstance') }}" method="post">
+
               <div class="form-group row">
                   <label class="col-lg-3 col-form-label">Labels:</label>
                   <div class="col-lg-9">
-                      <select  class="form-control form-control-sm" name="labels">
+                      <input type="hidden" name="type"  value="malware-instance">
+                      <select  class="form-control form-control-sm" multiple id="malinstancelabels">
                           <option>Choose an option</option>
                           <option value="adware">adware</option>
                           <option value="appender">appender</option>
@@ -1642,6 +1667,7 @@
                           <option value="web-bug">web-bug</option>
                           <option value="worm">worm</option>
                       </select>
+                      <input type="hidden" name="labels" id="malinstancelabels_final"  value="malware-instance">
                   </div>
               </div>
               <div class="form-group row">
@@ -1653,7 +1679,7 @@
               <div class="form-group row">
                   <label class="col-lg-3 col-form-label">OS execution environments:</label>
                   <div class="col-lg-9">
-                      <select class="form-control form-control-sm" name="osexecenv">
+                      <select class="form-control form-control-sm" multiple id="osexecenv">
                       <option>Choose an option</option>
                       <option value="android-1.0.x">android-1.0.x</option>
                       <option value="android-1.1.x">android-1.1.x</option>
@@ -1767,12 +1793,13 @@
                       <option value="windows-unknown-version">windows-unknown-version</option>
 
                   </select>
+                      <input type="hidden" name="osexecenv" id="osexecenv_final">
                   </div>
               </div>
               <div class="form-group row">
                 <label class="col-lg-3 col-form-label">Architecture execution environments:</label>
                   <div class="col-lg-9">
-                      <select class="form-control form-control-sm" name="archexec_env">
+                      <select class="form-control form-control-sm" multiple id="archexec_env">
                       <option>Choose an option</option>
                       <option value="x86">x86</option>
                       <option value="x86-64">x86-64</option>
@@ -1783,12 +1810,13 @@
                       <option value="sparc">sparc</option>
                       <option value="mips">mips</option>
                   </select>
+                      <input type="hidden" name="archexec_env" id="archexec_env_final">
                   </div>
               </div>
               <div class="form-group row">
                   <label class="col-lg-3 col-form-label">Os features:</label>
                   <div class="col-lg-9">
-                      <select class="form-control form-control-sm" name="os_feat">
+                      <select class="form-control form-control-sm" multiple id="os_feat">
                       <option>Choose an option</option>
                       <option value="login-items">login-items</option>
                       <option value="plist-files">plist-files</option>
@@ -1813,6 +1841,7 @@
                       <option value="device-drivers">device-drivers</option>
                       <option value="admin-network-shares">admin-network-shares</option>
                   </select>
+                      <input type="hidden" name="os_feat" id="os_feat_final">
                   </div>
               </div>
               <div class="form-group row">
@@ -1822,6 +1851,44 @@
                     </div>
              </div>
           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Display of STIX content -->
+ <div class="modal fade" id="view_stixcontent">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">View</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <pre id="display_publishedcontent"></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Display of Bundle content -->
+ <div class="modal fade" id="view_bundlecontent">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">View</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <pre id="display_bundlecontent"></pre>
         </div>
       </div>
     </div>
