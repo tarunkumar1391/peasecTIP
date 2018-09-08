@@ -1,6 +1,10 @@
-from flask import Flask, render_template, request, flash, url_for, redirect, session, g, json, jsonify
+from flask import Flask, render_template, request, flash, url_for, redirect, session, g, json, jsonify, send_file
 from flask_mysqldb import MySQL
-from flask_moment import Moment
+from stix2 import *
+import stix2viz
+import requests
+from datetime import datetime
+
 
 
 # dbconfig
@@ -12,10 +16,6 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'peasecTIP'
 mysql = MySQL(app)
-
-moment = Moment(app)
-# first page
-
 
 @app.route('/')
 def index():
@@ -75,6 +75,8 @@ def home():
     if g.user:
         user = g.user
         mainlist = []
+        stixobjs = []
+        maecobjs = []
         # query for attack pattern
         query_attkpat = "select * from `attack-pattern`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -89,6 +91,7 @@ def home():
                 'created_by': row[4]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
         # query for campaign
         query_campaign = "select * from `campaign`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -103,6 +106,7 @@ def home():
                 'created_by': row[4]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
         # query for identity
         query_campaign = "select * from `identity`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -117,6 +121,7 @@ def home():
                 'created_by': row[8]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
         # query for indicator
         query_indicator = "select * from `indicator`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -131,6 +136,7 @@ def home():
                    'created_by': row[8]
                 }
                 mainlist.append(rowdict)
+                stixobjs.append(rowdict)
         # query for intrusion-set
         query_indicator = "select * from `intrusion-set`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -145,6 +151,7 @@ def home():
                   'created_by': row[11]
                 }
                 mainlist.append(rowdict)
+                stixobjs.append(rowdict)
         # query for malware
         query_malware = "select * from `malware`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -159,6 +166,7 @@ def home():
                         'created_by': row[5]
                     }
                     mainlist.append(rowdict)
+                    stixobjs.append(rowdict)
         # query for report
         query_report = "select * from `report`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -173,6 +181,7 @@ def home():
                 'created_by': row[5]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
         # query for threat-actor
         query_report = "select * from `threat-actor`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -187,6 +196,7 @@ def home():
                 'created_by': row[13]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
         # query for tool
         query_tool = "select * from `tool`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -201,6 +211,7 @@ def home():
                 'created_by': row[5]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
         # query for vulnerability
         query_vul = "select * from `vulnerability`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -215,6 +226,8 @@ def home():
                 'created_by': row[4]
             }
             mainlist.append(rowdict)
+            stixobjs.append(rowdict)
+        # MAEC objects
         # query for MAEC - Behavior
         query_beh = "select * from `behavior`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -229,6 +242,7 @@ def home():
                 'created_by': row[4]
             }
             mainlist.append(rowdict)
+            maecobjs.append(rowdict)
         # query for MAEC - Collection
         query_coll = "select * from `collection`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -242,6 +256,7 @@ def home():
                 'created_by': row[4]
             }
             mainlist.append(rowdict)
+            maecobjs.append(rowdict)
         # query for MAEC - Malware action
         query_malaction = "select * from `malware-action`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -256,6 +271,7 @@ def home():
                 'created_by': row[8]
             }
             mainlist.append(rowdict)
+            maecobjs.append(rowdict)
         # query for MAEC - Malware family
         query_malfamily = "select * from `malware-family`  where created_by='" + user + "'"
         cur = mysql.connection.cursor()
@@ -267,12 +283,87 @@ def home():
                 'type': row[1],
                 'name': row[2],
                 'description': row[3],
-                'created_by': row[8]
+                'created_by': row[9]
             }
             mainlist.append(rowdict)
+            maecobjs.append(rowdict)
         output = json.dumps(mainlist, sort_keys=True, indent=4)
         resp = json.loads(output)
-        return render_template('home.html', data=resp)
+        # query for MAEC - Malware Instance
+        query_malfamily = "select * from `malware-instance`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_malfamily)
+        rows_malinstance = cur.fetchall()
+        for row in rows_malinstance:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'name': row[2],
+                'description': row[3],
+                'created_by': row[7]
+            }
+            mainlist.append(rowdict)
+            maecobjs.append(rowdict)
+        output = json.dumps(mainlist, sort_keys=True, indent=4)
+        resp = json.loads(output)
+        # query for all stix - relationship objects
+        relationshiplist =[]
+        query_relationship = "select * from `relationship`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_relationship)
+        rows_relationship = cur.fetchall()
+        for row in rows_relationship:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'src_id': row[2],
+                'src_type': row[3],
+                'relationship_type':row[4],
+                'target_id': row[5],
+                'target_type': row[6],
+                'description': row[7],
+                'created_by': row[8]
+            }
+            relationshiplist.append(rowdict)
+        output_relationship = json.dumps(relationshiplist, sort_keys=True, indent=4)
+        relationshipresp = json.loads(output_relationship)
+        # query  to display all the produced stix content
+        stixcontent = []
+        query_stixcontent = "select * from `stix_content`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_stixcontent)
+        rows_stixcontent = cur.fetchall()
+        for row in rows_stixcontent:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'stix_id': row[2],
+                'reference_id': row[3],
+                'timestamp':row[5]
+            }
+            stixcontent.append(rowdict)
+        output_stixcontent = json.dumps(stixcontent, sort_keys=True, indent=4)
+        stixcontentresp = json.loads(output_stixcontent)
+        # query  to display all bundle content
+        bundlecontent = []
+        query_bundlecontent = "select * from `bundle`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_bundlecontent)
+        rows_bundlecontent = cur.fetchall()
+        for row in rows_bundlecontent:
+            rowdict = {
+                'id': row[0],
+                'bundle_id': row[1]
+
+            }
+            bundlecontent.append(rowdict)
+        output_bundlecontent = json.dumps(bundlecontent, sort_keys=True, indent=4)
+        bundlecontentresp = json.loads(output_bundlecontent)
+
+        output = json.dumps(mainlist, sort_keys=True, indent=4)
+        resp = json.loads(output)
+        return render_template('home.html', data=resp,stixdata=stixobjs,maecdata=maecobjs, relationshipdata=relationshipresp,
+                               stixcontentdata=stixcontentresp, bundledata=bundlecontentresp)
     else:
         flash("You are not allowed to access without authorization. Kindly enter your credentials and login!! ",
               'error')
@@ -618,6 +709,28 @@ def view_additionalinfo(objtype, id):
             output = json.dumps(row_extrefList, sort_keys=True, indent=4)
             response_extref = json.loads(output)
             return render_template(url, main=resp_main, extreflist = response_extref)
+        elif objtype == "relationship":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'src_id': row_main[2],
+                'src_type': row_main[3],
+                'relationship_type': row_main[4],
+                'target_id': row_main[5],
+                'target_type': row_main[6],
+                'description': row_main[7]
+
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            return render_template(url, main=resp_main)
         elif objtype == "behavior":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -724,6 +837,7 @@ def view_additionalinfo(objtype, id):
             output = json.dumps(row_apicall_list, sort_keys=True, indent=4)
             resp_apicall = json.loads(output)
             return render_template(url, main=resp_main, apidata=resp_apicall)
+
     return redirect(url_for('index'))
 
 
@@ -934,6 +1048,27 @@ def update_entry(objtype, id):
                 'name': row[2],
                 'description': row[3]
             }
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            return render_template(url, data=resp)
+        elif objtype == "relationship":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'src_id': row[2],
+                'src_type': row[3],
+                'relationship_type': row[4],
+                'target_id': row[5],
+                'target_type': row[6],
+                'description': row[7]
+            }
+
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
             return render_template(url, data=resp)
@@ -2027,31 +2162,44 @@ def update_entry(objtype, id):
             extref_response = json.loads(extref_output)
             # for  display of Aliases
             cur = mysql.connection.cursor()
-            cur.execute("select * from `aliases` where obj_id=%s and obj_type=%s and created_by=%s",
-                        (obj_id, objtype, createdBy))
-            row_aliases = cur.fetchall()
-            aliaseslist = []
-            for row in row_aliases:
-                mainrowdict = {
-                    'id': row[0],
-                    'value': row[3],
-                    'source': row[4]
+            row_aliases_count = cur.execute("select * from `aliases` where obj_id=%s and obj_type=%s and created_by=%s",
+                                            (obj_id, objtype, createdBy))
+            rows_aliases = cur.fetchall()
+            aliaseslist_fam = []
+            if len(rows_aliases) is 0:
+                mainaliasdict2 = {
+                    'result': 'None'
                 }
-                aliaseslist.append(mainrowdict)
-            aliases_output = json.dumps(aliaseslist, sort_keys=True, indent=4)
+                aliaseslist_fam.append(mainaliasdict2)
+
+            elif len(rows_aliases) is not '0':
+                for row in rows_aliases:
+                    mainrowdict = {
+                        'result': row[3]
+                    }
+                    aliaseslist_fam.append(mainrowdict)
+
+            aliases_output = json.dumps(aliaseslist_fam, sort_keys=True, indent=4)
             aliases_response = json.loads(aliases_output)
             # for display of Name associated with malware family
             cur = mysql.connection.cursor()
             cur.execute("select * from `name` where obj_id=%s and obj_type=%s and created_by=%s",
                         (obj_id, objtype, createdBy))
             row_name = cur.fetchone()
-            mainrowdict = {
-                'id': row_name[0],
-                'value': row_name[3],
-                'source': row_name[4]
-            }
-            names_output = json.dumps(mainrowdict, sort_keys=True, indent=4)
-            name_response = json.loads(names_output)
+            if row_name is  None:
+                main_rowdict = {
+                    'result': 'None'
+                }
+                names_output = json.dumps(main_rowdict)
+                name_response = json.loads(names_output)
+            else:
+                mainrowdict = {
+                    'id': row_name[0],
+                    'result': row_name[3],
+                    'source': row_name[4]
+                }
+                names_output = json.dumps(mainrowdict, sort_keys=True, indent=4)
+                name_response = json.loads(names_output)
             # for capability- behavior references
             cur = mysql.connection.cursor()
             cur.execute("select * from `behavior` where created_by=%s",
@@ -2099,7 +2247,380 @@ def update_entry(objtype, id):
             return render_template(url, data=resp, extrefdata=extref_response, aliasesdata=aliases_response, namedata=name_response,
                                    behavrefsdata=behavrefs_response, refcapabilitydata=refcapability_response,
                                    refartifactdata=refartifact_response)
+        elif objtype == "malware-instance":
+            url = 'update_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row = cur.fetchone()
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'inputobjrefs': row[2],
+                'labels': row[3],
+                'description': row[4],
+                'os_execenv': row[5],
+                'arch_execenv': row[6],
+                'os_features': row[7]
+            }
+            output = json.dumps(rowdict, sort_keys=True, indent=4)
+            resp = json.loads(output)
+            # for display of Name associated with malware Instance
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `name` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_name = cur.fetchone()
+            if row_name is  None:
+                main_rowdict = {
+                    'result': 'None'
+                }
+                names_output = json.dumps(main_rowdict)
+                name_response = json.loads(names_output)
+            else:
+                mainrowdict = {
+                    'id': row_name[0],
+                    'result': row_name[3],
+                    'source': row_name[4]
+                }
+                names_output = json.dumps(mainrowdict, sort_keys=True, indent=4)
+                name_response = json.loads(names_output)
+            # for  display of Aliases associated with malware instance
+            cur = mysql.connection.cursor()
+            row_aliases_count = cur.execute("select * from `aliases` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            rows_aliases = cur.fetchall()
+            aliaseslist = []
+            if len(rows_aliases) is 0 :
+                mainaliasdict = {
+                    'result': 'None'
+                }
+                aliaseslist.append(mainaliasdict)
 
+            elif len(rows_aliases) is not '0':
+                for row in rows_aliases:
+                    mainrowdict = {
+                        'result': row[3]
+                    }
+                    aliaseslist.append(mainrowdict)
+
+            aliases_output = json.dumps(aliaseslist, sort_keys=True, indent=4)
+            aliases_response = json.loads(aliases_output)
+            # for display of input obj refs - file
+            cur = mysql.connection.cursor()
+            row_file_count = cur.execute("select * from `file` where obj_id=%s and obj_type=%s and created_by=%s",
+                                            (obj_id, objtype, createdBy))
+            rows_file = cur.fetchall()
+            filelist = []
+            if len(rows_file) is 0 :
+                mainfiledict = {
+                    'id': 'None',
+                    'result': 'None',
+                    'name': 'None'
+                }
+                filelist.append(mainfiledict)
+
+            elif len(rows_file) is not '0':
+                for row in rows_file:
+                    mainrowdict = {
+                        'id': row[0],
+                        'result': row[4],
+                        'name': row[8]
+                    }
+                    filelist.append(mainrowdict)
+
+            file_output = json.dumps(filelist, sort_keys=True, indent=4)
+            file_response = json.loads(file_output)
+            # for id's of behavior  in dynamic features
+            cur = mysql.connection.cursor()
+            row_behavior_count = cur.execute("select * from `behavior` where created_by=%s",
+                                         (createdBy,))
+            rows_behavior = cur.fetchall()
+            behaviorlist = []
+            if len(rows_behavior) is 0 :
+                mainbehaviordict = {
+                    'id': 'None',
+                    'type': 'behavior',
+                    'result': 'None',
+                    'desc': 'None'
+                }
+                behaviorlist.append(mainbehaviordict)
+
+            elif len(rows_behavior) is not '0':
+                for row in rows_behavior:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': 'behavior',
+                        'result': row[2],
+                        'desc': row[3]
+                    }
+                    behaviorlist.append(mainrowdict)
+
+            behavior_output = json.dumps(behaviorlist, sort_keys=True, indent=4)
+            behavior_response = json.loads(behavior_output)
+            # for id's of malware-action  in dynamic features
+            cur = mysql.connection.cursor()
+            row_malaction_count = cur.execute(
+                "select * from `malware-action` where  created_by=%s",
+                (createdBy,))
+            rows_malaction = cur.fetchall()
+            malactionlist = []
+            if len(rows_malaction) is 0:
+                mainmalactiondict = {
+                    'id': 'None',
+                    'type': 'None',
+                    'result': 'None',
+                    'desc': 'None'
+                }
+                malactionlist.append(mainmalactiondict)
+
+            elif len(rows_malaction) is not '0':
+                for row in rows_malaction:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1],
+                        'result': row[2],
+                        'desc': row[3]
+                    }
+                    malactionlist.append(mainrowdict)
+
+            malaction_output = json.dumps(malactionlist, sort_keys=True, indent=4)
+            malaction_response = json.loads(malaction_output)
+            # for id's of network-traffic and artifact  in dynamic features
+            cur = mysql.connection.cursor()
+            row_nettraffic_count = cur.execute(
+                "select * from `network-traffic` where obj_id=%s and obj_type=%s and created_by=%s",
+                (obj_id, objtype, createdBy))
+            rows_networktraffic = cur.fetchall()
+            networkartifactlist = []
+            if len(rows_networktraffic) is 0:
+                mainnetworktrafficdict = {
+                    'id': 'None',
+                    'type': 'network-traffic',
+                    'result': 'None',
+                    'desc': 'None'
+                }
+                networkartifactlist.append(mainnetworktrafficdict)
+            elif len(rows_networktraffic) is not '0':
+                for row in rows_networktraffic:
+                    mainrowdict = {
+                        'id': row[0],
+                        'result': row[5],
+                        'type': row[4]
+                    }
+                    networkartifactlist.append(mainrowdict)
+            cur = mysql.connection.cursor()
+            row_artifact_count = cur.execute(
+                "select * from `artifact` where obj_id=%s and obj_type=%s and created_by=%s",
+                (obj_id, objtype, createdBy))
+            rows_artifact = cur.fetchall()
+            if len(rows_artifact) is 0:
+                mainartifactdict = {
+                    'id': 'None',
+                    'result': 'None',
+                    'type': 'artifact',
+                    'desc': 'None'
+                }
+                networkartifactlist.append(mainartifactdict)
+            elif len(rows_artifact) is not '0':
+                for row in rows_artifact:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[4],
+                        'result': row[5]
+
+                    }
+                    networkartifactlist.append(mainrowdict)
+            networkartifact_output = json.dumps(networkartifactlist, sort_keys=True, indent=4)
+            networkartifact_response = json.loads(networkartifact_output)
+            # for process ref in process tree node
+            cur = mysql.connection.cursor()
+            row_process_count = cur.execute(
+                "select * from `process` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            rows_process = cur.fetchall()
+            processlist = []
+            if len(rows_process) is 0:
+                mainprocessdict = {
+                    'id': 'None',
+                    'type': 'Process',
+                    'result': 'None'
+                }
+                processlist.append(mainprocessdict)
+
+            elif len(rows_process) is not '0':
+                for row in rows_process:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[4],
+                        'result': row[8]
+                    }
+                    processlist.append(mainrowdict)
+
+            process_output = json.dumps(processlist, sort_keys=True, indent=4)
+            process_response = json.loads(process_output)
+            # for certificates in static features
+            cur = mysql.connection.cursor()
+            row_process_count = cur.execute(
+                "select * from `x509-certificate` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            rows_cert = cur.fetchall()
+            certlist = []
+            if len(rows_cert) is 0:
+                maincertdict = {
+                    'id': 'None',
+                    'type': 'x509-certificate',
+                    'result': 'None'
+                }
+                certlist.append(maincertdict)
+
+            elif len(rows_cert) is not '0':
+                for row in rows_cert:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[4],
+                        'result': row[8]
+                    }
+                    certlist.append(mainrowdict)
+
+            cert_output = json.dumps(certlist, sort_keys=True, indent=4)
+            cert_response = json.loads(process_output)
+            # for tool refs in malware dev env - static features
+            cur = mysql.connection.cursor()
+            row_software_count = cur.execute(
+                "select * from `software` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            rows_software = cur.fetchall()
+            softwarelist = []
+            if len(rows_software) is 0:
+                mainsoftdict = {
+                    'id': 'None',
+                    'type': 'software',
+                    'result': 'None'
+                }
+                softwarelist.append(mainsoftdict)
+
+            elif len(rows_software) is not '0':
+                for row in rows_software:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[4],
+                        'result': row[5]
+                    }
+                    softwarelist.append(mainrowdict)
+
+            software_output = json.dumps(softwarelist, sort_keys=True, indent=4)
+            software_response = json.loads(software_output)
+            # for ext references in signature metadata
+            cur = mysql.connection.cursor()
+            row_extref_count = cur.execute(
+                "select * from `external_references` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_extref = cur.fetchall()
+            extreflist = []
+            if len(row_extref) is 0:
+                mainextrefdict = {
+                    'id': 'None',
+                    'type': 'external_references',
+                    'result': 'None'
+                }
+                extreflist.append(mainextrefdict)
+
+            elif len(row_extref) is not '0':
+                for row in row_extref:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': 'external_references',
+                        'result': row[3]
+                    }
+                    extreflist.append(mainrowdict)
+
+            extref_output = json.dumps(extreflist, sort_keys=True, indent=4)
+            extref_response = json.loads(extref_output)
+            # for dev env in static features -malware dev env
+            cur = mysql.connection.cursor()
+            row_maldevenv_count = cur.execute(
+                "select * from `malware-development-environment` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_maldevenv = cur.fetchall()
+            maldevenvlist = []
+            if len(row_maldevenv) is 0:
+                mainmaldevenvdict = {
+                    'id': 'None',
+                    'type': 'malware-development-environment',
+                    'result': 'None'
+                }
+                maldevenvlist.append(mainmaldevenvdict)
+
+            elif len(row_maldevenv) is not '0':
+                for row in row_maldevenv:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': 'malware-development-environment',
+                        'result': row[3]
+                    }
+                    maldevenvlist.append(mainrowdict)
+
+            maldevenv_output = json.dumps(maldevenvlist, sort_keys=True, indent=4)
+            maldevenv_response = json.loads(maldevenv_output)
+            # for process_tree in dynamic features  - main
+            cur = mysql.connection.cursor()
+            row_proctreenode_count = cur.execute(
+                "select * from `process-tree-node` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_proctreenode = cur.fetchall()
+            proctreenodelist = []
+            if len(row_proctreenode) is 0:
+                mainproctreenodedict = {
+                    'id': 'None',
+                    'type': 'process-tree-node',
+                    'result': 'None'
+                }
+                proctreenodelist.append(mainmaldevenvdict)
+
+            elif len(row_proctreenode) is not '0':
+                for row in row_proctreenode:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': 'process-tree-node',
+                        'result': row[3]
+                    }
+                    proctreenodelist.append(mainrowdict)
+
+                    proctreenode_output = json.dumps(proctreenodelist, sort_keys=True, indent=4)
+                    proctreenode_response = json.loads(proctreenode_output)
+                    # for binary obfuscation in main of static features
+                    cur = mysql.connection.cursor()
+                    row_binobf_count = cur.execute(
+                        "select * from `binary-obfuscation` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                        (obj_id, objtype, createdBy))
+                    row_binobf = cur.fetchall()
+                    binobflist = []
+                    if len(row_binobf) is 0:
+                        mainbinobfdict = {
+                            'id': 'None',
+                            'type': 'binary-obfuscation',
+                            'result': 'None'
+                        }
+                        binobflist.append(mainbinobfdict)
+
+                    elif len(row_binobf) is not '0':
+                        for row in row_binobf:
+                            mainrowdict = {
+                                'id': row[0],
+                                'type': 'binary-obfuscation',
+                                'result': row[3]
+                            }
+                            binobflist.append(mainrowdict)
+
+                            binaryobfuscation_output = json.dumps(binobflist, sort_keys=True, indent=4)
+                            binaryobfuscation_response = json.loads(binaryobfuscation_output)
+
+            return render_template(url, data=resp, namedata=name_response, aliasesdata=aliases_response,
+                                   filedata=file_response, behaviordata=behavior_response, malactiondata=malaction_response,
+                                   networkartifactdata=networkartifact_response, processdata=process_response,
+                                   certificatedata=cert_response, softwaredata=software_response, extrefdata=extref_response,
+                                   maldevenvdata=maldevenv_response, proctreenodedata=proctreenode_response, binaryobfdata=binaryobfuscation_response)
     else:
         return redirect(url_for('index'))
 
@@ -2212,6 +2733,11 @@ def delete_all_entry():
                 mysql.connection.commit()
                 print "Entries deleted successfully"
                 return redirect(url_for('home'))
+            elif obj_type == 'relationship':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
             elif obj_type == 'behavior':
                 # deleting main SDO
                 cur = mysql.connection.cursor()
@@ -2250,6 +2776,346 @@ def logout():
     return redirect(url_for('index'))
 
 # Generally used routes for child tables and their respective operation
+
+# Analysis metadata - Insert (Ajax post query)
+@app.route('/insert_analysismetadata', methods=['POST'])
+def insert_analysismetadata():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            is_automated = request.form['is_automated']
+            start_time  = request.form['start_time']
+            end_time = request.form['end_time']
+            last_update_time = request.form['lastupdate_time']
+            confidence = request.form['confidence']
+            analysts = request.form['analysts']
+            comments = request.form['comments']
+            tool_refs = request.form['tool_refs']
+            analysis_env = request.form['analysis_env']
+            description = request.form['desc']
+            conclusion = request.form['conclusion']
+            references = request.form['ext_refs']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `analysis-metadata` (obj_id, obj_type, is_automated, start_time, end_time, last_update_time,
+             confidence, analysts, comments, tool_refs, analysis_environment, description, conclusion, `references`, created_by)
+                        values (%s , %s, %s, %s, %s,%s , %s, %s, %s, %s, %s , %s, %s, %s, %s)''',(ref_id, ref_type, is_automated, start_time,
+                                                                                                  end_time, last_update_time, confidence, analysts,
+                                                                                                  comments, tool_refs, analysis_env, description,  conclusion, references, created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+# Analysis metadata - update(ajax post query)
+@app.route('/update_analysismetadata',methods=['POST']) # to be updated
+def update_analysismetadata():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `analysis-metadata` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+# Analysis metadata- delete(ajax post query)
+@app.route('/delete_analysismetadata', methods=['POST'])
+def delete_analysismetadata():
+    id = request.json['id']
+    query = "delete from `analysis-metadata` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+
+# signature metadata - Insert (Ajax post query)
+@app.route('/insert_signaturemetadata', methods=['POST'])
+def insert_signaturemetadata():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            signature_type = request.form['sig_type']
+            name = request.form['nm']
+            description = request.form['desc']
+            author = request.form['author']
+            reference = request.form['reference']
+            severity = request.form['severity']
+            external_id = request.form['ext_id']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `signature-metadata` (obj_id, obj_type, signature_type, name, description, author,
+             reference, severity, external_id, created_by)
+                        values (%s , %s, %s, %s, %s,%s , %s, %s, %s, %s)''',(ref_id, ref_type, signature_type, name,
+                                                                             description, author, reference, severity,
+                                                                             external_id,  created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+# signature metadata - update(ajax post query)
+@app.route('/update_signaturemetadata',methods=['POST']) # to be updated
+def update_signaturemetadata():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `signature-metadata` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+# signature metadata- delete(ajax post query)
+@app.route('/delete_signaturemetadata', methods=['POST'])
+def delete_signaturemetadata():
+    id = request.json['id']
+    query = "delete from `signature-metadata` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+# malware dev env - Insert (Ajax post query)
+@app.route('/insert_malwaredevenv', methods=['POST'])
+def insert_malwaredevenv():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            tool_refs = request.form['tool_refs']
+            debuggin_filerefs = request.form['debugginfile_refs']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `malware-development-environment` (obj_id, obj_type, tool_refs, debuggin_filerefs,
+             created_by)
+                        values (%s , %s, %s, %s, %s)''',(ref_id, ref_type, tool_refs, debuggin_filerefs, created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+# malware dev env - update(ajax post query)
+@app.route('/update_malwaredevenv',methods=['POST']) # to be updated
+def update_malwaredevenv():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `malware-development-environment` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+# malware dev env- delete(ajax post query)
+@app.route('/delete_malwaredevenv', methods=['POST'])
+def delete_malwaredevenv():
+    id = request.json['id']
+    query = "delete from `malware-development-environment` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+# binary-obfuscation - Insert (Ajax post query)
+@app.route('/insert_binaryobfuscation', methods=['POST'])
+def insert_binaryobfuscation():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            method = request.form['method']
+            layer_order = request.form['layer_order']
+            encryption_algo = request.form['encryptionalgo']
+            packer_name = request.form['packer_name']
+            packer_version = request.form['packer_ver']
+            packer_entrypoint = request.form['packer_entrypoint']
+            packer_signature = request.form['packer_signature']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `binary-obfuscation` (obj_id, obj_type, method, layer_order, encryption_algorithm,
+             packer_name, packer_version, packer_entrypoint, packer_signature, created_by)
+                        values (%s , %s, %s, %s, %s, %s, %s, %s, %s, %s)''',(ref_id, ref_type, method, layer_order,
+                                                                             encryption_algo, packer_name, packer_version,
+                                                                             packer_entrypoint,packer_signature, created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+# binary-obfuscation- update(ajax post query)
+@app.route('/update_binaryobfuscation',methods=['POST']) # to be updated
+def update_binaryobfuscation():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `process-tree-node` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+# binary-obfuscation - delete(ajax post query)
+@app.route('/delete_binaryobfuscation', methods=['POST'])
+def delete_binaryobfuscation():
+    id = request.json['id']
+    query = "delete from `binary-obfuscation` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+# Static features - Insert (Ajax post query)
+@app.route('/insert_staticfeatures', methods=['POST'])
+def insert_staticfeatures():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            strings = request.form['strings']
+            obfuscation_methods = request.form['obfuscation_methods']
+            certificates = request.form['certificates']
+            file_headers = request.form['file_headers']
+            configuration_params = request.form['configparams']
+            development_env = request.form['development_env']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `static-features` (obj_id, obj_type, strings, obfuscation_methods, certificates,
+             file_headers, configuration_params, development_env, created_by)
+                        values (%s , %s, %s, %s, %s, %s, %s, %s, %s)''',(ref_id, ref_type, strings, obfuscation_methods,
+                                                                         certificates, file_headers, configuration_params,
+                                                                         development_env, created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+# Static features- update(ajax post query)
+@app.route('/update_staticfeatures',methods=['POST']) # to be updated
+def update_staticfeatures():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `process-tree-node` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+# Static features - delete(ajax post query)
+@app.route('/delete_staticfeatures', methods=['POST'])
+def delete_staticfeatures():
+    id = request.json['id']
+    query = "delete from `static-features` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+# process tree node - Insert (Ajax post query)
+@app.route('/insert_processtreenode', methods=['POST'])
+def insert_processtreenode():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            process_ref = request.form['process_refs']
+            parentaction_ref = request.form['parentaction_refs']
+            ordinal_position = request.form['ordinal_pos']
+            initiatedaction_refs = request.form['initaction_refs']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `process-tree-node` (obj_id, obj_type, process_ref, parent_actionref, ordinal_position, initiated_actionrefs, created_by)
+                        values (%s , %s, %s, %s, %s, %s, %s)''',(ref_id, ref_type, process_ref, parentaction_ref, ordinal_position, initiatedaction_refs, created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+
+# process tree node- update(ajax post query)
+@app.route('/update_processtreenode',methods=['POST']) # to be updated
+def update_processtreenode():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `process-tree-node` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+
+# process tree node - delete(ajax post query)
+@app.route('/delete_processtreenode', methods=['POST'])
+def delete_processtreenode():
+    id = request.json['id']
+    query = "delete from `process-tree-node` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
+
+# Dynamic features - Insert (Ajax post query)
+@app.route('/insert_dynamicfeatures', methods=['POST'])
+def insert_dynamicfeatures():
+    if g.user:
+        if request.method == 'POST':
+            ref_id = request.form['obj_id']
+            ref_type = request.form['obj_type']
+            behavior_refs = request.form['behavior_refs']
+            action_refs = request.form['action_refs']
+            networktraffic_refs = request.form['networktraffic_refs']
+            process_tree = request.form['process_tree']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''INSERT INTO `dynamic-features` (obj_id, obj_type, behavior_refs, action_refs, networktraffic_refs, process_tree, created_by)
+                        values (%s , %s, %s, %s, %s, %s, %s)''',(ref_id, ref_type, behavior_refs, action_refs, networktraffic_refs, process_tree, created_by))
+            mysql.connection.commit()
+            print('Successfully entered!!')
+            return jsonify({'result': 'success'})
+
+
+# Dynamic features- update(ajax post query)
+@app.route('/update_dynamicfeatures',methods=['POST']) # to be updated
+def update_dynamicfeatures():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            value = request.json['name_val']
+            confidence = request.json['confidence']
+            cur = mysql.connection.cursor()
+            cur.execute("UPDATE `dynamic-features` SET value=%s, confidence=%s where sno=%s ",(kc_name,phase_name,id))
+            mysql.connection.commit()
+            print "Successfully update kill chain data"
+            return jsonify({'result': 'success'})
+
+
+# Dynamic features - delete(ajax post query)
+@app.route('/delete_dynamicfeatures', methods=['POST'])
+def delete_dynamicfeatures():
+    id = request.json['id']
+    query = "delete from `dynamic-features` where sno=%s"
+    cur = mysql.connection.cursor()
+    cur.execute(query, (id,))
+    mysql.connection.commit()
+    print "successfully deleted"
+    return jsonify({'result': 'success'})
 
 # Name - Insert (Ajax post query)
 @app.route('/insertname', methods=['POST'])
@@ -4161,6 +5027,52 @@ def update_vulnerability():
 
 ################ End of vulnerability #####################
 
+# ********* Relationship ********************
+# Relationship- Main object creation - Insert operation
+@app.route('/create_relationship', methods=['POST'])
+def create_relationship():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            src_id = request.form['src_id']
+            src_type = request.form['src_type']
+            rel_type = request.form['rel_type']
+            target_id = request.form['tar_id']
+            target_type = request.form['tar_type']
+            description = request.form['desc']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `relationship` (type, src_id, src_type, relationship_type, target_id, target_type, description, created_by) 
+                 values (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                (type, src_id, src_type, rel_type, target_id, target_type,   description, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/update_relationship', methods=['POST'])
+def update_relationship():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+
+            description = request.form['desc']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `relationship` SET  description=%s WHERE sno=%s AND created_by=%s ''',
+                ( description, id, created_by))
+            mysql.connection.commit()
+            print('successfully updated')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+
+
 # ********* MAEC objects  ********************
 
 # ********* MAEC Behavior  ********************
@@ -4341,7 +5253,521 @@ def update_malwarefamily():
     else:
         return redirect(url_for('index'))
 
+################ End of Malware Family #####################
+# ********* MAEC Malware Instance  ********************
+@app.route('/create_malwareinstance',methods=['POST'])
+def create_malwareinstance():
+    if g.user:
+        if request.method == 'POST':
+            type = request.form['type']
+            labels = request.form['labels']
+            description = request.form['desc']
+            osexecenv = request.form['osexecenv']
+            archexec_env = request.form['archexec_env']
+            os_feat = request.form['os_feat']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `malware-instance` (type, labels,  description, os_execenv, arch_execenv, os_features, created_by) 
+                 values (%s, %s, %s, %s, %s, %s, %s)''',
+                (type, labels, description, osexecenv, archexec_env, os_feat, created_by))
+            mysql.connection.commit()
+            print('success input data')
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
 
+
+
+@app.route('/udpate_malwareinstance', methods=['POST'])
+def update_malwareinstance():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+            input_objrefs = request.form['input_objrefs']
+            labels = request.form['labels']
+            description = request.form['desc']
+            osexecenv = request.form['osexecenv']
+            archexec_env = request.form['archexec_env']
+            os_feat = request.form['os_feat']
+            created_by = g.user
+            cur = mysql.connection.cursor()
+            cur.execute('''UPDATE `malware-instance` SET input_objrefs=%s, labels=%s, description=%s, os_execenv=%s, arch_execenv=%s,
+                         os_features=%s WHERE sno=%s and created_by=%s''',
+                        (input_objrefs, labels, description, osexecenv, archexec_env, os_feat, id, created_by))
+            mysql.connection.commit()
+            print('successfully updated data')
+            return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+#########################################################
+######################### STIX 2 #######################
+
+# FileSystemStore - location
+fs = FileSystemStore("/home/tarun/Documents/stix2_store")
+
+# generate - stix2
+@app.route('/home/stix2/generate', methods=['POST'])
+def generate_stix2():
+    if g.user:
+        if request.method == 'POST':
+            objid = request.form['id']
+            objtype = request.form['obj_type']
+
+            # STIX objects
+            if objtype == 'attack-pattern':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `attack-pattern` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+
+                # kill chain phases
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `kill_chain_phase` where  obj_type=%s AND obj_id=%s AND created_by=%s ", (objtype, objid, g.user))
+                row_kc = cur.fetchall()
+                kclist = []
+                for row in row_kc:
+                     rowdict = {
+                         'kill_chain_name': row[3],
+                         'phase_name': row[4]
+                     }
+                     kclist.append(rowdict)
+                # external references
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `external_references` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
+                            (objtype, objid, g.user))
+                row_extref = cur.fetchall()
+                extreflist = []
+                for row in row_extref:
+                     rowdict = {
+                         'source_name': row[3],
+                         'description': row[4],
+                         'url': row[5],
+                         'hashes': {row[6]:row[7]},
+                         'external_id': row[8]
+                     }
+                     extreflist.append(rowdict)
+
+                # generate stix - Attack pattern
+                attack_pattern = AttackPattern(name=main[2], description=main[3], kill_chain_phases=kclist, external_references=extreflist )
+                print ('Generated STIX - Attack Pattern successfully!!')
+                # add to FileSystemStore
+                fs.add(attack_pattern)
+                print ('Added STIX - Attack Pattern to file system store!!')
+                # save a record in database
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, attack_pattern.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'campaign':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `campaign` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                aliaseslist = main[4]
+                aliases_result =tuple(aliaseslist.split(";"))
+                # generate stix - campaign
+                campaign = Campaign(name=main[2], description=main[3], aliases=aliases_result,
+                                    first_seen=main[5].strftime('%Y-%m-%dT%H:%M'),
+                                    last_seen=main[6].strftime('%Y-%m-%dT%H:%M'), objective=main[7])
+                # add to FileSystemStore
+                fs.add(campaign)
+                print ('Added STIX - campaign to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, campaign.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'identity':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `identity` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                labelslist = main[3]
+                labels_result = tuple(labelslist.split(";"))
+                sectorslist = main[6]
+                sectors_result = tuple(sectorslist.split(","))
+                # generate stix - identity
+                identity = Identity(name=main[2], labels=labels_result, description=main[4], identity_class=main[5],
+                                    sectors=sectors_result,
+                                    contact_information=main[7])
+                # add to FileSystemStore
+                fs.add(identity)
+                print ('Added STIX - Identity to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, identity.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'indicator':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `indicator` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                labelslist = main[3]
+                labels_result = tuple(labelslist.split(";"))
+                # kill chain phases
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `kill_chain_phase` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
+                            (objtype, objid, g.user))
+                row_kc = cur.fetchall()
+                kclist = []
+                for row in row_kc:
+                    rowdict = {
+                        'kill_chain_name': row[3],
+                        'phase_name': row[4]
+                    }
+                    kclist.append(rowdict)
+
+
+                # generate stix - indicator
+                indicator = Indicator(name=main[2], labels=labels_result, description=main[4], pattern=main[5],
+                                    valid_from=main[6].strftime('%Y-%m-%dT%H:%M'),valid_until=main[7].strftime('%Y-%m-%dT%H:%M'),
+                                    kill_chain_phases=kclist)
+                # add to FileSystemStore
+                fs.add(indicator)
+                print ('Added STIX - Indicator to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, indicator.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'intrusion-set':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `intrusion-set` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                aliaseslist = main[3]
+                aliases_result = tuple(aliaseslist.split(";"))
+                goalslist = main[7]
+                goals_result = tuple(goalslist.split(";"))
+                sec_motivationlist = main[10]
+                sec_motivation_result = tuple(sec_motivationlist.split(","))
+                # generate stix - intrusionset
+                intrusionset = IntrusionSet(name=main[2], aliases=aliases_result, description=main[4], first_seen=main[5].strftime('%Y-%m-%dT%H:%M'),
+                                      last_seen=main[6].strftime('%Y-%m-%dT%H:%M'),
+                                      goals=goals_result, resource_level=main[8], primary_motivation=main[9], secondary_motivations=sec_motivation_result)
+                # add to FileSystemStore
+                fs.add(intrusionset)
+                print ('Added STIX - intrusionset to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, intrusionset.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'malware':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `malware` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                labelslist = main[3]
+                labels_result = tuple(labelslist.split(","))
+                # kill chain phases
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `kill_chain_phase` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
+                            (objtype, objid, g.user))
+                row_kc = cur.fetchall()
+                kclist = []
+                for row in row_kc:
+                    rowdict = {
+                        'kill_chain_name': row[3],
+                        'phase_name': row[4]
+                    }
+                    kclist.append(rowdict)
+                # generate stix - malware
+                malware = Malware(name=main[2], labels=labels_result, description=main[4], kill_chain_phases=kclist)
+                # add to FileSystemStore
+                fs.add(malware)
+                print ('Added STIX - malware to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, malware.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'report':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `report` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                labelslist = main[4]
+                labels_result = tuple(labelslist.split(","))
+
+                # for object references
+                finallist = ()
+                objlist = json.loads(main[6])
+                for dat in objlist:
+                    id = dat['objid']
+                    type = dat['objtype']
+                    cur = mysql.connection.cursor()
+                    cur.execute('''select stix_id from `stix_content` where type=%s AND reference_id=%s AND created_by=%s''',(type, id, g.user))
+                    row_main = cur.fetchone()
+                    result = row_main[0]
+                    finallist = finallist + (result,)
+                # output = json.dumps(finallist, sort_keys=True, indent=4)
+                #ref_final = json.loads(output)
+
+
+
+
+                # generate stix - report
+                report = Report(name=main[2], description=main[3],  labels=labels_result, published= main[5].strftime('%Y-%m-%dT%H:%M'),object_refs=finallist)
+                # add to FileSystemStore
+                fs.add(report)
+                print ('Added STIX - report to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, report.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'threat-actor':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `threat-actor` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                labelslist = main[3]
+                labels_result = tuple(labelslist.split(","))
+                aliaseslist = main[4]
+                aliases_result = tuple(aliaseslist.split(";"))
+                roleslist = main[6]
+                roles_result = tuple(roleslist.split(","))
+                goalslist = main[7]
+                goals_result = tuple(goalslist.split(";"))
+                secondarymotivationslist = main[11]
+                secmotivations_result = tuple(secondarymotivationslist.split(","))
+                personalmotivationslist = main[12]
+                personalmotivations_result = tuple(personalmotivationslist.split(","))
+
+                # generate stix - threat-actor
+                threatactor = ThreatActor(name=main[2], labels=labels_result, description=main[5], aliases=aliases_result, roles=roles_result,
+                                          goals=goals_result,sophistication=main[8], resource_level=main[9], primary_motivation=main[10],
+                                          secondary_motivations=secmotivations_result, personal_motivations=personalmotivations_result )
+                # add to FileSystemStore
+                fs.add(threatactor)
+                print ('Added STIX - threatactor to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, threatactor.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'tool':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `tool` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                labelslist = main[3]
+                labels_result = tuple(labelslist.split(","))
+
+                # kill chain phases
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `kill_chain_phase` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
+                            (objtype, objid, g.user))
+                row_kc = cur.fetchall()
+                kclist = []
+                for row in row_kc:
+                    rowdict = {
+                        'kill_chain_name': row[3],
+                        'phase_name': row[4]
+                    }
+                    kclist.append(rowdict)
+
+                # generate stix - tool
+                tool = Tool(name=main[2], labels=labels_result, description=main[4],tool_version=main[5], kill_chain_phases=kclist)
+                # add to FileSystemStore
+                fs.add(tool)
+                print ('Added STIX - tool to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, tool.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'vulnerability':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `vulnerability` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+
+                # external references
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `external_references` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
+                            (objtype, objid, g.user))
+                row_extref = cur.fetchall()
+                extreflist = []
+                for row in row_extref:
+                    rowdict = {
+                        'source_name': row[3],
+                        'description': row[4],
+                        'url': row[5],
+                        'hashes': {row[6]: row[7]},
+                        'external_id': row[8]
+                    }
+                    extreflist.append(rowdict)
+
+                # generate stix - vulnerability
+                vulnerability = Vulnerability(name=main[2], description=main[3],external_references=extreflist)
+                # add to FileSystemStore
+                fs.add(vulnerability)
+                print ('Added STIX - vulnerability to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, vulnerability.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+            elif objtype == 'relationship':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `relationship` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                src_id = main[2]
+                src_type = main[3]
+                tar_id = main[5]
+                tar_type = main[6]
+
+                # capture stix id of source
+                cur = mysql.connection.cursor()
+                cur.execute("select stix_id from `stix_content` where  reference_id=%s AND type=%s  AND created_by=%s ", (src_id, src_type,  g.user))
+                src_main = cur.fetchone()
+                stix_srcid = src_main[0]
+                # capture stix id of target
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    "select stix_id from `stix_content` where  reference_id=%s AND type=%s AND created_by=%s ",
+                    (tar_id, tar_type, g.user))
+                tar_main = cur.fetchone()
+                stix_tarid = tar_main[0]
+
+                # generate stix -  Relationship
+
+                relationship = Relationship(relationship_type=main[4], description=main[7], source_ref=stix_srcid,
+                                    target_ref=stix_tarid)
+                # add to FileSystemStore
+                fs.add(relationship)
+                print ('Added STIX - relationship to file system store!!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, relationship.id, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+
+    else:
+        return redirect(url_for('index'))
+
+# view stix content from filesystemstore
+@app.route('/view_stixcontent',methods=['POST'])
+def view_stixcontent():
+    if g.user:
+        if request.method == 'POST':
+            type = request.json['type']
+            stixid = request.json['stixid']
+            result = str(fs.get(stixid))
+            return result
+
+
+    else:
+        return redirect(url_for('index'))
+# view bundle content
+@app.route('/view_bundle',methods=['POST'])
+def view_bundle():
+    if g.user:
+        if request.method == 'POST':
+            type = request.json['type']
+            bundleid = request.json['bundleid']
+            cur = mysql.connection.cursor()
+            cur.execute("select bundle_data from bundle where bundle_id=%s AND created_by=%s",(bundleid, g.user))
+            result = cur.fetchone()
+            output = json.dumps(result[0], sort_keys=True, indent=4)
+            return output
+    else:
+        return redirect(url_for('index'))
+@app.route('/create_bundle',methods=['POST'])
+def create_bundle():
+    if g.user:
+        if request.method == 'POST':
+            idlist = request.form['bundle']
+            finallist = []
+            bundleobjs = json.loads(idlist)
+            for dat in bundleobjs:
+                stixid = dat['refstix']
+                objdata = fs.get(stixid)
+                finallist.append(objdata)
+
+            # generate stix - bundle
+            bundle = Bundle(finallist)
+            print bundle
+            # save a record in database
+            timestamp = datetime.now()
+            type = "bundle"
+
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `bundle` (bundle_id, bundle_data, created_by) values (%s, %s, %s)''',
+                (bundle.id, bundle, g.user))
+            mysql.connection.commit()
+            print ('A bundle data has been saved to database')
+            #final return point
+            return redirect(url_for('home'))
+
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/visualize',methods=['GET'])
+def visualize():
+
+    return render_template('view.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
