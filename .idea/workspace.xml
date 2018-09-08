@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="62822a07-8042-4e57-8b3c-51647f255cbd" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/update_templates/malware-instance.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/view_templates/malware-instance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/customscript.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/customscript.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/object_modaltemplate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/object_modaltemplate.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/update_templates/attack-pattern.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/attack-pattern.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/update_templates/malware-family.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/malware-family.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/attack-pattern.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/attack-pattern.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/campaign.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/campaign.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/identity.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/identity.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/indicator.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/indicator.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/malware.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/malware.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/report.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/threat-actor.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/threat-actor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/tool.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/tool.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/vulnerability.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/vulnerability.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/peasecTIP$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1536366174417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz" />
+    <SUITE FILE_PATH="coverage/peasecTIP$setup.coverage" NAME="setup Coverage Results" MODIFIED="1536368508796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/cti-stix-visualization-master" />
+    <SUITE FILE_PATH="coverage/peasecTIP$peasecTIP.coverage" NAME="peasecTIP Coverage Results" MODIFIED="1536439654073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="peasecTIP@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="peasecTIP@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="peasecTIP@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="peasecTIP: schema" type="c314c289:MysqlImplModel$Schema" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="peasecTIP@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="peasecTIP: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="bundle: table" type="98d5ac3d:MysqlImplModel$Table" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-141399238">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="6" />
+          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.12" value="3" />
+          <entry key="project.open.time.29" value="1" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.open.time.8" value="2" />
+          <entry key="project.open.time.9" value="6" />
+          <entry key="project.opened" value="14" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="cell" value="39" />
+          <entry key="css" value="139" />
+          <entry key="html" value="36770" />
+          <entry key="js" value="7106" />
+          <entry key="py" value="33639" />
+          <entry key="sql" value="2240" />
+          <entry key="txt" value="9" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="CSS" value="139" />
+          <entry key="HTML" value="36770" />
+          <entry key="JavaScript" value="7106" />
+          <entry key="PLAIN_TEXT" value="9" />
+          <entry key="Python" value="33609" />
+          <entry key="SQL" value="1757" />
+          <entry key="Scratch" value="552" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="aliases" value="5" />
+          <entry key="api-call" value="3" />
+          <entry key="artifact" value="4" />
+          <entry key="attack-pattern" value="1" />
+          <entry key="autonomous-system" value="2" />
+          <entry key="behavior" value="1" />
+          <entry key="bundle" value="2" />
+          <entry key="campaign" value="2" />
+          <entry key="cfg" value="1" />
+          <entry key="css" value="4" />
+          <entry key="directory" value="1" />
+          <entry key="domain-name" value="1" />
+          <entry key="email-addr" value="2" />
+          <entry key="email-message" value="1" />
+          <entry key="external_references" value="2" />
+          <entry key="file" value="4" />
+          <entry key="html" value="245" />
+          <entry key="identity" value="2" />
+          <entry key="indicator" value="1" />
+          <entry key="js" value="174" />
+          <entry key="kill_chain_phase" value="1" />
+          <entry key="malware" value="1" />
+          <entry key="malware-action" value="4" />
+          <entry key="malware-family" value="3" />
+          <entry key="md" value="3" />
+          <entry key="name" value="4" />
+          <entry key="png" value="1" />
+          <entry key="process" value="1" />
+          <entry key="process-tree-node" value="2" />
+          <entry key="py" value="4" />
+          <entry key="refined_capability" value="1" />
+          <entry key="relationship" value="1" />
+          <entry key="report" value="1" />
+          <entry key="sql" value="27" />
+          <entry key="stix_content" value="9" />
+          <entry key="user-account" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="CSS" value="4" />
+          <entry key="Database Element" value="63" />
+          <entry key="HTML" value="245" />
+          <entry key="Image" value="1" />
+          <entry key="Ini" value="1" />
+          <entry key="JavaScript" value="174" />
+          <entry key="Markdown" value="3" />
+          <entry key="Python" value="4" />
+          <entry key="SQL" value="2" />
+          <entry key="Scratch" value="25" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="peasecTIP" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="487">
+              <caret line="355" column="35" lean-forward="true" selection-start-line="355" selection-start-column="35" selection-end-line="355" selection-end-column="35" />
+              <folding>
+                <element signature="e#0#113#0" expanded="true" />
+                <element signature="e#2603#2872#0" />
+                <element signature="e#3148#3417#0" />
+                <element signature="e#13240#16112#0" />
+                <element signature="e#16161#17010#0" />
+                <element signature="e#17059#17910#0" />
+                <element signature="e#17960#19790#0" />
+                <element signature="e#19844#20832#0" />
+                <element signature="e#20880#22580#0" />
+                <element signature="e#22627#23437#0" />
+                <element signature="e#22974#23270#0" />
+                <element signature="e#23490#24581#0" />
+                <element signature="e#24626#26393#0" />
+                <element signature="e#26447#28350#0" />
+                <element signature="e#28403#29264#0" />
+                <element signature="e#29313#31338#0" />
+                <element signature="e#31389#32175#0" />
+                <element signature="e#32230#34103#0" />
+                <element signature="e#40187#41167#0" />
+                <element signature="e#41212#41901#0" />
+                <element signature="e#41955#42569#0" />
+                <element signature="e#42266#42413#0" />
+                <element signature="e#42622#43396#0" />
+                <element signature="e#43468#44224#0" />
+                <element signature="e#44275#44983#0" />
+                <element signature="e#45038#93007#0" />
+                <element signature="e#93062#98607#0" />
+                <element signature="e#98664#115172#0" />
+                <element signature="e#233933#236327#0" />
+                <element signature="e#236384#237714#0" />
+                <element signature="e#237771#239163#0" />
+                <element signature="e#239221#241131#0" />
+                <element signature="e#241193#242873#0" />
+                <element signature="e#242929#244640#0" />
+                <element signature="e#244695#246592#0" />
+                <element signature="e#246653#248702#0" />
+                <element signature="e#248755#250468#0" />
+                <element signature="e#250530#252326#0" />
+                <element signature="e#252387#254361#0" />
+                <marker date="1536430815781" expanded="true" signature="255579:256061" ph="..." />
+                <marker date="1536430815781" expanded="true" signature="257208:257210" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/home.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="491">
+              <caret line="602" column="122" selection-start-line="602" selection-start-column="122" selection-end-line="602" selection-end-column="122" />
+              <folding>
+                <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/nbextensions/application.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1641">
+              <caret line="289" column="5" selection-start-line="289" selection-start-column="5" selection-end-line="289" selection-end-column="5" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/nbextensions/application.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1335">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/view.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/object_modaltemplate.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1277">
+              <caret line="1890" column="48" lean-forward="true" selection-start-line="1890" selection-start-column="10" selection-end-line="1890" selection-end-column="48" />
+              <folding>
+                <element signature="n#div#11;n#!!top" />
+                <element signature="n#div#12;n#!!top" />
+                <element signature="n#div#13;n#!!top" />
+                <element signature="n#div#14;n#!!top" />
+                <element signature="n#div#15;n#!!top" />
+                <element signature="n#div#16;n#!!top" />
+                <element signature="n#div#17;n#!!top" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/static/custom/customscript.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="546">
+              <caret line="507" column="29" selection-start-line="507" selection-start-column="29" selection-end-line="507" selection-end-column="29" />
+              <folding>
+                <element signature="e#790#1377#0" />
+                <element signature="e#2855#4234#0" />
+                <element signature="e#4427#6260#0" />
+                <element signature="e#6298#10893#0" />
+                <element signature="e#13169#13919#0" />
+                <element signature="e#14565#15840#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>bodycontent</find>
+      <find>created</find>
+      <find>form-group</find>
+      <find>delete_x509</find>
+      <find>emaddr_output_response</find>
+      <find>killchainphase</find>
+      <find>data-require</find>
+      <find>fetch</find>
+      <find>linkifyHeader</find>
+      <find>pasted</find>
+      <find>uploader</find>
+      <find>header</find>
+      <find>chosen-files</find>
+      <find>styles</find>
+      <find>legend-content</find>
+      <find>canvas</find>
+      <find>legend</find>
+      <find>link</find>
+      <find>selection</find>
+      <find>reset</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>form-group row</replace>
+      <replace>kill_chain_phase</replace>
+    </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/app.py" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/static/custom/vulnerability/view_vulnerability.js" />
+        <option value="$PROJECT_DIR$/static/custom/vulnerability/update_vulnerability.js" />
+        <option value="$PROJECT_DIR$/static/custom/threat-actor/view_threatactor.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/threat-actor.html" />
+        <option value="$PROJECT_DIR$/static/custom/threat-actor/update_threatactor.js" />
+        <option value="$PROJECT_DIR$/templates/index.html" />
+        <option value="$PROJECT_DIR$/static/custom/behavior/update_behavior.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/behavior.html" />
+        <option value="$PROJECT_DIR$/static/custom/behavior/view_behavior.js" />
+        <option value="$PROJECT_DIR$/static/custom/collection/view_collection.js" />
+        <option value="$PROJECT_DIR$/static/custom/collection/update_collection.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/collection.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/behavior.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/collection.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-action/view_malwareaction.js" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/10c79e1d-ecc7-4334-9757-6ef168f5102d/console.sql" />
+        <option value="$PROJECT_DIR$/templates/view_templates/malware-action.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-family/view_malwarefamily.js" />
+        <option value="$PROJECT_DIR$/static/custom/malware-action/update_malwareaction.js" />
+        <option value="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" />
+        <option value="$PROJECT_DIR$/templates/view_templates/malware-instance.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/malware-family.html" />
+        <option value="$PROJECT_DIR$/templates/update_templates/malware-action.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/malware-instance.html" />
+        <option value="$PROJECT_DIR$/static/custom/styles.css" />
+        <option value="$PROJECT_DIR$/templates/view_templates/attack-pattern.html" />
+        <option value="$PROJECT_DIR$/templates/update_templates/attack-pattern.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/campaign.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/identity.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/indicator.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/malware.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/report.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/tool.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/vulnerability.html" />
+        <option value="$PROJECT_DIR$/static/custom/relationship/view_relationship.js" />
+        <option value="$PROJECT_DIR$/templates/view_templates/relationship.html" />
+        <option value="$PROJECT_DIR$/static/custom/relationship/update_relationship.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/relationship.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/threat-actor.html" />
+        <option value="$PROJECT_DIR$/templates/object_modaltemplate.html" />
+        <option value="$PROJECT_DIR$/static/cti-stix-visualization-master/application.js" />
+        <option value="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz/stix2viz/stix2viz.js" />
+        <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/templates/view.html" />
+        <option value="$PROJECT_DIR$/static/nbextensions/application.css" />
+        <option value="$PROJECT_DIR$/static/nbextensions/application.js" />
+        <option value="$PROJECT_DIR$/static/custom/customscript.js" />
+        <option value="$PROJECT_DIR$/templates/home.html" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="2443" />
+    <option name="y" value="13" />
+    <option name="width" value="928" />
+    <option name="height" value="507" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State />
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>SQL</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="custom" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="custom" type="462c0819:PsiDirectoryNode" />
+              <item name="attack_pattern" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="custom" type="462c0819:PsiDirectoryNode" />
+              <item name="malware-instance" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="ToolWindowSQL Generator.ShowToolbar" value="false" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="database.console.LAST_STATE" value="false" />
+    <property name="database.data.extractors.current.id" value="Tab-separated (TSV)_id" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/custom/intrusion-set" />
+      <recent name="$PROJECT_DIR$/templates/view_templates" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.setup">
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="peasecTIP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz/__init__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="setup" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="peasecTIP" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/static/cti-stix-visualization-master" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/static/cti-stix-visualization-master/setup.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="peasecTIP" type="Python.FlaskServer" factoryName="Flask server">
+      <module name="peasecTIP" />
+      <option name="target" value="$PROJECT_DIR$/app.py" />
+      <option name="targetType" value="PATH" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Flask server.peasecTIP" />
+      <item itemvalue="Python.__init__" />
+      <item itemvalue="Python.setup" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.setup" />
+        <item itemvalue="Python.__init__" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="62822a07-8042-4e57-8b3c-51647f255cbd" name="Default" comment="" />
+      <created>1533209919062</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1533209919062</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="1919" y="0" width="1922" height="1081" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49679896" visible="true" weight="0.21664888" />
+      <window_info id="Structure" order="1" sideWeight="0.503201" side_tool="true" weight="0.1307364" />
+      <window_info id="Favorites" order="2" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
+      <window_info anchor="bottom" id="SQL Generator" order="0" weight="0.32869378" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49786553" weight="0.32846716" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.4903949" visible="true" weight="0.21063608" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32976446" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" weight="0.3295099" />
+      <window_info anchor="bottom" id="Python Console" order="11" />
+      <window_info anchor="bottom" id="Terminal" order="12" weight="0.3295099" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5096051" side_tool="true" weight="0.21627408" />
+      <window_info anchor="bottom" id="Database Console" order="14" weight="0.36402568" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.12753469" />
+    </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4986339" visible="true" weight="0.1307364" />
+      <window_info id="Structure" order="1" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
+      <window_info id="Favorites" order="2" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
+      <window_info anchor="bottom" id="SQL Generator" order="0" weight="0.32869378" />
+      <window_info anchor="bottom" id="Message" order="1" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49786553" weight="0.32846716" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.4903949" visible="true" weight="0.18561001" />
+      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32976446" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Database Changes" order="10" weight="0.3295099" />
+      <window_info anchor="bottom" id="Python Console" order="11" />
+      <window_info anchor="bottom" id="Terminal" order="12" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5096051" side_tool="true" weight="0.21627408" />
+      <window_info anchor="bottom" id="Database Console" order="14" weight="0.36402568" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.122732125" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="jinja2-line">
+          <url>file://$PROJECT_DIR$/templates/home.html</url>
+          <line>203</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/static/custom/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="45">
+          <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/attack-pattern.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="143" column="112" selection-start-line="143" selection-start-column="112" selection-end-line="143" selection-end-column="112" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/aliases">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/campaign">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/identity.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="422">
+          <caret line="67" column="14" selection-start-line="67" selection-start-column="14" selection-end-line="67" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/identity">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/indicator">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/indicator.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="59" column="8" lean-forward="true" selection-start-line="59" selection-start-column="8" selection-end-line="68" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/intrusion-set.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="678">
+          <caret line="67" column="14" selection-start-line="67" selection-start-column="14" selection-end-line="67" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/malware">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/report.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/tool.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/vulnerability.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="615">
+          <caret line="68" column="14" selection-start-line="68" selection-start-column="14" selection-end-line="68" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/external_references">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/malware.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-553">
+          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="68" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/report">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/relationship">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/relationship.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="48" column="27" lean-forward="true" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/relationship/view_relationship.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/campaign.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="123" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware/update_malware.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="158">
+          <caret line="245" column="16" selection-start-line="245" selection-start-column="16" selection-end-line="247" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/relationship/update_relationship.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/relationship.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="88" column="93" selection-start-line="88" selection-start-column="93" selection-end-line="88" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/campaign.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="58" column="8" lean-forward="true" selection-start-line="58" selection-start-column="8" selection-end-line="67" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/threat-actor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/attack-pattern.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="120" column="73" lean-forward="true" selection-start-line="120" selection-start-column="52" selection-end-line="120" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/attack_pattern/view_attackpattern.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="117" column="12" lean-forward="true" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/attack-pattern">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/bundle">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/setup.cfg">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/d3/d3.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/d3/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/setup.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/require.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="15708" selection-start-line="4" selection-start-column="15696" selection-end-line="4" selection-end-column="15708" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/stix2viz/stix2viz.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/domReady.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/stix_content">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/stix2viz/icons/stix2_indicator_icon_tiny_round_v1.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="355" column="35" lean-forward="true" selection-start-line="355" selection-start-column="35" selection-end-line="355" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#113#0" expanded="true" />
+            <element signature="e#2603#2872#0" />
+            <element signature="e#3148#3417#0" />
+            <element signature="e#13240#16112#0" />
+            <element signature="e#16161#17010#0" />
+            <element signature="e#17059#17910#0" />
+            <element signature="e#17960#19790#0" />
+            <element signature="e#19844#20832#0" />
+            <element signature="e#20880#22580#0" />
+            <element signature="e#22627#23437#0" />
+            <element signature="e#22974#23270#0" />
+            <element signature="e#23490#24581#0" />
+            <element signature="e#24626#26393#0" />
+            <element signature="e#26447#28350#0" />
+            <element signature="e#28403#29264#0" />
+            <element signature="e#29313#31338#0" />
+            <element signature="e#31389#32175#0" />
+            <element signature="e#32230#34103#0" />
+            <element signature="e#40187#41167#0" />
+            <element signature="e#41212#41901#0" />
+            <element signature="e#41955#42569#0" />
+            <element signature="e#42266#42413#0" />
+            <element signature="e#42622#43396#0" />
+            <element signature="e#43468#44224#0" />
+            <element signature="e#44275#44983#0" />
+            <element signature="e#45038#93007#0" />
+            <element signature="e#93062#98607#0" />
+            <element signature="e#98664#115172#0" />
+            <element signature="e#233933#236327#0" />
+            <element signature="e#236384#237714#0" />
+            <element signature="e#237771#239163#0" />
+            <element signature="e#239221#241131#0" />
+            <element signature="e#241193#242873#0" />
+            <element signature="e#242929#244640#0" />
+            <element signature="e#244695#246592#0" />
+            <element signature="e#246653#248702#0" />
+            <element signature="e#248755#250468#0" />
+            <element signature="e#250530#252326#0" />
+            <element signature="e#252387#254361#0" />
+            <marker date="1536430815781" expanded="true" signature="255579:256061" ph="..." />
+            <marker date="1536430815781" expanded="true" signature="257208:257210" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/application.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1335">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/nbextensions/application.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1641">
+          <caret line="289" column="5" selection-start-line="289" selection-start-column="5" selection-end-line="289" selection-end-column="5" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2148">
+          <caret line="825" column="16" selection-start-line="825" selection-start-column="16" selection-end-line="826" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/attack_pattern/update_attackpattern.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/object_modaltemplate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1277">
+          <caret line="1890" column="48" lean-forward="true" selection-start-line="1890" selection-start-column="10" selection-end-line="1890" selection-end-column="48" />
+          <folding>
+            <element signature="n#div#11;n#!!top" />
+            <element signature="n#div#12;n#!!top" />
+            <element signature="n#div#13;n#!!top" />
+            <element signature="n#div#14;n#!!top" />
+            <element signature="n#div#15;n#!!top" />
+            <element signature="n#div#16;n#!!top" />
+            <element signature="n#div#17;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/customscript.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="546">
+          <caret line="507" column="29" selection-start-line="507" selection-start-column="29" selection-end-line="507" selection-end-column="29" />
+          <folding>
+            <element signature="e#790#1377#0" />
+            <element signature="e#2855#4234#0" />
+            <element signature="e#4427#6260#0" />
+            <element signature="e#6298#10893#0" />
+            <element signature="e#13169#13919#0" />
+            <element signature="e#14565#15840#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="491">
+          <caret line="602" column="122" selection-start-line="602" selection-start-column="122" selection-end-line="602" selection-end-column="122" />
+          <folding>
+            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

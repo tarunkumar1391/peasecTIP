@@ -1,0 +1,15 @@
+Metadata-Version: 2.0
+Name: stix2-viz
+Version: 0.1.0
+Summary: Visualize STIX content
+Home-page: UNKNOWN
+Author: UNKNOWN
+Author-email: UNKNOWN
+License: UNKNOWN
+Description-Content-Type: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: jupyter (>=1.0.0)
+
+UNKNOWN
+
+
