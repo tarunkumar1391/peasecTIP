@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Behavior</div>
+                <div class="card-body">
+                    <p class="card-text">A Behavior corresponds to the specific purpose behind a particular snippet of code,
+                        as executed by a malware instance. Examples include keylogging, detecting a virtual machine, and installing a backdoor.
+                        Behaviors may be composed of one or more Malware Actions, thereby providing context to these Actions.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of this property MUST​ be behavior.</td>
+                              </tr>
+                              <tr>
+                                <td><b>id​ (required) </b></td>
+                                <td>identifier</td>
+                                <td>Specifies a unique ID for the Behavior</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (required)</b></td>
+                                <td>open-vocab </td>
+                                <td>Captures the name of the Behavior. The values for this property SHOULD​ come from the behavior-ov open vocabulary.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>Specifies a textual description of the Behavior</td>
+                              </tr>
+                              <tr>
+                                <td><b>timestamp​ ​(optional) </b></td>
+                                <td>timestamp</td>
+                                <td>Captures the local or relative time at which the Behavior occurred or was observed.</td>
+                              </tr>
+                              <tr>
+                                <td><b>attributes​ ​(optional) </b></td>
+                                <td>dictionary</td>
+                                <td>Captures attributes of the Behavior as name/value pairs.
+                                    Dictionary keys used in this property SHOULD​ come from the
+                                    common-attribute-ov vocabulary. Each corresponding key
+                                    value MUST​ be of type string and SHOULD​ come from an
+                                    associated vocabulary, if applicable. For example, if the key is
+                                    encryption-algorithm, its corresponding value SHOULD
+                                    come from the STIX encryption-algo-ov vocabulary</td>
+                              </tr>
+                              <tr>
+                                <td><b>action_refs​ ​(optional) </b></td>
+                                <td>list of type identifier </td>
+                                <td>Captures Actions that serve as an implementation of the
+                                    Behavior. Each list item specifies the unique ID of the Action
+                                    being referenced; accordingly, each referenced item MUST​ be
+                                    of type malware-action.
+                                    Each Action MUST​ be present in the current Package. The
+                                    ordering of the references in the list denotes the sequential
+                                    ordering of the Actions with respect to the Behavior; that is,
+                                    Actions at the beginning of the list MUST​ have occurred before
+                                    those later in the list.</td>
+                              </tr>
+                            <tr>
+                                <td><b>technique_refs​ (optional) </b></td>
+                                <td>list of type external-reference</td>
+                                <td>References any techniques used to implement the Behavior; for
+                                    example, DLL Search Order Hijacking. Each reference SHOULD
+                                    point to a valid ATT&CK [ATT&CK] Technique or similar entity.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Source</th>
+                                <th>Relationship Type</th>
+                                <th>Target</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>behavior</td>
+                                <td>dependent-on </td>
+                                <td>behavior</td>
+                                <td>Specifies that the behavior is dependent on the successful execution of another.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>behavior</td>
+                                <td>discovered-by </td>
+                                <td>software</td>
+                                <td>Specifies that the behavior was discovered by a particular tool, as
+                                    a represented by a STIX Cyber Observable Software Object.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>

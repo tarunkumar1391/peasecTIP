@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Intrusion set</div>
+                <div class="card-body">
+                    <p class="card-text">An Intrusion Set is a grouped set of adversarial behaviors and resources with common properties that
+                        is believed to be orchestrated by a single organization. An Intrusion Set may capture multiple Campaigns or other
+                        activities that are all tied together by shared attributes indicating a common known or unknown Threat Actor.
+                        New activity can be attributed to an Intrusion Set even if the Threat Actors behind the attack are not known.
+                        Threat Actors can move from supporting one Intrusion Set to supporting another, or they may support multiple Intrusion Sets.
+                        Where a Campaign is a set of attacks over a period of time against a specific set of targets to achieve some objective,
+                        an Intrusion Set is the entire attack package and may be used over a very long period of time in multiple Campaigns
+                        to achieve potentially multiple purposes.
+                        While sometimes an Intrusion Set is not active, or changes focus, it is usually difficult to know
+                        if it has truly disappeared or ended. Analysts may have varying level of fidelity on attributing an
+                        Intrusion Set back to Threat Actors and may be able to only attribute it back to a nation state or
+                        perhaps back to an organization within that nation state.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of this property MUST be intrusion-set.</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (required)</b></td>
+                                <td>string</td>
+                                <td>A name used to identify this Intrusion Set.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>A description that provides more details and context about the Intrusion Set,
+                                    potentially including its purpose and its key characteristics.</td>
+                              </tr>
+                              <tr>
+                                <td><b>aliases (optional)</b></td>
+                                <td>list of type string</td>
+                                <td>Alternative names used to identify this Intrusion Set.</td>
+                              </tr>
+                              <tr>
+                                <td><b>first_seen (optional)</b></td>
+                                <td>timestamp</td>
+                                <td>The time that this Intrusion Set was first seen.
+                                    This property is a summary property of data from sightings and other data
+                                    that may or may not be available in STIX. If new sightings are received that are
+                                    earlier than the first seen timestamp, the object may be updated to account for the new data.</td>
+                              </tr>
+                              <tr>
+                                <td><b>last_seen (optional)</b></td>
+                                <td>timestamp</td>
+                                <td>The time that this Intrusion Set was last seen. This property is a summary property of data
+                                    from sightings and other data that may or may not be available in STIX. If new sightings are
+                                    received that are later than the last seen timestamp, the object may be updated to account for the new data.</td>
+                              </tr>
+                            <tr>
+                                <td><b>goals (optional)</b></td>
+                                <td>list of type string</td>
+                                <td>The high level goals of this Intrusion Set, namely, what are they trying to do.
+                                    For example, they may be motivated by personal gain, but their goal is to steal
+                                    credit card numbers. To do this, they may execute specific Campaigns that have detailed objectives
+                                    like compromising point of sale systems at a large retailer. Another example: to gain
+                                    information about latest merger and IPO information from ACME Bank.</td>
+                              </tr>
+                            <tr>
+                                <td><b>resource_level (optional)</b></td>
+                                <td>open-vocab</td>
+                                <td>This defines the organizational level at which this Intrusion Set typically works,
+                                    which in turn determines the resources available to this Intrusion Set for use in
+                                    an attack. This is an open vocabulary and values SHOULD come from the
+                                    attack-resource-level-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>primary_motivation (optional)</b></td>
+                                <td>open-vocab</td>
+                                <td>The primary reason, motivation, or purpose behind this Intrusion Set. The motivation
+                                    is why the Intrusion Set wishes to achieve the goal (what they are trying to achieve).
+                                    For example, an Intrusion Set with a goal to disrupt the finance sector in a country might
+                                    be motivated by ideological hatred of capitalism.
+                                    This is an open vocabulary and values SHOULD come from the attack-motivation-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>secondary_motivations (optional)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>The secondary reasons, motivations, or purposes behind this Intrusion Set.
+                                These motivations can exist as an equal or near-equal cause to the primary motivation.
+                                    However, it does not replace or necessarily magnify the primary motivation, but it
+                                    might indicate additional context. This is an open vocabulary and values
+                                    SHOULD come from the attack-motivation-ov vocabulary.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Source</th>
+                                <th>Relationship Type</th>
+                                <th>Target</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>intrusion-set</td>
+                                <td>attributed-to</td>
+                                <td>threat-actor</td>
+                                <td>This Relationship describes that the related Threat Actor is involved in carrying out the Intrusion Set.
+                                    For example, an attributed-to Relationship from the Red Orca Intrusion Set to the Urban Fowl Threat Actor
+                                    means that the actor carried out or was involved in some of the activity described by the Intrusion Set.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>intrusion-set</td>
+                                <td>targets</td>
+                                <td>identity, vulnerability</td>
+                                <td>This Relationship describes that the Intrusion Set uses exploits of the related Vulnerability
+                                    or targets the type of victims described by the related Identity. For example, a targets Relationship
+                                    from the Red Orca Intrusion Set to a Vulnerability in a blogging platform indicates that attacks
+                                    performed as part of Red Orca often exploit that Vulnerability. Similarly, a targets Relationship
+                                    from the Red Orca Intrusion Set to an Identity describing the energy sector in the United States
+                                    means that the Intrusion Set typically carries out attacks against targets in that sector.</td>
+                              </tr>
+                            <tr>
+                                <td>intrusion-set</td>
+                                <td>uses</td>
+                                <td>attack-pattern, malware, tool</td>
+                                <td>This Relationship describes that attacks carried out as part of the Intrusion Set typically
+                                    use the related Attack Pattern, Malware, or Tool. For example, a uses Relationship
+                                    from the Red Orca Intrusion Set to the xInject Malware indicates that xInject is
+                                    often used during attacks attributed to that Intrusion Set.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>

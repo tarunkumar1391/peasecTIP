@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Indicator</div>
+                <div class="card-body">
+                    <p class="card-text">Indicators contain a pattern that can be used to detect suspicious or malicious cyber activity.
+                        For example, an Indicator may be used to represent a set of malicious domains and use the STIX Patterning Language
+                        (STIX™ Version 2.0. Part 5: STIX Patterning) to specify these domains.
+                        The Indicator SDO contains a simple textual description, the Kill Chain Phases that it detects behavior in,
+                        a time window for when the Indicator is valid or useful, and a required pattern property to capture a structured
+                        detection pattern. Conforming STIX implementations MUST support the STIX Patterning Language as defined in
+                        STIX™ Version 2.0. Part 5: STIX Patterning. While each structured pattern language has different syntax and
+                        potentially different  semantics, in general an Indicator is considered to have "matched"
+                        (or been "sighted") when the conditions specified in the structured pattern are satisfied in
+                        whatever context they are evaluated in.
+                        Relationships from the Indicator can describe the malicious or suspicious behavior that it directly
+                        detects (Malware, Tool, and Attack Pattern) as well as the Campaigns, Intrusion Sets, and Threat Actors
+                        that it might indicate the presence of.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of this property MUST be indicator.</td>
+                              </tr>
+                              <tr>
+                                <td><b>labels (required)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>This property is an Open Vocabulary that specifies the type of indicator.
+                                    This is an open vocabulary and values SHOULD come from the indicator-label-ov vocabulary.</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (optional)</b></td>
+                                <td>string</td>
+                                <td>A name used to identify the Indicator.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>A description that provides more details and context about the Indicator,
+                                    potentially including its purpose and its key characteristics.</td>
+                              </tr>
+                              <tr>
+                                <td><b>pattern (required)</b></td>
+                                <td>string</td>
+                                <td>The detection pattern for this Indicator is a STIX Pattern as specified in STIX™ Version 2.0. Part 5: STIX Patterning.</td>
+                              </tr>
+                              <tr>
+                                <td><b>valid_from (required)</b></td>
+                                <td>timestamp</td>
+                                <td>The time from which this Indicator should be considered valuable intelligence.</td>
+                              </tr>
+                            <tr>
+                                <td><b>valid_until (optional)</b></td>
+                                <td>timestamp</td>
+                                <td>The time at which this Indicator should no longer be considered valuable intelligence.
+                                    If the valid_until property is omitted, then there is no constraint on the latest time
+                                    for which the Indicator should be used. </td>
+                              </tr>
+                            <tr>
+                                <td><b>kill_chain_phases (optional)</b></td>
+                                <td>list of type kill-chain-phase</td>
+                                <td>The kill chain phase(s) to which this Indicator corresponds. </td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Source</th>
+                                <th>Relationship Type</th>
+                                <th>Target</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>indicator</td>
+                                <td>indicates</td>
+                                <td>attack-pattern, campaign, intrusion-set, malware, threat-actor, tool</td>
+                                <td>This Relationship describes that the Indicator can detect evidence of the related Campaign,
+                                    Intrusion Set, or Threat Actor. This evidence may not be direct: for example, the Indicator
+                                    may detect secondary evidence of the Campaign, such as malware or behavior commonly used by that Campaign.
+                                    For example, an indicates Relationship from an Indicator to a Campaign object representing Glass Gazelle
+                                    means that the Indicator is capable of detecting evidence of Glass Gazelle, such as command and control
+                                    IPs commonly used by that Campaign.  </td>
+                              </tr>
+
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>

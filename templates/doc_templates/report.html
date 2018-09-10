@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Report</div>
+                <div class="card-body">
+                    <p class="card-text">Reports are collections of threat intelligence focused on one or more topics,
+                        such as a description of a threat actor, malware, or attack technique, including context and
+                        related details. They are used to group related threat intelligence together so that it can be
+                        published as a comprehensive cyber threat story.
+                        The Report SDO contains a list of references to SDOs and SROs (the CTI objects included in the
+                        report) along with a textual description and the name of the report.
+                        For example, a threat report produced by ACME Defense Corp. discussing the Glass
+                        Gazelle campaign should be represented using Report. The Report itself would contain
+                        the narrative of the report while the Campaign SDO and any related SDOs
+                        (e.g., Indicators for the Campaign, Malware it uses, and the associated Relationships)
+                        would be referenced in the report contents.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of this property MUST be report.</td>
+                              </tr>
+                              <tr>
+                                <td><b>labels (required)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>This property is an Open Vocabulary that specifies the primary subject of this report.
+                                    This is an open vocabulary and values SHOULD come from the report-label-ov vocabulary.</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (required)</b></td>
+                                <td>string</td>
+                                <td>A name used to identify the Report.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>A description that provides more details and context about the Report,
+                                    potentially including its purpose and its key characteristics</td>
+                              </tr>
+                              <tr>
+                                <td><b>published (required)</b></td>
+                                <td>timestamp</td>
+                                <td>The date that this Report object was officially published by the creator of this report.
+                                    The publication date (public release, legal release, etc.) may be different than the date
+                                    the report was created or shared internally (the date in the created property).</td>
+
+                              </tr>
+                            <tr>
+                                <td><b>object_refs (required)</b></td>
+                                <td>list of type identifier</td>
+                                <td>Specifies the STIX Objects that are referred to by this Report.</td>
+
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>

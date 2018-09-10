@@ -7,6 +7,10 @@ $(function() {
 
 $('[data-toggle="tooltip"]').tooltip();
 
+$('[data-toggle="popover"]').popover({html:true});
+
+
+
 // identity - dropdowns
 $('#select_sector').change(function(){
     var values = $(this).val();

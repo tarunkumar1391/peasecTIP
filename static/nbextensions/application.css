@@ -41,7 +41,7 @@ h1 img {
   right: 0;
 }*/
 
-svg {
+#canvas {
   border: solid 1px black;
   width: 100%;
   height: auto;

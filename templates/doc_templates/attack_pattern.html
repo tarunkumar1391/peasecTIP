@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Attack Pattern</div>
+                <div class="card-body">
+                    <p class="card-text">Attack Patterns are a type of TTP that describe ways that adversaries attempt to compromise targets.
+                        Attack Patterns are used to help categorize attacks, generalize specific attacks to the patterns that they follow,
+                        and provide detailed information about how attacks are performed. An example of an attack pattern is "spear phishing":
+                        a common type of attack where an attacker sends a carefully crafted e-mail message to a party with the intent of getting
+                        them to click a link or open an attachment to deliver malware. Attack Patterns can also be more specific; spear phishing
+                        as practiced by a particular threat actor (e.g., they might generally say that the target won a contest) can also be an
+                        Attack Pattern.
+                        The Attack Pattern SDO contains textual descriptions of the pattern along with references to externally-defined
+                        taxonomies of attacks such as CAPEC [CAPEC]. Relationships from Attack Pattern can be used to relate it to what it
+                        targets (Vulnerabilities and Identities) and which tools and malware use it (Tool and Malware).
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of property field MUST be attack-pattern.</td>
+                              </tr>
+                              <tr>
+                                <td><b>external_references (optional)</b></td>
+                                <td>list of type external-reference</td>
+                                <td>A list of external references which refer to non-STIX information.
+                                    This property MAY be used to provide one or more Attack Pattern identifiers,
+                                    such as a CAPEC ID. When specifying a CAPEC ID, the source_name property of the
+                                    external reference MUST be set to capec and the external_id property MUST be formatted as CAPEC-[id].</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (required)</b></td>
+                                <td>string</td>
+                                <td>A name used to identify the Attack Pattern.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>A description that provides more details and context about the Attack Pattern,
+                                    potentially including its purpose and its key characteristics.</td>
+                              </tr>
+                              <tr>
+                                <td><b>kill_chain_phases (optional)</b></td>
+                                <td>list of type kill-chain-phase</td>
+                                <td>The list of Kill Chain Phases for which this Attack Pattern is used.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Source</th>
+                                <th>Relationship Type</th>
+                                <th>Target</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>attack-pattern</td>
+                                <td>targets</td>
+                                <td>identity, vulnerability</td>
+                                <td>This Relationship describes that this Attack Pattern typically targets the type of victims or
+                                    vulnerability represented by the related Identity or Vulnerability object.
+                                    For example, a targets Relationship linking an Attack Pattern for SQL injection to an Identity object
+                                    representing domain administrators means that the form of SQL injection characterized by the Attack Pattern
+                                    targets domain administrators in order to achieve its objectives.
+                                    Another example is a Relationship linking an Attack Pattern for SQL injection to a Vulnerability
+                                    in blogging software means that the particular SQL injection attack exploits that vulnerability.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>attack-pattern</td>
+                                <td>uses</td>
+                                <td>malware, tool</td>
+                                <td>This Relationship describes that the related Malware or Tool is used to perform the behavior identified in the Attack Pattern.
+                                    For example, a uses Relationship linking an Attack Pattern for a distributed denial of service (DDoS)
+                                    to a Tool for Low Orbit Ion Cannon (LOIC) indicates that the tool can be used to perform those DDoS attacks.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-lg-2">
+            <div class="card">
+                <div class="card-header">Kill chain phases</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                        <thead>
+                                          <tr>
+                                            <th>Property Name</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr>
+                                            <td>kill_chain_name (required)</td>
+                                            <td>string</td>
+                                            <td>The name of the kill chain. The value of this property SHOULD be all
+                                                lowercase (where lowercase is defined by the locality conventions) and
+                                                SHOULD use hyphens instead of spaces or underscores as word separators.
+                                            </td>
+                                          </tr>
+                                          <tr>
+                                            <td>phase_name (required)</td>
+                                            <td>string</td>
+                                            <td>The name of the phase in the kill chain. The value of this property SHOULD be all
+                                                lowercase (where lowercase is defined by the locality conventions) and SHOULD use
+                                                hyphens instead of spaces or underscores as word separators.
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mt-lg-2">
+            <div class="card">
+                <div class="card-header">External references</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                          <tr>
+                                            <th>Property Name</th>
+                                            <th>Type</th>
+                                            <th>Description</th>
+                                          </tr>
+                                        </thead>
+                                <tbody>
+                                          <tr>
+                                            <td><b>source_name (required)</b></td>
+                                            <td>string</td>
+                                            <td>The source within which the external-reference is defined (system, registry, organization, etc.).</td>
+                                          </tr>
+                                          <tr>
+                                            <td><b>description (optional)</b></td>
+                                            <td>string</td>
+                                            <td>A human readable description.</td>
+                                          </tr>
+                                          <tr>
+                                            <td><b>url (optional)</b></td>
+                                            <td>string</td>
+                                            <td>A URL reference to an external resource [RFC3986].</td>
+                                          </tr>
+                                          <tr>
+                                            <td><b>hashes (optional)</b></td>
+                                            <td>hashes</td>
+                                            <td>Specifies a dictionary of hashes for the contents of the url. This SHOULD be provided when the url property is present.</td>
+                                          </tr>
+                                          <tr>
+                                            <td><b>external_id (optional)</b></td>
+                                            <td>string</td>
+                                            <td>An identifier for the external reference content.</td>
+                                          </tr>
+                                        </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>

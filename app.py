@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, flash, url_for, redirect, session, g, json, jsonify, send_file
 from flask_mysqldb import MySQL
 from stix2 import *
-import stix2viz
-import requests
 from datetime import datetime
 
 
@@ -5764,10 +5762,156 @@ def create_bundle():
     else:
         return redirect(url_for('index'))
 
-@app.route('/visualize',methods=['GET'])
-def visualize():
+@app.route('/publishedfeeds',methods=['POST'])
+def publishedfeeds():
+    if g.user:
+        if request.method == 'POST':
+            table = request.json['table']
+            cur= mysql.connection.cursor()
+            cur.execute("select type AS TYPE, count(*)  AS feedcount from stix_content where created_by=%s group by type",
+                        (g.user,))
+            result = cur.fetchall()
+            final_result = []
+            for row in result:
+                rowdict = {
+                    'type': row[0],
+                    'feedcount': row[1]
+                }
+                final_result.append(rowdict)
+            output = json.dumps(final_result, sort_keys=True, indent=4)
 
-    return render_template('view.html')
+            return output
+
+    else:
+        return redirect(url_for('index'))
+
+#########################################################
+################ Documentation links ####################
+@app.route('/info/attack-pattern')
+def info_attackpattern():
+    if g.user:
+
+        return render_template('doc_templates/attack_pattern.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/campaign')
+def info_campaign():
+    if g.user:
+
+        return render_template('doc_templates/campaign.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/identity')
+def info_identity():
+    if g.user:
+
+        return render_template('doc_templates/identity.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/indicator')
+def info_indicator():
+    if g.user:
+
+        return render_template('doc_templates/indicator.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/intrusionset')
+def info_intrusionset():
+    if g.user:
+
+        return render_template('doc_templates/intrusionset.html')
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/info/malware')
+def info_malware():
+    if g.user:
+
+        return render_template('doc_templates/malware.html')
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/info/report')
+def info_report():
+    if g.user:
+
+        return render_template('doc_templates/report.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/threatactor')
+def info_threatactor():
+    if g.user:
+
+        return render_template('doc_templates/threatactor.html')
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/info/tool')
+def info_tool():
+    if g.user:
+
+        return render_template('doc_templates/tool.html')
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/info/vulnerability')
+def info_vulnerability():
+    if g.user:
+
+        return render_template('doc_templates/vulnerability.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/behavior')
+def info_behavior():
+    if g.user:
+
+        return render_template('doc_templates/behavior.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/collection')
+def info_collection():
+    if g.user:
+
+        return render_template('doc_templates/collection.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/malwareaction')
+def info_malwareaction():
+    if g.user:
+
+        return render_template('doc_templates/malwareaction.html')
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/info/malwarefamily')
+def info_malwarefamily():
+    if g.user:
+
+        return render_template('doc_templates/malwarefamily.html')
+    else:
+        return redirect(url_for('index'))
+
+
+@app.route('/info/malwareinstance')
+def info_malwareinstance():
+    if g.user:
+
+        return render_template('doc_templates/malwareinstance.html')
+    else:
+        return redirect(url_for('index'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

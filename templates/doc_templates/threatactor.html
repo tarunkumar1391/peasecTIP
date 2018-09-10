@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Threat Actor</div>
+                <div class="card-body">
+                    <p class="card-text">Threat Actors are actual individuals, groups, or organizations believed to be
+                        operating with malicious intent. A Threat Actor is not an Intrusion Set but may support or be
+                        affiliated with various Intrusion Sets, groups, or organizations over time. Threat Actors leverage
+                        their resources, and possibly the resources of an Intrusion Set, to conduct attacks and run
+                        Campaigns against targets. Threat Actors can be characterized by their motives, capabilities,
+                        goals, sophistication level, past activities, resources they have access to, and their role
+                        in the organization. </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of this property MUST be threat-actor.</td>
+                              </tr>
+                              <tr>
+                                <td><b>labels (required)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>This property specifies the type of Threat Actor. This is an open
+                                    vocabulary and values SHOULD come from the threat-actor-label-ov vocabulary.</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (required)</b></td>
+                                <td>string</td>
+                                <td>A name used to identify this Threat Actor or Threat Actor group.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>A description that provides more details and context about the Threat Actor,
+                                    potentially including its purpose and its key characteristics.</td>
+                              </tr>
+                              <tr>
+                                <td><b>aliases (optional)</b></td>
+                                <td>list of type string</td>
+                                <td>A list of other names that this Threat Actor is believed to use.</td>
+                              </tr>
+                              <tr>
+                                <td><b>roles (optional)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>A list of roles the Threat Actor plays. This is an open vocabulary
+                                    and the values SHOULD come from the threat-actor-role-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>goals (optional)</b></td>
+                                <td>list of type string</td>
+                                <td>The high level goals of this Threat Actor, namely, what are they trying to do.
+                                    For example, they may be motivated by personal gain, but their goal is to steal
+                                    credit card numbers. To do this, they may execute specific Campaigns that have detailed
+                                    objectives like compromising point of sale systems at a large retailer.</td>
+                              </tr>
+                            <tr>
+                                <td><b>sophistication (optional)</b></td>
+                                <td>open-vocab</td>
+                                <td>The skill, specific knowledge, special training, or expertise a Threat Actor must have to perform the attack.
+                                    This is an open vocabulary and values SHOULD come from the threat-actor-sophistication-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>resource_level (optional)</b></td>
+                                <td>open-vocab</td>
+                                <td>This defines the organizational level at which this Threat Actor typically works,
+                                    which in turn determines the resources available to this Threat Actor for use in an
+                                    attack. This attribute is linked to the sophistication property — a specific resource
+                                    level implies that the Threat Actor has access to at least a specific sophistication level.
+                                    This is an open vocabulary and values SHOULD come from the attack-resource-level-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>primary_motivation (optional)</b></td>
+                                <td>open-vocab</td>
+                                <td>The primary reason, motivation, or purpose behind this Threat Actor.
+                                    The motivation is why the Threat Actor wishes to achieve the goal
+                                    (what they are trying to achieve). For example, a Threat Actor with a goal to disrupt
+                                    the finance sector in a country might be motivated by ideological hatred of capitalism.
+                                    This is an open vocabulary and values SHOULD come from the attack-motivation-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>secondary_motivations (optional)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>The secondary reasons, motivations, or purposes behind this Threat Actor. These motivations
+                                    can exist as an equal or near-equal cause to the primary motivation. However, it does
+                                    not replace or necessarily magnify the primary motivation, but it might indicate
+                                    additional context. This is an open vocabulary and values SHOULD come from the attack-motivation-ov vocabulary.</td>
+                              </tr>
+                            <tr>
+                                <td><b>personal_motivations (optional)</b></td>
+                                <td>list of type open-vocab</td>
+                                <td>The personal reasons, motivations, or purposes of the Threat Actor regardless of organizational goals.
+                                    Personal motivation, which is independent of the organization’s goals, describes what impels an
+                                    individual to carry out an attack. Personal motivation may align with the organization’s motivation—as
+                                    is common with activists—but more often it supports personal goals. For example, an individual analyst
+                                    may join a Data Miner corporation because his or her skills may align with the corporation’s objectives.
+                                    But the analyst most likely performs his or her daily work toward those objectives for personal reward
+                                    in the form of a paycheck. The motivation of personal reward may be even stronger for Threat Actors who
+                                    commit illegal acts, as it is more difficult for someone to cross that line purely for altruistic reasons.
+                                    This is an open vocabulary and values SHOULD come from the attack-motivation-ov vocabulary.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Source</th>
+                                <th>Relationship Type</th>
+                                <th>Target</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>threat-actor</td>
+                                <td>attributed-to</td>
+                                <td>identity</td>
+                                <td>This Relationship describes that the Threat Actor's real identity is the related Identity.
+                                    For example, an attributed-to Relationship from the jay-sm17h Threat Actor to the John Smith
+                                    Identity means that the actor known as jay-sm17h is John Smith.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>threat-actor</td>
+                                <td>impersonates</td>
+                                <td>identity</td>
+                                <td>This Relationship describes that the Threat Actor impersonates the related Identity.
+                                    For example, an  impersonates Relationship from the gh0st Threat Actor to the ACME Corp.
+                                    Identity means that the actor known as gh0st impersonates ACME Corp.</td>
+                              </tr>
+                            <tr>
+                                <td>threat-actor</td>
+                                <td>targets</td>
+                                <td>identity, vulnerability</td>
+                                <td>This Relationship describes that the Threat Actor uses exploits of the related Vulnerability or
+                                    targets the type of victims described by the related Identity.For example, a targets Relationship
+                                    from the jay-sm17h Threat Actor to a Vulnerability in a blogging platform indicates that attacks
+                                    performed by John Smith often exploit that Vulnerability.
+                                    Similarly, a targets Relationship from the jay-sm17h Threat Actor to an Identity describing
+                                    the energy sector in the United States means that John Smith often carries out attacks against targets in that sector.</td>
+                              </tr>
+                            <tr>
+                                <td>threat-actor</td>
+                                <td>uses</td>
+                                <td>attack-pattern, malware, tool</td>
+                                <td>This Relationship describes that attacks carried out as part of the Threat Actor typically
+                                    use the related Attack Pattern, Malware, or Tool. For example, a uses Relationship from the
+                                    jay-sm17h Threat Actor to the xInject Malware indicates that xInject is often used by John Smith.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>

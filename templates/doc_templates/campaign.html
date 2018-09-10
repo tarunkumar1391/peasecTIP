@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+</head>
+<body>
+
+<div class="container-fluid">
+{#header section#}
+        <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+                <div class="navbar-collapse">
+                    <ul class=" nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                    </li>
+                  </ul>
+                </div>
+                    <div class="clearfix mr-lg-5 pr-lg-5">
+                        <ul class="nav navbar-nav mr-lg-auto float-lg-right " >
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="true" aria-expanded="false"><span class="glyphicons glyphicons-user">
+                            </span>{{ session['user'] }}</a>
+                            <div class="dropdown-menu">
+                              <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                          </li>
+                        </ul>
+                    </div>
+            </nav>
+            <!--/.Navbar-->
+       </div>
+{#    body content section#}
+    <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">Campaign</div>
+                <div class="card-body">
+                    <p class="card-text">A Campaign is a grouping of adversarial behaviors that describes a set of malicious activities
+                        or attacks (sometimes called waves) that occur over a period of time against a specific set of targets.
+                        Campaigns usually have well defined objectives and may be part of an Intrusion Set.
+                        Campaigns are often attributed to an intrusion set and threat actors. The threat actors may reuse
+                        known infrastructure from the intrusion set or may set up new infrastructure specific for conducting that campaign.
+                        Campaigns can be characterized by their objectives and the incidents they cause, people or resources they target,
+                        and the resources (infrastructure, intelligence, Malware, Tools, etc.) they use.
+                        For example, a Campaign could be used to describe a crime syndicate's attack using a specific
+                        variant of malware and new C2 servers against the executives of ACME Bank during the summer of 2016
+                        in order to gain secret information about an upcoming merger with another bank.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row mt-lg-2">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Properties</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Property Name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td><b>type (required)</b></td>
+                                <td>string</td>
+                                <td>The value of this property MUST be campaign.</td>
+                              </tr>
+                              <tr>
+                                <td><b>name (required)</b></td>
+                                <td>string</td>
+                                <td>A name used to identify the Campaign.</td>
+                              </tr>
+                              <tr>
+                                <td><b>description (optional)</b></td>
+                                <td>string</td>
+                                <td>A description that provides more details and context about the Campaign,
+                                    potentially including its purpose and its key characteristics.</td>
+                              </tr>
+                              <tr>
+                                <td><b>aliases (optional)</b></td>
+                                <td>list of type string</td>
+                                <td>Alternative names used to identify this Campaign</td>
+                              </tr>
+                              <tr>
+                                <td><b>first_seen (optional)</b></td>
+                                <td>timestamp</td>
+                                <td>The time that this Campaign was first seen.
+                                    This property is a summary property of data from sightings and other data
+                                    that may or may not be available in STIX. If new sightings are received that
+                                    are earlier than the first seen timestamp, the object may be updated to account for the new data.</td>
+                              </tr>
+                              <tr>
+                                <td><b>last_seen (optional)</b></td>
+                                <td>timestamp</td>
+                                <td>The time that this Campaign was last seen.
+                                    This property is a summary property of data from sightings and other data that
+                                    may or may not be available in STIX. If new sightings are received that are later
+                                    than the last seen timestamp, the object may be updated to account for the new data.</td>
+                              </tr>
+                            <tr>
+                                <td><b>objective (optional)</b></td>
+                                <td>string</td>
+                                <td>This property defines the Campaign’s primary goal, objective, desired outcome,
+                                    or intended effect — what the Threat Actor hopes to accomplish with this Campaign.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">Relationships</div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                            <thead>
+                              <tr>
+                                <th>Source</th>
+                                <th>Relationship Type</th>
+                                <th>Target</th>
+                                <th>Description</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>campaign</td>
+                                <td>attributed-to</td>
+                                <td>intrusion-set, threat-actor</td>
+                                <td>This Relationship describes that the Intrusion Set or Threat Actor that is involved in carrying out the Campaign.
+                                    For example, an attributed-to Relationship from the Glass Gazelle Campaign to the Urban Fowl Threat Actor
+                                    means that the actor carried out or was involved in some of the activity described by the Campaign.
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>campaign</td>
+                                <td>targets</td>
+                                <td>identity, vulnerability</td>
+                                <td>This Relationship describes that the Campaign uses exploits of the related Vulnerability
+                                    or targets the type of victims described by the related Identity.
+                                    For example, a targets Relationship from the Glass Gazelle Campaign to a Vulnerability
+                                    in a blogging platform indicates that attacks performed as part of Glass Gazelle often
+                                    exploit that Vulnerability.
+                                    Similarly, a targets Relationship from the Glass Gazelle Campaign to a Identity
+                                    describing the energy sector in the United States means that the Campaign typically
+                                    carries out attacks against targets in that sector.</td>
+                              </tr>
+                            <tr>
+                                <td>campaign</td>
+                                <td>uses</td>
+                                <td>attack-pattern, malware, tool</td>
+                                <td>This Relationship describes that attacks carried out as part of the Campaign typically use the related Attack Pattern, Malware, or Tool.
+                                    For example, a uses Relationship from the Glass Gazelle Campaign to the xInject Malware
+                                    indicates that xInject is often used during attacks attributed to that Campaign.</td>
+                              </tr>
+                            </tbody>
+                          </table>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#        footer section#}
+       <div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>
