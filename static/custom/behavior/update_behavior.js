@@ -16,9 +16,9 @@ $(function() {
             type: 'POST',
             success: function(response) {
 
-                $("#success-alert1").fadeTo(2000, 500).slideUp(500, function(){
-               $("#success-alert1").slideUp(500);
-                });
+                $( "#success-alert1" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400, function () {
+                     window.location.reload();
+                 } );
                 console.log(response);
             },
             error: function(error) {
@@ -38,14 +38,15 @@ $(function() {
             data: $('#ext_refform').serialize(),
             type: 'POST',
             success: function(response) {
-                 $("#success-alert3").fadeTo(2000, 500).slideUp(500, function(){
-               $("#success-alert3").slideUp(500);
-                });
+                 $( "#success-alert2" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400, function () {
+                     window.location.reload();
+                 } );
+
                 console.log(response);
             },
             error: function(error) {
-                $("#error-alert3").fadeTo(2000, 500).slideUp(500, function(){
-               $("#error-alert3").slideUp(500);
+                $("#error-alert2").fadeTo(2000, 500).slideUp(500, function(){
+               $("#error-alert2").slideUp(500);
                 });
                 console.log(error);
             }
@@ -71,12 +72,12 @@ $('#attr_key').change(function(){
     var key = $(this).val();
     $('#attr_val1').change(function () {
         var val1 = $(this).val();
-        var result = key +":" + val1;
+        var result = key + ":" + val1 ;
         $('#attr_val_final').val(result);
     });
     $('#attr_val2').change(function () {
         var val2 = $(this).val();
-        var result = key +":" + val2;
+        var result = key + ":" + val2 ;
         $('#attr_val_final').val(result);
     });
 
@@ -86,6 +87,16 @@ $('#attr_key').change(function(){
 $('#name').change(function () {
     var value = $(this).val();
     $('#name_final').val(value);
+});
+
+$('#technique_refs').change(function () {
+    var value = $(this).val();
+    $('#tech_refs_final').val(value);
+});
+
+$('#action_refs').change(function () {
+    var value = $(this).val();
+    $('#action_refs_final').val(value);
 });
 
  /* Enable URL function*/

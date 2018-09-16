@@ -2,29 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62822a07-8042-4e57-8b3c-51647f255cbd" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/update_templates/malware-instance.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/view_templates/malware-instance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/10c79e1d-ecc7-4334-9757-6ef168f5102d.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/10c79e1d-ecc7-4334-9757-6ef168f5102d.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/behavior/update_behavior.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/behavior/update_behavior.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/collection/update_collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/collection/update_collection.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/collection/view_collection.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/collection/view_collection.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/custom/customscript.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/customscript.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/malware-action/update_malwareaction.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-action/update_malwareaction.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/malware-action/view_malwareaction.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-action/view_malwareaction.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/malware-family/view_malwarefamily.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-family/view_malwarefamily.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/static/custom/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/custom/styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/object_modaltemplate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/object_modaltemplate.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/update_templates/attack-pattern.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/attack-pattern.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/update_templates/behavior.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/behavior.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/update_templates/collection.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/collection.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/update_templates/malware-action.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/malware-action.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/update_templates/malware-family.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/malware-family.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/attack-pattern.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/attack-pattern.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/campaign.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/campaign.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/identity.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/identity.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/indicator.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/indicator.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/malware.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/malware.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/report.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/report.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/threat-actor.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/threat-actor.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/tool.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/tool.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/view_templates/vulnerability.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/vulnerability.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/update_templates/malware-instance.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/update_templates/malware-instance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/behavior.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/behavior.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/collection.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/collection.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/malware-action.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/malware-action.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/malware-instance.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/malware-instance.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +37,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/peasecTIP$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1536366174417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz" />
     <SUITE FILE_PATH="coverage/peasecTIP$setup.coverage" NAME="setup Coverage Results" MODIFIED="1536368508796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/cti-stix-visualization-master" />
-    <SUITE FILE_PATH="coverage/peasecTIP$peasecTIP.coverage" NAME="peasecTIP Coverage Results" MODIFIED="1536439654073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/peasecTIP$peasecTIP.coverage" NAME="peasecTIP Coverage Results" MODIFIED="1537129787030" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -69,7 +71,14 @@
         <item name="peasecTIP@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="peasecTIP: schema" type="c314c289:MysqlImplModel$Schema" />
-        <item name="bundle: table" type="98d5ac3d:MysqlImplModel$Table" />
+        <item name="autonomous-system: table" type="98d5ac3d:MysqlImplModel$Table" />
+      </path>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="peasecTIP@localhost" type="feb32156:DbDataSourceImpl" />
+        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
+        <item name="peasecTIP: schema" type="c314c289:MysqlImplModel$Schema" />
+        <item name="collection: table" type="98d5ac3d:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
@@ -79,89 +88,118 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="6" />
-          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.10" value="2" />
+          <entry key="project.open.time.11" value="2" />
           <entry key="project.open.time.12" value="3" />
+          <entry key="project.open.time.21" value="1" />
           <entry key="project.open.time.29" value="1" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.8" value="2" />
-          <entry key="project.open.time.9" value="6" />
-          <entry key="project.opened" value="14" />
+          <entry key="project.open.time.9" value="8" />
+          <entry key="project.opened" value="20" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cell" value="39" />
-          <entry key="css" value="139" />
-          <entry key="html" value="36770" />
-          <entry key="js" value="7106" />
-          <entry key="py" value="33639" />
-          <entry key="sql" value="2240" />
+          <entry key="cell" value="46" />
+          <entry key="css" value="205" />
+          <entry key="html" value="48502" />
+          <entry key="js" value="10520" />
+          <entry key="py" value="51207" />
+          <entry key="sql" value="2504" />
           <entry key="txt" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="CSS" value="139" />
-          <entry key="HTML" value="36770" />
-          <entry key="JavaScript" value="7106" />
+          <entry key="CSS" value="205" />
+          <entry key="HTML" value="48502" />
+          <entry key="JavaScript" value="10520" />
           <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="33609" />
-          <entry key="SQL" value="1757" />
-          <entry key="Scratch" value="552" />
+          <entry key="Python" value="51177" />
+          <entry key="SQL" value="1828" />
+          <entry key="Scratch" value="752" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="aliases" value="5" />
-          <entry key="api-call" value="3" />
-          <entry key="artifact" value="4" />
+          <entry key="aliases" value="7" />
+          <entry key="analysis-metadata" value="1" />
+          <entry key="api-call" value="4" />
+          <entry key="artifact" value="11" />
           <entry key="attack-pattern" value="1" />
-          <entry key="autonomous-system" value="2" />
-          <entry key="behavior" value="1" />
+          <entry key="autonomous-system" value="3" />
+          <entry key="behavior" value="8" />
+          <entry key="binary-obfuscation" value="1" />
           <entry key="bundle" value="2" />
-          <entry key="campaign" value="2" />
+          <entry key="campaign" value="3" />
+          <entry key="capability" value="1" />
           <entry key="cfg" value="1" />
-          <entry key="css" value="4" />
-          <entry key="directory" value="1" />
-          <entry key="domain-name" value="1" />
-          <entry key="email-addr" value="2" />
-          <entry key="email-message" value="1" />
-          <entry key="external_references" value="2" />
-          <entry key="file" value="4" />
-          <entry key="html" value="245" />
-          <entry key="identity" value="2" />
-          <entry key="indicator" value="1" />
-          <entry key="js" value="174" />
-          <entry key="kill_chain_phase" value="1" />
-          <entry key="malware" value="1" />
-          <entry key="malware-action" value="4" />
-          <entry key="malware-family" value="3" />
+          <entry key="collection" value="6" />
+          <entry key="css" value="5" />
+          <entry key="directory" value="2" />
+          <entry key="domain-name" value="2" />
+          <entry key="dynamic-features" value="1" />
+          <entry key="email-addr" value="3" />
+          <entry key="email-message" value="2" />
+          <entry key="external_references" value="7" />
+          <entry key="field-data" value="1" />
+          <entry key="file" value="8" />
+          <entry key="html" value="345" />
+          <entry key="identity" value="4" />
+          <entry key="indicator" value="2" />
+          <entry key="intrusion-set" value="1" />
+          <entry key="ipv4-addr" value="1" />
+          <entry key="ipv6-addr" value="1" />
+          <entry key="js" value="215" />
+          <entry key="json" value="1" />
+          <entry key="kill_chain_phase" value="2" />
+          <entry key="mac-addr" value="1" />
+          <entry key="malware" value="2" />
+          <entry key="malware-action" value="8" />
+          <entry key="malware-development-environment" value="1" />
+          <entry key="malware-family" value="8" />
+          <entry key="malware-instance" value="1" />
           <entry key="md" value="3" />
-          <entry key="name" value="4" />
+          <entry key="name" value="9" />
+          <entry key="network-traffic" value="1" />
           <entry key="png" value="1" />
-          <entry key="process" value="1" />
-          <entry key="process-tree-node" value="2" />
-          <entry key="py" value="4" />
-          <entry key="refined_capability" value="1" />
-          <entry key="relationship" value="1" />
+          <entry key="process" value="2" />
+          <entry key="process-tree-node" value="3" />
+          <entry key="py" value="5" />
+          <entry key="refined_capability" value="2" />
+          <entry key="relationship" value="3" />
           <entry key="report" value="1" />
-          <entry key="sql" value="27" />
-          <entry key="stix_content" value="9" />
-          <entry key="user-account" value="1" />
+          <entry key="rnc" value="1" />
+          <entry key="signature-metadata" value="1" />
+          <entry key="software" value="3" />
+          <entry key="sql" value="31" />
+          <entry key="static-features" value="1" />
+          <entry key="stix_content" value="11" />
+          <entry key="svg" value="1" />
+          <entry key="threat-actor" value="3" />
+          <entry key="url" value="1" />
+          <entry key="user-account" value="2" />
+          <entry key="users" value="1" />
+          <entry key="windows-registry-key" value="1" />
+          <entry key="x509-certificate" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="CSS" value="4" />
-          <entry key="Database Element" value="63" />
-          <entry key="HTML" value="245" />
+          <entry key="CSS" value="5" />
+          <entry key="Database Element" value="152" />
+          <entry key="HTML" value="345" />
           <entry key="Image" value="1" />
           <entry key="Ini" value="1" />
-          <entry key="JavaScript" value="174" />
+          <entry key="JSON" value="1" />
+          <entry key="JavaScript" value="215" />
           <entry key="Markdown" value="3" />
-          <entry key="Python" value="4" />
+          <entry key="Python" value="5" />
+          <entry key="RNG Compact" value="1" />
           <entry key="SQL" value="2" />
-          <entry key="Scratch" value="25" />
+          <entry key="SVG" value="1" />
+          <entry key="Scratch" value="29" />
         </counts>
       </usages-collector>
     </session>
@@ -171,145 +209,103 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="487">
-              <caret line="355" column="35" lean-forward="true" selection-start-line="355" selection-start-column="35" selection-end-line="355" selection-end-column="35" />
+            <state relative-caret-position="312">
+              <caret line="8265" column="47" selection-start-line="8265" selection-start-column="47" selection-end-line="8265" selection-end-column="47" />
               <folding>
                 <element signature="e#0#113#0" expanded="true" />
-                <element signature="e#2603#2872#0" />
-                <element signature="e#3148#3417#0" />
-                <element signature="e#13240#16112#0" />
-                <element signature="e#16161#17010#0" />
-                <element signature="e#17059#17910#0" />
-                <element signature="e#17960#19790#0" />
-                <element signature="e#19844#20832#0" />
-                <element signature="e#20880#22580#0" />
-                <element signature="e#22627#23437#0" />
-                <element signature="e#22974#23270#0" />
-                <element signature="e#23490#24581#0" />
-                <element signature="e#24626#26393#0" />
-                <element signature="e#26447#28350#0" />
-                <element signature="e#28403#29264#0" />
-                <element signature="e#29313#31338#0" />
-                <element signature="e#31389#32175#0" />
-                <element signature="e#32230#34103#0" />
-                <element signature="e#40187#41167#0" />
-                <element signature="e#41212#41901#0" />
-                <element signature="e#41955#42569#0" />
-                <element signature="e#42266#42413#0" />
-                <element signature="e#42622#43396#0" />
-                <element signature="e#43468#44224#0" />
-                <element signature="e#44275#44983#0" />
-                <element signature="e#45038#93007#0" />
-                <element signature="e#93062#98607#0" />
-                <element signature="e#98664#115172#0" />
-                <element signature="e#233933#236327#0" />
-                <element signature="e#236384#237714#0" />
-                <element signature="e#237771#239163#0" />
-                <element signature="e#239221#241131#0" />
-                <element signature="e#241193#242873#0" />
-                <element signature="e#242929#244640#0" />
-                <element signature="e#244695#246592#0" />
-                <element signature="e#246653#248702#0" />
-                <element signature="e#248755#250468#0" />
-                <element signature="e#250530#252326#0" />
-                <element signature="e#252387#254361#0" />
-                <marker date="1536430815781" expanded="true" signature="255579:256061" ph="..." />
-                <marker date="1536430815781" expanded="true" signature="257208:257210" ph="..." />
+                <element signature="e#13981#16853#0" />
+                <element signature="e#16902#17751#0" />
+                <element signature="e#17800#18651#0" />
+                <element signature="e#18701#20531#0" />
+                <element signature="e#20585#21573#0" />
+                <element signature="e#21621#23321#0" />
+                <element signature="e#23368#24178#0" />
+                <element signature="e#24231#25322#0" />
+                <element signature="e#25367#27134#0" />
+                <element signature="e#27188#29091#0" />
+                <element signature="e#29144#30005#0" />
+                <element signature="e#30054#32160#0" />
+                <element signature="e#44813#71081#0" />
+                <element signature="e#71136#75269#0" />
+                <element signature="e#76838#88225#0" />
+                <element signature="e#75604#76261#0" />
+                <element signature="e#76310#77126#0" />
+                <element signature="e#77175#77941#0" />
+                <element signature="e#77991#78807#0" />
+                <element signature="e#78861#79802#0" />
+                <element signature="e#79850#80499#0" />
+                <element signature="e#80546#81301#0" />
+                <element signature="e#81354#82334#0" />
+                <element signature="e#82379#83068#0" />
+                <element signature="e#83122#83736#0" />
+                <element signature="e#83789#84563#0" />
+                <element signature="e#84635#87306#0" />
+                <element signature="e#104548#152629#0" />
+                <element signature="e#152684#158229#0" />
+                <element signature="e#158323#174608#0" />
+                <element signature="e#175035#194668#0" />
+                <element signature="e#175259#176240#0" />
+                <element signature="e#176298#176619#0" />
+                <element signature="e#176677#176998#0" />
+                <element signature="e#177057#177705#0" />
+                <element signature="e#177768#178089#0" />
+                <element signature="e#178146#178794#0" />
+                <element signature="e#178850#179171#0" />
+                <element signature="e#179233#179552#0" />
+                <element signature="e#179606#180254#0" />
+                <element signature="e#180317#180971#0" />
+                <element signature="e#181033#181252#0" />
+                <element signature="e#181310#181964#0" />
+                <element signature="e#182024#186967#0" />
+                <element signature="e#187046#192335#0" />
+                <element signature="e#328622#330335#0" />
+                <element signature="e#332254#334228#0" />
+                <element signature="e#363463#367565#0" />
+                <element signature="e#369420#377551#0" />
+                <marker date="1537129772302" expanded="true" signature="331952:332567" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/home.html">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/view_templates/behavior.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="491">
-              <caret line="602" column="122" selection-start-line="602" selection-start-column="122" selection-end-line="602" selection-end-column="122" />
+            <state relative-caret-position="525">
+              <caret line="68" column="20" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/collection">
+          <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+            <state>
+              <filtering enabled="true" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/view_templates/collection.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="60" column="66" selection-start-line="60" selection-start-column="66" selection-end-line="60" selection-end-column="66" />
               <folding>
-                <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#0;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-                <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/nbextensions/application.js">
+        <entry file="file://$PROJECT_DIR$/templates/update_templates/collection.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1641">
-              <caret line="289" column="5" selection-start-line="289" selection-start-column="5" selection-end-line="289" selection-end-column="5" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/nbextensions/application.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1335">
-              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/view.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/templates/object_modaltemplate.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1277">
-              <caret line="1890" column="48" lean-forward="true" selection-start-line="1890" selection-start-column="10" selection-end-line="1890" selection-end-column="48" />
-              <folding>
-                <element signature="n#div#11;n#!!top" />
-                <element signature="n#div#12;n#!!top" />
-                <element signature="n#div#13;n#!!top" />
-                <element signature="n#div#14;n#!!top" />
-                <element signature="n#div#15;n#!!top" />
-                <element signature="n#div#16;n#!!top" />
-                <element signature="n#div#17;n#!!top" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/static/custom/customscript.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="507" column="29" selection-start-line="507" selection-start-column="29" selection-end-line="507" selection-end-column="29" />
-              <folding>
-                <element signature="e#790#1377#0" />
-                <element signature="e#2855#4234#0" />
-                <element signature="e#4427#6260#0" />
-                <element signature="e#6298#10893#0" />
-                <element signature="e#13169#13919#0" />
-                <element signature="e#14565#15840#0" />
-              </folding>
+            <state relative-caret-position="755">
+              <caret line="1581" column="99" selection-start-line="1581" selection-start-column="99" selection-end-line="1581" selection-end-column="99" />
             </state>
           </provider>
         </entry>
@@ -326,26 +322,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>bodycontent</find>
-      <find>created</find>
-      <find>form-group</find>
-      <find>delete_x509</find>
-      <find>emaddr_output_response</find>
-      <find>killchainphase</find>
-      <find>data-require</find>
-      <find>fetch</find>
-      <find>linkifyHeader</find>
-      <find>pasted</find>
-      <find>uploader</find>
-      <find>header</find>
-      <find>chosen-files</find>
-      <find>styles</find>
-      <find>legend-content</find>
-      <find>canvas</find>
-      <find>legend</find>
-      <find>link</find>
-      <find>selection</find>
-      <find>reset</find>
+      <find>/delete_directory</find>
+      <find>MAEC</find>
+      <find>/create_beh</find>
+      <find>collection</find>
+      <find>/create_collection</find>
+      <find>/update_collection</find>
+      <find>$PROJECT_DIR$/../../..</find>
+      <find>fielddata</find>
+      <find>/delete_arti</find>
+      <find>/delete_artifact</find>
+      <find>_capability</find>
+      <find>/deleteext</find>
+      <find>/insertname</find>
+      <find>$PROJECT_DIR$/../../../delete</find>
+      <find>/insert_malware</find>
+      <find>/create_malware</find>
+      <find>/delete_dynamic</find>
+      <find>/delete_processtreenode</find>
+      <find>/delete_file</find>
+      <find>/deletefield</find>
+      <find>/deletealiases</find>
+      <find>/deletecapa</find>
+      <find>/deleteextref</find>
+      <find>/delete_static</find>
+      <find>/delete_binary</find>
+      <find>/delete_malwaredeve</find>
+      <find>/delete_analysis</find>
+      <find>/delete_signature</find>
+      <find>$PROJECT_DIR$/../../../update</find>
+      <find>$PROJECT_DIR$/../../../view</find>
     </findStrings>
     <replaceStrings>
       <replace>form-group row</replace>
@@ -361,57 +367,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/static/custom/vulnerability/view_vulnerability.js" />
-        <option value="$PROJECT_DIR$/static/custom/vulnerability/update_vulnerability.js" />
-        <option value="$PROJECT_DIR$/static/custom/threat-actor/view_threatactor.js" />
-        <option value="$PROJECT_DIR$/templates/update_templates/threat-actor.html" />
-        <option value="$PROJECT_DIR$/static/custom/threat-actor/update_threatactor.js" />
-        <option value="$PROJECT_DIR$/templates/index.html" />
-        <option value="$PROJECT_DIR$/static/custom/behavior/update_behavior.js" />
-        <option value="$PROJECT_DIR$/templates/update_templates/behavior.html" />
-        <option value="$PROJECT_DIR$/static/custom/behavior/view_behavior.js" />
-        <option value="$PROJECT_DIR$/static/custom/collection/view_collection.js" />
-        <option value="$PROJECT_DIR$/static/custom/collection/update_collection.js" />
-        <option value="$PROJECT_DIR$/templates/update_templates/collection.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/behavior.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/collection.html" />
-        <option value="$PROJECT_DIR$/static/custom/malware-action/view_malwareaction.js" />
-        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/10c79e1d-ecc7-4334-9757-6ef168f5102d/console.sql" />
-        <option value="$PROJECT_DIR$/templates/view_templates/malware-action.html" />
-        <option value="$PROJECT_DIR$/static/custom/malware-family/view_malwarefamily.js" />
-        <option value="$PROJECT_DIR$/static/custom/malware-action/update_malwareaction.js" />
-        <option value="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" />
-        <option value="$PROJECT_DIR$/templates/view_templates/malware-instance.html" />
-        <option value="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" />
-        <option value="$PROJECT_DIR$/templates/update_templates/malware-family.html" />
-        <option value="$PROJECT_DIR$/templates/update_templates/malware-action.html" />
-        <option value="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" />
-        <option value="$PROJECT_DIR$/templates/update_templates/malware-instance.html" />
-        <option value="$PROJECT_DIR$/static/custom/styles.css" />
-        <option value="$PROJECT_DIR$/templates/view_templates/attack-pattern.html" />
-        <option value="$PROJECT_DIR$/templates/update_templates/attack-pattern.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/campaign.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/identity.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/indicator.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/malware.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/report.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/tool.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/vulnerability.html" />
         <option value="$PROJECT_DIR$/static/custom/relationship/view_relationship.js" />
         <option value="$PROJECT_DIR$/templates/view_templates/relationship.html" />
         <option value="$PROJECT_DIR$/static/custom/relationship/update_relationship.js" />
         <option value="$PROJECT_DIR$/templates/update_templates/relationship.html" />
         <option value="$PROJECT_DIR$/templates/view_templates/threat-actor.html" />
-        <option value="$PROJECT_DIR$/templates/object_modaltemplate.html" />
         <option value="$PROJECT_DIR$/static/cti-stix-visualization-master/application.js" />
         <option value="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz/stix2viz/stix2viz.js" />
-        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/templates/view.html" />
-        <option value="$PROJECT_DIR$/static/nbextensions/application.css" />
         <option value="$PROJECT_DIR$/static/nbextensions/application.js" />
-        <option value="$PROJECT_DIR$/static/custom/customscript.js" />
+        <option value="$PROJECT_DIR$/static/nbextensions/application.css" />
+        <option value="$PROJECT_DIR$/static/custom/graph.js" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/attack_pattern.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/campaign.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/identity.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/indicator.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/intrusionset.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/malware.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/report.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/threatactor.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/tool.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/vulnerability.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/behavior.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/collection.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/malwarefamily.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/malwareaction.html" />
+        <option value="$PROJECT_DIR$/templates/doc_templates/malwareinstance.html" />
+        <option value="$PROJECT_DIR$/static/custom/styles.css" />
+        <option value="$APPLICATION_CONFIG_DIR$/consoles/db/10c79e1d-ecc7-4334-9757-6ef168f5102d/console.sql" />
+        <option value="$PROJECT_DIR$/static/custom/collection/view_collection.js" />
+        <option value="$PROJECT_DIR$/templates/view_templates/malware-action.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-action/view_malwareaction.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/behavior.html" />
+        <option value="$PROJECT_DIR$/static/custom/behavior/update_behavior.js" />
+        <option value="$PROJECT_DIR$/static/custom/malware-action/update_malwareaction.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/malware-action.html" />
+        <option value="$PROJECT_DIR$/templates/update_templates/collection.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js" />
+        <option value="$PROJECT_DIR$/templates/update_templates/malware-family.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-family/view_malwarefamily.js" />
+        <option value="$PROJECT_DIR$/templates/view_templates/malware-family.html" />
+        <option value="$PROJECT_DIR$/templates/update_templates/malware-instance.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js" />
+        <option value="$PROJECT_DIR$/templates/view_templates/malware-instance.html" />
+        <option value="$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js" />
         <option value="$PROJECT_DIR$/templates/home.html" />
+        <option value="$PROJECT_DIR$/static/custom/customscript.js" />
+        <option value="$PROJECT_DIR$/templates/object_modaltemplate.html" />
+        <option value="$PROJECT_DIR$/static/custom/collection/update_collection.js" />
+        <option value="$PROJECT_DIR$/templates/view_templates/behavior.html" />
+        <option value="$PROJECT_DIR$/templates/view_templates/collection.html" />
+        <option value="$PROJECT_DIR$/app.py" />
       </list>
     </option>
   </component>
@@ -421,11 +427,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="2443" />
-    <option name="y" value="13" />
-    <option name="width" value="928" />
-    <option name="height" value="507" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1920" />
+    <option name="width" value="960" />
+    <option name="height" value="540" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -446,6 +451,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -469,19 +475,18 @@
               <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
               <item name="custom" type="462c0819:PsiDirectoryNode" />
-              <item name="attack_pattern" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
-              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="custom" type="462c0819:PsiDirectoryNode" />
-              <item name="malware-instance" type="462c0819:PsiDirectoryNode" />
+              <item name="collection" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
               <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="view_templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
@@ -491,7 +496,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -522,7 +526,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.setup">
+  <component name="RunManager" selected="Flask server.peasecTIP">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="peasecTIP" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -617,58 +621,33 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1919" y="0" width="1922" height="1081" extended-state="7" />
+    <frame x="1919" y="0" width="1922" height="1081" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49679896" visible="true" weight="0.21664888" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49679896" visible="true" weight="0.21354167" />
       <window_info id="Structure" order="1" sideWeight="0.503201" side_tool="true" weight="0.1307364" />
       <window_info id="Favorites" order="2" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
       <window_info anchor="bottom" id="SQL Generator" order="0" weight="0.32869378" />
       <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49786553" weight="0.32846716" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.4903949" visible="true" weight="0.21063608" />
+      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49786553" weight="0.32790223" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.49010417" visible="true" weight="0.21995927" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="7" weight="0.32976446" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.3295099" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" />
       <window_info anchor="bottom" id="Database Changes" order="10" weight="0.3295099" />
       <window_info anchor="bottom" id="Python Console" order="11" />
       <window_info anchor="bottom" id="Terminal" order="12" weight="0.3295099" />
-      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5096051" side_tool="true" weight="0.21627408" />
-      <window_info anchor="bottom" id="Database Console" order="14" weight="0.36402568" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5052083" side_tool="true" weight="0.20162933" />
+      <window_info anchor="bottom" id="Database Console" order="14" sideWeight="0.49479166" weight="0.20162933" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.12753469" />
+      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.12708333" />
     </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4986339" visible="true" weight="0.1307364" />
-      <window_info id="Structure" order="1" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
-      <window_info id="Favorites" order="2" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
-      <window_info anchor="bottom" id="SQL Generator" order="0" weight="0.32869378" />
-      <window_info anchor="bottom" id="Message" order="1" />
-      <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49786553" weight="0.32846716" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.4903949" visible="true" weight="0.18561001" />
-      <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="7" weight="0.32976446" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Database Changes" order="10" weight="0.3295099" />
-      <window_info anchor="bottom" id="Python Console" order="11" />
-      <window_info anchor="bottom" id="Terminal" order="12" />
-      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5096051" side_tool="true" weight="0.21627408" />
-      <window_info anchor="bottom" id="Database Console" order="14" weight="0.36402568" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" visible="true" weight="0.122732125" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -676,127 +655,29 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="jinja2-line">
-          <url>file://$PROJECT_DIR$/templates/home.html</url>
-          <line>203</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/static/custom/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="3" column="21" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/update_templates/attack-pattern.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="143" column="112" selection-start-line="143" selection-start-column="112" selection-end-line="143" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/aliases">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/network-traffic">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/campaign">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/process">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/identity.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="422">
-          <caret line="67" column="14" selection-start-line="67" selection-start-column="14" selection-end-line="67" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/identity">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/process-tree-node">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/indicator">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/indicator.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="59" column="8" lean-forward="true" selection-start-line="59" selection-start-column="8" selection-end-line="68" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/intrusion-set.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="678">
-          <caret line="67" column="14" selection-start-line="67" selection-start-column="14" selection-end-line="67" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/malware">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/report.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/tool.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/vulnerability.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="615">
-          <caret line="68" column="14" selection-start-line="68" selection-start-column="14" selection-end-line="68" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/external_references">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/malware.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-553">
-          <caret line="59" column="8" selection-start-line="59" selection-start-column="8" selection-end-line="68" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/report">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/refined_capability">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
@@ -810,130 +691,38 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/relationship.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="48" column="27" lean-forward="true" selection-start-line="48" selection-start-column="27" selection-end-line="48" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/relationship/view_relationship.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/update_templates/campaign.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="123" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/malware/update_malware.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="158">
-          <caret line="245" column="16" selection-start-line="245" selection-start-column="16" selection-end-line="247" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/relationship/update_relationship.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/update_templates/relationship.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="495">
-          <caret line="88" column="93" selection-start-line="88" selection-start-column="93" selection-end-line="88" selection-end-column="93" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/campaign.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="58" column="8" lean-forward="true" selection-start-line="58" selection-start-column="8" selection-end-line="67" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/threat-actor.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="48" column="28" selection-start-line="48" selection-start-column="28" selection-end-line="48" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view_templates/attack-pattern.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="120" column="73" lean-forward="true" selection-start-line="120" selection-start-column="52" selection-end-line="120" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/attack_pattern/view_attackpattern.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-90">
-          <caret line="117" column="12" lean-forward="true" selection-start-line="117" selection-start-column="12" selection-end-line="117" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/attack-pattern">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/x509-certificate">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/bundle">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/windows-registry-key">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/setup.cfg">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/d3/d3.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/d3/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor />
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/setup.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/require.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="15708" selection-start-line="4" selection-start-column="15696" selection-end-line="4" selection-end-column="15708" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/stix2viz/stix2viz.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/domReady.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/index.html">
-      <provider selected="true" editor-type-id="text-editor">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/users">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
-          <caret selection-end-line="51" />
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/user-account">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/url">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
@@ -944,148 +733,457 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/stix2viz/stix2viz/icons/stix2_indicator_icon_tiny_round_v1.png">
-      <provider selected="true" editor-type-id="images" />
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/static-features">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.py">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/software">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/signature-metadata">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/behavior/update_behavior.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="487">
-          <caret line="355" column="35" lean-forward="true" selection-start-line="355" selection-start-column="35" selection-end-line="355" selection-end-column="35" />
+        <state relative-caret-position="555">
+          <caret line="98" column="25" selection-start-line="98" selection-start-column="25" selection-end-line="98" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/threat-actor">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/threat-actor/update_threatactor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-586" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/threat-actor.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-585" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/report.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1591" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-action/update_malwareaction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="53" column="26" selection-start-line="53" selection-start-column="26" selection-end-line="53" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/file">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/malware-action">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/malware-action.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="309" column="84" selection-start-line="309" selection-start-column="84" selection-end-line="309" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/behavior/view_behavior.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="117" column="29" lean-forward="true" selection-start-line="117" selection-start-column="29" selection-end-line="117" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/malware-action.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="2382" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/collection/view_collection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="584">
+          <caret line="475" column="4" selection-start-line="475" selection-start-column="4" selection-end-line="835" selection-end-column="7" />
           <folding>
-            <element signature="e#0#113#0" expanded="true" />
-            <element signature="e#2603#2872#0" />
-            <element signature="e#3148#3417#0" />
-            <element signature="e#13240#16112#0" />
-            <element signature="e#16161#17010#0" />
-            <element signature="e#17059#17910#0" />
-            <element signature="e#17960#19790#0" />
-            <element signature="e#19844#20832#0" />
-            <element signature="e#20880#22580#0" />
-            <element signature="e#22627#23437#0" />
-            <element signature="e#22974#23270#0" />
-            <element signature="e#23490#24581#0" />
-            <element signature="e#24626#26393#0" />
-            <element signature="e#26447#28350#0" />
-            <element signature="e#28403#29264#0" />
-            <element signature="e#29313#31338#0" />
-            <element signature="e#31389#32175#0" />
-            <element signature="e#32230#34103#0" />
-            <element signature="e#40187#41167#0" />
-            <element signature="e#41212#41901#0" />
-            <element signature="e#41955#42569#0" />
-            <element signature="e#42266#42413#0" />
-            <element signature="e#42622#43396#0" />
-            <element signature="e#43468#44224#0" />
-            <element signature="e#44275#44983#0" />
-            <element signature="e#45038#93007#0" />
-            <element signature="e#93062#98607#0" />
-            <element signature="e#98664#115172#0" />
-            <element signature="e#233933#236327#0" />
-            <element signature="e#236384#237714#0" />
-            <element signature="e#237771#239163#0" />
-            <element signature="e#239221#241131#0" />
-            <element signature="e#241193#242873#0" />
-            <element signature="e#242929#244640#0" />
-            <element signature="e#244695#246592#0" />
-            <element signature="e#246653#248702#0" />
-            <element signature="e#248755#250468#0" />
-            <element signature="e#250530#252326#0" />
-            <element signature="e#252387#254361#0" />
-            <marker date="1536430815781" expanded="true" signature="255579:256061" ph="..." />
-            <marker date="1536430815781" expanded="true" signature="257208:257210" ph="..." />
+            <element signature="e#642#1373#0" />
+            <element signature="e#1425#2124#0" />
+            <element signature="e#2168#3011#0" />
+            <element signature="e#3057#3687#0" />
+            <element signature="e#3732#4421#0" />
+            <element signature="e#4469#5756#0" />
+            <element signature="e#5795#7210#0" />
+            <element signature="e#7254#7948#0" />
+            <element signature="e#7992#8686#0" />
+            <element signature="e#8729#9280#0" />
+            <element signature="e#9330#10936#0" />
+            <element signature="e#10978#12334#0" />
+            <element signature="e#12377#13141#0" />
+            <element signature="e#13179#13730#0" />
+            <element signature="e#13777#15246#0" />
+            <element signature="e#15301#16055#0" />
+            <element signature="e#16106#17535#0" />
+            <element signature="e#17689#31440#0" />
+            <element signature="e#18369#19089#0" />
+            <element signature="e#19145#19870#0" />
+            <element signature="e#19918#20635#0" />
+            <element signature="e#20685#21411#0" />
+            <element signature="e#21460#22184#0" />
+            <element signature="e#22236#22959#0" />
+            <element signature="e#23002#23721#0" />
+            <element signature="e#23769#24488#0" />
+            <element signature="e#24536#25255#0" />
+            <element signature="e#25302#26020#0" />
+            <element signature="e#26074#26803#0" />
+            <element signature="e#26849#27571#0" />
+            <element signature="e#27618#28341#0" />
+            <element signature="e#28383#29101#0" />
+            <element signature="e#29152#29874#0" />
+            <element signature="e#29933#30657#0" />
+            <element signature="e#30712#31431#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/application.css">
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-action/view_malwareaction.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1335">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="330">
+          <caret line="22" column="50" lean-forward="true" selection-start-line="22" selection-start-column="8" selection-end-line="22" selection-end-column="50" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/view.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="12" column="12" lean-forward="true" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/artifact">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/nbextensions/application.js">
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/external_references">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/malware-family">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-family/update_malwarefamily.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1641">
-          <caret line="289" column="5" selection-start-line="289" selection-start-column="5" selection-end-line="289" selection-end-column="5" />
+        <state relative-caret-position="30">
+          <caret line="29" column="78" selection-start-line="29" selection-start-column="78" selection-end-line="29" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/malware-family.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="308" column="115" selection-start-line="308" selection-start-column="115" selection-end-line="308" selection-end-column="115" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#select#0;n#div#0;n#div#2;n#form#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/name">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/aliases">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/malware-family.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="46" column="28" lean-forward="true" selection-end-line="274" selection-end-column="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/custom/malware-instance/update_malwareinstance.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2148">
-          <caret line="825" column="16" selection-start-line="825" selection-start-column="16" selection-end-line="826" selection-end-column="35" />
+        <state relative-caret-position="1050">
+          <caret line="326" selection-start-line="326" selection-end-line="326" />
+          <folding>
+            <element signature="e#1270#2091#0" />
+            <element signature="e#2826#3467#0" />
+            <element signature="e#3536#4172#0" />
+            <element signature="e#4240#4882#0" />
+            <element signature="e#5074#5719#0" />
+            <element signature="e#5806#6468#0" />
+            <element signature="e#7095#7743#0" />
+            <element signature="e#24282#24873#0" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/static/custom/attack_pattern/update_attackpattern.js">
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/malware-instance.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="262">
+          <caret line="897" column="66" selection-start-line="897" selection-start-column="66" selection-end-line="897" selection-end-column="66" />
+          <folding>
+            <element signature="n#select#0;n#div#0;n#div#5;n#form#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#select#0;n#div#0;n#div#6;n#form#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#select#0;n#div#0;n#div#7;n#form#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#select#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#1;n#div#1;n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#form#6;n#div#0;n#div#1;n#div#0;n#div#2;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-family/view_malwarefamily.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="330">
-          <caret line="22" column="14" lean-forward="true" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+          <caret line="22" column="62" lean-forward="true" selection-end-line="165" selection-end-column="3" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/object_modaltemplate.html">
+    <entry file="file://$PROJECT_DIR$/static/custom/malware-instance/view_malwareinstance.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1277">
-          <caret line="1890" column="48" lean-forward="true" selection-start-line="1890" selection-start-column="10" selection-end-line="1890" selection-end-column="48" />
+        <state relative-caret-position="360">
+          <caret line="449" column="55" selection-start-line="449" selection-start-column="55" selection-end-line="449" selection-end-column="55" />
           <folding>
-            <element signature="n#div#11;n#!!top" />
-            <element signature="n#div#12;n#!!top" />
-            <element signature="n#div#13;n#!!top" />
-            <element signature="n#div#14;n#!!top" />
-            <element signature="n#div#15;n#!!top" />
-            <element signature="n#div#16;n#!!top" />
-            <element signature="n#div#17;n#!!top" />
+            <element signature="e#102#1468#0" />
+            <element signature="e#1551#2917#0" />
+            <element signature="e#3015#4383#0" />
+            <element signature="e#104#1468#0" />
+            <element signature="e#1565#2930#0" />
+            <element signature="e#7400#8763#0" />
+            <element signature="e#8866#10240#0" />
+            <element signature="e#10350#11724#0" />
+            <element signature="e#11817#13190#0" />
+            <element signature="e#13315#14688#0" />
+            <element signature="e#14826#16199#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/malware-instance.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="563" column="125" selection-start-line="563" selection-start-column="125" selection-end-line="563" selection-end-column="125" />
+          <folding>
+            <element signature="n#div#2;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#3;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#3;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#0;n#div#4;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#5;n#div#0;n#body#0;n#html#0;n#!!top" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/custom/customscript.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="507" column="29" selection-start-line="507" selection-start-column="29" selection-end-line="507" selection-end-column="29" />
+        <state relative-caret-position="461">
+          <caret line="450" column="60" selection-start-line="450" selection-start-column="60" selection-end-line="450" selection-end-column="60" />
           <folding>
-            <element signature="e#790#1377#0" />
-            <element signature="e#2855#4234#0" />
-            <element signature="e#4427#6260#0" />
-            <element signature="e#6298#10893#0" />
-            <element signature="e#13169#13919#0" />
-            <element signature="e#14565#15840#0" />
+            <element signature="e#2913#4292#0" />
+            <element signature="e#11034#11784#0" />
+            <element signature="e#11868#13143#0" />
+            <element signature="e#13204#13728#0" />
+            <element signature="e#13798#14536#0" />
+            <element signature="e#14628#15854#0" />
+            <element signature="e#15947#17014#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/behavior">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/home.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="602" column="122" selection-start-line="602" selection-start-column="122" selection-end-line="602" selection-end-column="122" />
+        <state relative-caret-position="2396">
+          <caret line="301" column="87" selection-start-line="301" selection-start-column="87" selection-end-line="301" selection-end-column="87" />
           <folding>
-            <element signature="n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#nav#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#1;n#div#0;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#2;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
             <element signature="n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#table#0;n#div#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#div#1;n#div#0;n#div#3;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#1;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#4;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#4;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#1;n#div#0;n#div#4;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#5;n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/object_modaltemplate.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="446">
+          <caret line="1225" column="85" selection-start-line="1225" selection-start-column="85" selection-end-line="1225" selection-end-column="85" />
+          <folding>
+            <element signature="n#div#3;n#!!top" />
+            <element signature="n#div#4;n#!!top" />
+            <element signature="n#div#5;n#!!top" />
+            <element signature="n#div#6;n#!!top" />
+            <element signature="n#div#7;n#!!top" />
+            <element signature="n#div#8;n#!!top" />
+            <element signature="n#div#9;n#!!top" />
+            <element signature="n#div#10;n#!!top" />
+            <element signature="n#div#11;n#!!top" />
+            <element signature="n#div#12;n#!!top" />
+            <element signature="n#div#14;n#!!top" />
+            <element signature="n#div#15;n#!!top" />
+            <element signature="n#div#16;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/collection.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="755">
+          <caret line="1581" column="99" selection-start-line="1581" selection-start-column="99" selection-end-line="1581" selection-end-column="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/collection">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/collection/update_collection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="1070" column="49" selection-start-line="1070" selection-start-column="49" selection-end-line="1070" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/behavior.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3765">
+          <caret line="431" column="85" selection-start-line="431" selection-start-column="68" selection-end-line="431" selection-end-column="85" />
+          <folding>
+            <element signature="n#select#0;n#div#0;n#div#0;n#form#0;n#div#0;n#div#1;n#div#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/behavior.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="68" column="20" selection-start-line="68" selection-start-column="20" selection-end-line="68" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/collection.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="60" column="66" selection-start-line="60" selection-start-column="66" selection-end-line="60" selection-end-column="66" />
+          <folding>
+            <element signature="n#div#0;n#div#1;n#div#2;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="8265" column="47" selection-start-line="8265" selection-start-column="47" selection-end-line="8265" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#113#0" expanded="true" />
+            <element signature="e#13981#16853#0" />
+            <element signature="e#16902#17751#0" />
+            <element signature="e#17800#18651#0" />
+            <element signature="e#18701#20531#0" />
+            <element signature="e#20585#21573#0" />
+            <element signature="e#21621#23321#0" />
+            <element signature="e#23368#24178#0" />
+            <element signature="e#24231#25322#0" />
+            <element signature="e#25367#27134#0" />
+            <element signature="e#27188#29091#0" />
+            <element signature="e#29144#30005#0" />
+            <element signature="e#30054#32160#0" />
+            <element signature="e#44813#71081#0" />
+            <element signature="e#71136#75269#0" />
+            <element signature="e#76838#88225#0" />
+            <element signature="e#75604#76261#0" />
+            <element signature="e#76310#77126#0" />
+            <element signature="e#77175#77941#0" />
+            <element signature="e#77991#78807#0" />
+            <element signature="e#78861#79802#0" />
+            <element signature="e#79850#80499#0" />
+            <element signature="e#80546#81301#0" />
+            <element signature="e#81354#82334#0" />
+            <element signature="e#82379#83068#0" />
+            <element signature="e#83122#83736#0" />
+            <element signature="e#83789#84563#0" />
+            <element signature="e#84635#87306#0" />
+            <element signature="e#104548#152629#0" />
+            <element signature="e#152684#158229#0" />
+            <element signature="e#158323#174608#0" />
+            <element signature="e#175035#194668#0" />
+            <element signature="e#175259#176240#0" />
+            <element signature="e#176298#176619#0" />
+            <element signature="e#176677#176998#0" />
+            <element signature="e#177057#177705#0" />
+            <element signature="e#177768#178089#0" />
+            <element signature="e#178146#178794#0" />
+            <element signature="e#178850#179171#0" />
+            <element signature="e#179233#179552#0" />
+            <element signature="e#179606#180254#0" />
+            <element signature="e#180317#180971#0" />
+            <element signature="e#181033#181252#0" />
+            <element signature="e#181310#181964#0" />
+            <element signature="e#182024#186967#0" />
+            <element signature="e#187046#192335#0" />
+            <element signature="e#328622#330335#0" />
+            <element signature="e#332254#334228#0" />
+            <element signature="e#363463#367565#0" />
+            <element signature="e#369420#377551#0" />
+            <marker date="1537129772302" expanded="true" signature="331952:332567" ph="..." />
           </folding>
         </state>
       </provider>

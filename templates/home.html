@@ -91,8 +91,15 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">STIX</a>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" data-toggle="tab" href="#viewstixfeed">View Feeds</a>
+                                <a class="dropdown-item" data-toggle="tab" href="#viewstixfeed">View content</a>
                                 <a class="dropdown-item" data-toggle="tab" href="#visualizefeed">Visualize</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">MAEC</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" data-toggle="tab" href="#viewMaecfeed">View content</a>
+                                <a class="dropdown-item" data-toggle="tab" href="#convertMaec2Stix">Convert MAEC5 to STIX2</a>
                             </div>
                         </li>
                     </ul>
@@ -355,6 +362,10 @@ may have components such as strings that are common across all members of the fa
                                                                                   <option value="malware">malware</option>
                                                                                   <option value="threat-actor">threat-actor</option>
                                                                                   <option value="tool">tool</option>
+                                                                                  <option value="behavior">Behavior</option>
+                                                                                  <option value="malware-action">malware-action</option>
+                                                                                  <option value="malware-family">malware-family</option>
+                                                                                  <option value="malware-instance">malware-instance</option>
                                                                               </select>
                                                                                 <input type="hidden" name="type" value="relationship">
                                                                             </div>
@@ -673,6 +684,212 @@ may have components such as strings that are common across all members of the fa
                                                             </div>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="viewMaecfeed" class="tab-pane fade" data-toggle="tab"><br>
+                                    <div class="row pb-lg-5">
+                                        <div class="col-lg-6">
+                                          <div class="card">
+                                                <div class="card-header"> MAEC</div>
+                                                <div class="card-body" style="height: auto;">
+                                                    <div class="table-responsive-sm">
+                                                            <table class="table table-hover table-sm" style="overflow-y: scroll">
+                                                                  <thead>
+                                                                    <tr class="d-flex">
+                                                                      <th class="col-lg-1">Id</th>
+                                                                      <th class="col-lg-2">Type</th>
+                                                                      <th class="col-lg-3">MAEC ID</th>
+                                                                      <th class="col-lg-2">Reference ID</th>
+                                                                      <th class="col-lg-2">Timestamp</th>
+                                                                      <th  class="col-lg-2">Actions</th>
+                                                                    </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                  {% for dat in maeccontentdata %}
+                                                                    <tr class="d-flex" row_id="{{ dat.id }}">
+                                                                      <td class="col-lg-1">{{dat.id}}</td>
+                                                                        <td class="col-lg-2" id="maec_type">{{dat.type}}</td>
+                                                                        <td class="col-lg-3" id="maec_id">{{dat.maec_id}}</td>
+                                                                        <td class="col-lg-2">{{dat.reference_id}}</td>
+                                                                        <td class="col-lg-2">{{dat.timestamp}}</td>
+                                                                      <td class="col-lg-2"><button data-toggle="modal" data-target="#view_maeccontent" data-toggle="tooltip" title="View feed"
+                                                                                                   type="button" id="view_content"
+                                                                                                   class="btn btn-primary btn-sm mr-1">
+                                                                              <i class="material-icons">info</i></button>
+                                                                          </td>
+                                                                    </tr>
+                                                                  {% endfor %}
+                                                                  </tbody>
+                                                            </table>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="card ">
+                                                <div class="card-header">Create Package</div>
+                                                <div class="card-body">
+                                                    <form method="post" id="packageform">
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-12 col-form-label">Allows creation of package which puts together all the objects and their relationships.
+                                                            Can be used for visualization and further analysis.
+                                                            </label>
+                                                            <div class="col-lg-12">
+                                                                <select multiple class="form-control form-control-sm" size="8" id="package" required>
+                                                                    <option>Choose an option</option>
+                                                                    {% for data in maeccontentdata %}
+                                                                    <option value="" reftype="{{ data.type }}" refmaec="{{ data.maec_id }}">{{ data.id }}--{{ data.maec_id }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            <input type="hidden" id="final_package" name="package">
+                                                            </div>
+                                                        </div>
+                                                    <div class="form-group row">
+                                                        <div class="offset-lg-1">
+                                                            <input type="submit" class="btn btn-primary" id="create_bundle" value="Submit">
+                                                            <input type="reset" class="btn btn-light" value="Reset">
+                                                        </div>
+
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="card mt-lg-1" >
+                                                <div class="card-header">List of packages</div>
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <div class="table-responsive-sm">
+                                                        <table class="table table-hover table-sm" style="overflow-y: scroll">
+                                                              <thead>
+                                                                <tr>
+                                                                  <th>Id</th>
+                                                                  <th>Package Id</th>
+                                                                  <th >Actions</th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody>
+                                                              {% for dat in packagedata %}
+                                                                <tr  row_id="{{ dat.id }}">
+                                                                  <td >{{dat.id}}</td>
+                                                                    <td  id="bundle_id">{{dat.package_id}}</td>
+                                                                  <td><button data-toggle="modal" data-target="#view_packagecontent" data-toggle="tooltip" title="View package"
+                                                                                               type="button" id="view_packagedata"
+                                                                                               class="btn btn-primary btn-sm mr-1">
+                                                                          <i class="material-icons">info</i></button>
+                                                                      </td>
+                                                                </tr>
+                                                              {% endfor %}
+                                                              </tbody>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="convertMaec2Stix" class="tab-pane fade" data-toggle="tab"><br>
+                                    <div class="row pb-lg-5">
+                                        <div class="col-lg-6">
+                                          <div class="card">
+                                                <div class="card-header"> STIX</div>
+                                                <div class="card-body" style="height: auto;">
+                                                    <div class="table-responsive-sm">
+                                                            <table class="table table-hover table-sm" style="overflow-y: scroll">
+                                                                  <thead>
+                                                                    <tr class="d-flex">
+                                                                      <th class="col-lg-1">Id</th>
+                                                                      <th class="col-lg-2">Type</th>
+                                                                      <th class="col-lg-3">STIX ID</th>
+                                                                      <th class="col-lg-2">Reference ID</th>
+                                                                      <th class="col-lg-2">Timestamp</th>
+                                                                      <th  class="col-lg-2">Actions</th>
+                                                                    </tr>
+                                                                  </thead>
+                                                                  <tbody>
+                                                                  {% for dat in stixcontentdata %}
+                                                                    <tr class="d-flex" row_id="{{ dat.id }}">
+                                                                      <td class="col-lg-1">{{dat.id}}</td>
+                                                                        <td class="col-lg-2" id="stix_type">{{dat.type}}</td>
+                                                                        <td class="col-lg-3" id="stix_id">{{dat.stix_id}}</td>
+                                                                        <td class="col-lg-2">{{dat.reference_id}}</td>
+                                                                        <td class="col-lg-2">{{dat.timestamp}}</td>
+                                                                      <td class="col-lg-2"><button data-toggle="modal" data-target="#view_stixcontent" data-toggle="tooltip" title="View feed"
+                                                                                                   type="button" id="view_content"
+                                                                                                   class="btn btn-primary btn-sm mr-1">
+                                                                              <i class="material-icons">info</i></button>
+                                                                          </td>
+                                                                    </tr>
+                                                                  {% endfor %}
+                                                                  </tbody>
+                                                            </table>
+                                                    </div>
+                                                </div>
+                                          </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="card ">
+                                                <div class="card-header">Create Bundle</div>
+                                                <div class="card-body">
+                                                    <form method="post" id="bundleform">
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-12 col-form-label">Allows creation of bundle which puts together all the objects and their relationships.
+                                                            Can be used for visualization and further analysis.
+                                                            </label>
+                                                            <div class="col-lg-12">
+                                                                <select multiple class="form-control form-control-sm" size="8" id="bundle" required>
+                                                                    <option>Choose an option</option>
+                                                                    {% for data in stixcontentdata %}
+                                                                    <option value="" reftype="{{ data.type }}" refstix="{{ data.stix_id }}">{{ data.id }}--{{ data.stix_id }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            <input type="hidden" id="final_bundle" name="bundle">
+                                                            </div>
+                                                        </div>
+                                                    <div class="form-group row">
+                                                        <div class="offset-lg-1">
+                                                            <input type="submit" class="btn btn-primary" id="create_bundle" value="Submit">
+                                                            <input type="reset" class="btn btn-light" value="Reset">
+                                                        </div>
+
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                            <div class="card mt-lg-1" >
+                                                <div class="card-header">List of bundles</div>
+                                                <div class="card-body">
+                                                    <div class="container">
+                                                        <div class="table-responsive-sm">
+                                                        <table class="table table-hover table-sm" style="overflow-y: scroll">
+                                                              <thead>
+                                                                <tr>
+                                                                  <th>Id</th>
+                                                                  <th>Bundle Id</th>
+                                                                  <th >Actions</th>
+                                                                </tr>
+                                                              </thead>
+                                                              <tbody>
+                                                              {% for dat in bundledata %}
+                                                                <tr  row_id="{{ dat.id }}">
+                                                                  <td >{{dat.id}}</td>
+                                                                    <td  id="bundle_id">{{dat.bundle_id}}</td>
+                                                                  <td><button data-toggle="modal" data-target="#view_bundlecontent" data-toggle="tooltip" title="View bundle"
+                                                                                               type="button" id="view_bundledata"
+                                                                                               class="btn btn-primary btn-sm mr-1">
+                                                                          <i class="material-icons">info</i></button>
+                                                                      </td>
+                                                                </tr>
+                                                              {% endfor %}
+                                                              </tbody>
+                                                        </table>
+                                                    </div>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>

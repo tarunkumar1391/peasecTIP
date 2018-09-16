@@ -46,7 +46,7 @@
        </div>
 {#    body content section#}
     <div class="row attkpat_bodycontent ">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="alert alert-info">
             <form method="POST" action="{{ url_for('delete_all_entry') }}">
                 <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
@@ -55,6 +55,18 @@
               <button type="submit" class="btn btn-primary">Click here</button>
             </form>
             </div>
+        </div>
+        <div class="col-lg-6">
+            {% if publishedflag == 1 %}
+            <div class="alert alert-success">
+            <form method="POST" action="{{ url_for('generate_maec5') }}">
+                <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
+                <input type="hidden" name="obj_type" value="{{ main.type }}">
+                <strong>To publish as MAEC content then</strong>
+              <button type="submit" class="btn btn-primary">Click here</button>
+            </form>
+            </div>
+            {% endif %}
         </div>
         <div class="col-lg-4">
             <div class="card">
@@ -74,6 +86,10 @@
                                 <td>{{main.id}}</td>
                               </tr>
                               <tr>
+                                <td><b>MAEC Id:</b></td>
+                                <td>{{main.maec_id}}</td>
+                              </tr>
+                              <tr>
                                 <td><b>Name:</b></td>
                                 <td>{{main.name}}</td>
                               </tr>
@@ -86,20 +102,21 @@
                                 <td>{{main.timestamp}}</td>
                               </tr>
                             <tr>
-                                <td><b>Attributes:</b></td> <!--Should display key value pairs-->
+                                <td><b>Attributes:</b></td>
                                 <td>{{main.attributes}}</td>
                               </tr>
                             <tr>
                                 <td><b>Action references:</b></td>
                                 <td>{{main.action_refs}}</td>
                               </tr>
+
                             </tbody>
                           </table>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-12">
+        <div class="col-lg-8">
             <div class="card">
                 <div class="card-header">Technique references:</div>
                 <div class="card-body">
@@ -111,8 +128,6 @@
                                               <th class="col-lg-1">Source name</th>
                                               <th class="col-lg-2">Description</th>
                                               <th class="col-lg-2">URL</th>
-                                              <th class="col-lg-1">Hash type</th>
-                                              <th class="col-lg-2">Hash value</th>
                                               <th class="col-lg-1">External Id</th>
                                               <th class="col-lg-2">Actions</th>
                                             </tr>
@@ -124,8 +139,6 @@
                                                 <td class="col-lg-1"><div class="row_data2" edit_type="click" col_name="src_name">{{dat.src_name}}</div></td>
                                                 <td class="col-lg-2"><div class="row_data2" edit_type="click" col_name="description">{{dat.description}}</div></td>
                                                 <td class="col-lg-2"><div >{{dat.url}}</div></td>
-                                                <td class="col-lg-1"><div >{{dat.hash_type}}</div></td>
-                                                <td class="col-lg-2"><div >{{dat.hash_value}}</div></td>
                                                 <td class="col-lg-1"><div class="row_data2" edit_type="click" col_name="ext_id">{{dat.external_id}}</div></td>
                                                 <td class="col-lg-2"><span class="btn_edit2" > <a href="#" class="btn btn-link " row_id="{{ dat.id }}" > Edit</a> </span>
                                                         <span class="btn_delete2" > <a href="#" class="btn btn-link " row_id="{{ dat.id }}" > Delete</a> </span>

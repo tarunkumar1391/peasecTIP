@@ -13,3 +13,6 @@ body {
 .index_bodycontent{
     margin-top: 5%;
 }
+.show_refs {
+    display: block;
+}

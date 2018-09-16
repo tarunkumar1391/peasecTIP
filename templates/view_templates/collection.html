@@ -46,7 +46,7 @@
        </div>
 {#    body content section#}
     <div class="row attkpat_bodycontent ">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="alert alert-info">
             <form method="POST" action="{{ url_for('delete_all_entry') }}">
                 <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
@@ -56,9 +56,19 @@
             </form>
             </div>
         </div>
+        <div class="col-lg-6">
+            <div class="alert alert-success">
+            <form method="POST" action="{{ url_for('generate_maec5') }}">
+                <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
+                <input type="hidden" name="obj_type" value="{{ main.type }}">
+                <strong>To publish as MAEC content then</strong>
+              <button type="submit" class="btn btn-primary">Click here</button>
+            </form>
+            </div>
+        </div>
     </div>
     <div class="row">
-        <div class="col-lg-4">
+        <div class="col-lg-6">
             <div class="card">
                 <div class="card-header">{{ main.type }}</div>
                 <div class="card-body">
@@ -87,10 +97,7 @@
                                 <td><b>Entity references:</b></td>
                                 <td>{{main.entity_refs}}</td>
                               </tr>
-                            <tr>
-                                <td><b>Observable references:</b></td>
-                                <td>{{main.observable_refs}}</td>
-                              </tr>
+
                             </tbody>
                           </table>
                     </div>
@@ -98,6 +105,37 @@
 
             </div>
 
+        </div>
+        <div class="col-lg-6">
+        {% if observableref_flag == 1 and entityref_flag == 0 %}
+            <div class="card">
+                <div class="card-header">Observable references:</div>
+                <div class="card-body">
+                    <div class="table-responsive-sm">
+                        <table class="table table-hover table-sm">
+                                          <thead>
+                                            <tr >
+                                              <th >Observable Id</th>
+                                              <th >Observable Name</th>
+                                              <th >Actions</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                          {% for dat in obsdata %}
+                                            <tr  row_id="{{ dat.id }}">
+                                                <td ><div class="row_data" col_name="id">{{dat.id}}</div></td>
+                                                <td ><div class="row_data" col_name="obs_type">{{dat.type}}</div></td>
+                                                <td ><span class="btn_view" > <a href="#" class="btn btn-link " data-toggle="modal" data-target="#{{ dat.type }}" row_id="{{ dat.id }}" > View</a> </span>
+                                                        <span class="btn_delete" > <a href="#" class="btn btn-link " row_id="{{ dat.id }}" > Delete</a> </span>
+                                                </td>
+                                            </tr>
+                                          {% endfor %}
+                                          </tbody>
+                                    </table>
+                              </div>
+                </div>
+            </div>
+        {% endif %}
         </div>
     </div>
 
@@ -110,5 +148,1158 @@
             </nav>
         </div>
 </div>
+{# Modals sections #}
+<div class="modal fade" id="artifact">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Artifact</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+               <!-- <form method="POST" id="input_artifact" role="form" >
+
+                        <div class="form-group row">
+                          <label class="col-lg-4 col-form-label" >Mime type:</label>
+                          <div class="col-lg-8">
+                            <input type="text" class="form-control form-control-sm" name="mime_type">
+                              <input type="hidden" name="ref_type" value="None">
+                              <input type="hidden" name="type" value="artifact">
+                              <input type="hidden" class="form-control form-control-sm" name="obj_id" value="{{ main.id  }}">
+                              <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ main.type }}">
+                              <input type="hidden" name="created_by" value="{{ session['user'] }}">
+                          </div>
+                         </div>
+                        <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" >Payload bin:</label>
+                      <div class="col-lg-8">
+                          <input type="text" class="form-control form-control-sm" id="payload" name="payload_bin">
+                          <small id="urlHelpBlock" class="form-text text-muted">
+                               If you want to provide information for this field, then do not add URL information
+                          </small>
+                      </div>
+                  </div>
+                            <div class="form-group row">
+                      <label class="col-lg-4 col-form-label" >URL:</label>
+                      <div class="col-lg-8">
+                          <input type="text" class="form-control form-control-sm" id="extUrl" readonly value="none" name="url" >
+                          <small id="urlHelpBlock" class="form-text text-muted">
+                                If you want to add URL information, enable the check box below to also add the hash type and value information, else, leave the box unchecked.
+                          </small>
+                          <div class="form-check">
+                              <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input"  id="enableURL">Submit URL along with Hash type and value
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Hash type:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control form-control-sm" id="hashType"  readonly name="hash_type">
+                                          <option>--Choose a hash type--</option>
+                                          <option value="MD5">MD5</option>
+                                          <option value="MD6">MD6</option>
+                                          <option value="RIPEMD-160">RIPEMD-160</option>
+                                          <option value="SHA-1">SHA-1</option>
+                                          <option value="SHA-224">SHA-224</option>
+                                          <option value="SHA-256">SHA-256</option>
+                                          <option value="SHA-384">SHA-384</option>
+                                          <option value="SHA-512">SHA-512</option>
+                                          <option value="SHA3-224">SHA3-224</option>
+                                          <option value="SHA3-256">SHA3-256</option>
+                                          <option value="SHA3-384">SHA3-384</option>
+                                          <option value="SHA3-512">SHA3-512</option>
+                                          <option value="ssdeep">ssdeep</option>
+                                          <option value="WHIRLPOOL">WHIRLPOOL</option>
+                                      </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label" >Hash value:</label>
+                        <div class="col-lg-9">
+                            <input type="text" class="form-control form-control-sm" id="hashVal" readonly value="none"  name="hash_value">
+                        </div>
+                    </div>
+                  <div class="form-group row">
+                      <div class="offset-lg-4 col-lg-8">
+                          <button type="button" class="btn btn-sm btn-secondary" id="submit_input_artifact" >Add</button>
+                          <button type="reset" class="btn btn-sm btn-light">Reset</button>
+                      </div>
+                    </div>
+                    </form> -->
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Mime Type</td>
+                    <td id="mime_type"></td>
+                  </tr>
+                  <tr>
+                    <td>Payload bin</td>
+                    <td id="payload_bin"></td>
+                  </tr>
+                  <tr>
+                    <td>URL</td>
+                    <td id="url"></td>
+                  </tr>
+                    <tr>
+                    <td>Hash Type</td>
+                    <td id="hash_type"></td>
+                  </tr>
+                    <tr>
+                    <td>Hash Value</td>
+                    <td id="hash_val"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+<div class="modal fade" id="autonomous-system">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Autonomous System</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Number</td>
+                    <td id="number"></td>
+                  </tr>
+                  <tr>
+                    <td>Name</td>
+                    <td id="name"></td>
+                  </tr>
+                  <tr>
+                    <td>RIR</td>
+                    <td id="rir"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="directory">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Directory</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Path</td>
+                    <td id="path"></td>
+                  </tr>
+                  <tr>
+                    <td>Path encoding</td>
+                    <td id="path_enc"></td>
+                  </tr>
+                  <tr>
+                    <td>Created</td>
+                    <td id="created"></td>
+                  </tr>
+                <tr>
+                    <td>Modified</td>
+                    <td id="modified"></td>
+                  </tr>
+                <tr>
+                    <td>Accessed</td>
+                    <td id="accessed"></td>
+                  </tr>
+                <tr>
+                    <td>Contains References</td>
+                    <td id="contains_refs"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="domain-name">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Domain Name</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Value</td>
+                    <td id="value"></td>
+                  </tr>
+                  <tr>
+                    <td>Resolves to References</td>
+                    <td id="resolves_to_refs"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="email-addr">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Email Address</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Value</td>
+                    <td id="value"></td>
+                  </tr>
+                  <tr>
+                    <td>Display name</td>
+                    <td id="display_name"></td>
+                  </tr>
+                    <tr>
+                    <td>Belongs to reference</td>
+                    <td id="belongs_to_ref"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="email-message">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Email Message</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Is Multipart</td>
+                    <td id="is_multipart"></td>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td id="date"></td>
+                  </tr>
+                  <tr>
+                    <td>Content Type</td>
+                    <td id="content_type"></td>
+                  </tr>
+                  <tr>
+                    <td>From reference</td>
+                    <td id="from_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Sender reference</td>
+                    <td id="sender_ref"></td>
+                  </tr>
+                <tr>
+                    <td>To reference</td>
+                    <td id="to_refs"></td>
+                  </tr>
+                <tr>
+                    <td>CC reference</td>
+                    <td id="cc_refs"></td>
+                  </tr>
+                <tr>
+                    <td>BCC reference</td>
+                    <td id="bcc_refs"></td>
+                  </tr>
+                <tr>
+                    <td>Subject</td>
+                    <td id="subject"></td>
+                  </tr>
+                <tr>
+                    <td>Received lines</td>
+                    <td id="received_lines"></td>
+                  </tr>
+                <tr>
+                    <td>Additional header fields</td>
+                    <td id="additional_header_fields"></td>
+                  </tr>
+                <tr>
+                    <td>body</td>
+                    <td id="body"></td>
+                  </tr>
+                <tr>
+                    <td>Raw email reference</td>
+                    <td id="raw_email_ref"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="file">
+     <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">File</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Extensions</td>
+                    <td id="extensions"></td>
+                  </tr>
+                  <tr>
+                    <td>Hashes</td>
+                    <td id="hashes"></td>
+                  </tr>
+                  <tr>
+                    <td>Size</td>
+                    <td id="size"></td>
+                  </tr>
+                  <tr>
+                    <td>Name</td>
+                    <td id="name"></td>
+                  </tr>
+                <tr>
+                    <td>Name encoding</td>
+                    <td id="name_enc"></td>
+                  </tr>
+                <tr>
+                    <td>Magic number hex</td>
+                    <td id="magic_number_hex"></td>
+                  </tr>
+                <tr>
+                    <td>Mime type</td>
+                    <td id="mime_type"></td>
+                  </tr>
+                <tr>
+                    <td>Created</td>
+                    <td id="created"></td>
+                  </tr>
+                <tr>
+                    <td>Modified</td>
+                    <td id="modified"></td>
+                  </tr>
+                <tr>
+                    <td>Accessed</td>
+                    <td id="accessed"></td>
+                  </tr>
+                <tr>
+                    <td>Parent directory reference</td>
+                    <td id="parent_directory_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Is encrypted</td>
+                    <td id="is_encrypted"></td>
+                  </tr>
+                <tr>
+                    <td>Encryption algorithm</td>
+                    <td id="encryption_algorithm"></td>
+                  </tr>
+                <tr>
+                    <td>Decryption key</td>
+                    <td id="decryption_key"></td>
+                  </tr>
+                <tr>
+                    <td>Content reference</td>
+                    <td id="content_ref"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="ipv4-addr">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Ipv4 Address</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Value</td>
+                    <td id="value"></td>
+                  </tr>
+                  <tr>
+                    <td>Resolves to references</td>
+                    <td id="resolves_to_refs"></td>
+                  </tr>
+                  <tr>
+                    <td>Belongs to references</td>
+                    <td id="belongs_to_refs"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="ipv6-addr">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Ipv6 Address</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Value</td>
+                    <td id="value"></td>
+                  </tr>
+                  <tr>
+                    <td>Resolves to references</td>
+                    <td id="resolves_to_refs"></td>
+                  </tr>
+                  <tr>
+                    <td>Belongs to references</td>
+                    <td id="belongs_to_refs"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="mac-addr">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">MAC Address</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Value</td>
+                    <td id="value"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="network-traffic">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Network traffic</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Extensions</td>
+                    <td id="extensions"></td>
+                  </tr>
+                <tr>
+                    <td>Start</td>
+                    <td id="start"></td>
+                  </tr>
+                <tr>
+                    <td>End</td>
+                    <td id="end"></td>
+                  </tr>
+                <tr>
+                    <td>Is active</td>
+                    <td id="is_active"></td>
+                  </tr>
+                <tr>
+                    <td>Source reference</td>
+                    <td id="src_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Destination reference</td>
+                    <td id="dst_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Source port</td>
+                    <td id="src_port"></td>
+                  </tr>
+                <tr>
+                    <td>Destination port</td>
+                    <td id="dst_port"></td>
+                  </tr>
+                <tr>
+                    <td>Protocols</td>
+                    <td id="protocols"></td>
+                  </tr>
+                <tr>
+                    <td>Source byte count</td>
+                    <td id="src_byte_count"></td>
+                  </tr>
+                <tr>
+                    <td>Destination byte count</td>
+                    <td id="dst_byte_count"></td>
+                  </tr>
+                <tr>
+                    <td>Source packets</td>
+                    <td id="src_packets"></td>
+                  </tr>
+                <tr>
+                    <td>Destination packets</td>
+                    <td id="dst_packets"></td>
+                  </tr>
+                <tr>
+                    <td>Ipfix</td>
+                    <td id="ipfix"></td>
+                  </tr>
+                <tr>
+                    <td>Source payload reference</td>
+                    <td id="src_payload_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Destination payload reference</td>
+                    <td id="dst_payload_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Encapsulated references</td>
+                    <td id="encapsulated_refs"></td>
+                  </tr>
+                <tr>
+                    <td>Encapsulated by reference</td>
+                    <td id="encapsulated_by_ref"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="process">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Process</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Extensions</td>
+                    <td id="extensions"></td>
+                  </tr>
+                <tr>
+                    <td>Is hidden</td>
+                    <td id="is_hidden"></td>
+                  </tr>
+                <tr>
+                    <td>PID</td>
+                    <td id="pid"></td>
+                  </tr>
+                <tr>
+                    <td>Name</td>
+                    <td id="name"></td>
+                  </tr>
+                <tr>
+                    <td>Created</td>
+                    <td id="created"></td>
+                  </tr>
+                <tr>
+                    <td>CWD</td>
+                    <td id="cwd"></td>
+                  </tr>
+                <tr>
+                    <td>Arguments</td>
+                    <td id="arguments"></td>
+                  </tr>
+                <tr>
+                    <td>Command line</td>
+                    <td id="command_line"></td>
+                  </tr>
+                <tr>
+                    <td>Environment variables</td>
+                    <td id="environment_variables"></td>
+                  </tr>
+                <tr>
+                    <td>Opened connection references</td>
+                    <td id="opened_connection_refs"></td>
+                  </tr>
+                <tr>
+                    <td>Creator user reference</td>
+                    <td id="creator_user_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Binary reference</td>
+                    <td id="binary_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Parent reference</td>
+                    <td id="parent_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Child references</td>
+                    <td id="child_refs"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="software">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Software</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Name</td>
+                    <td id="name"></td>
+                  </tr>
+                <tr>
+                    <td>CPE</td>
+                    <td id="cpe"></td>
+                  </tr>
+                <tr>
+                    <td>Languages</td>
+                    <td id="languages"></td>
+                  </tr>
+                <tr>
+                    <td>Vendor</td>
+                    <td id="vendor"></td>
+                  </tr>
+                <tr>
+                    <td>Version</td>
+                    <td id="version"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="url">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">URL</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Value</td>
+                    <td id="value"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="user-account">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">User account</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Extensions</td>
+                    <td id="extensions"></td>
+                  </tr>
+                <tr>
+                    <td>User Id</td>
+                    <td id="user_id"></td>
+                  </tr>
+                <tr>
+                    <td>Account login</td>
+                    <td id="account_login"></td>
+                  </tr>
+                <tr>
+                    <td>Account type</td>
+                    <td id="account_type"></td>
+                  </tr>
+                <tr>
+                    <td>Display name</td>
+                    <td id="display_name"></td>
+                  </tr>
+                  <tr>
+                    <td>Is service account</td>
+                    <td id="is_service_account"></td>
+                  </tr>
+                <tr>
+                    <td>Is privileged</td>
+                    <td id="is_privileged"></td>
+                  </tr>
+                <tr>
+                    <td>Can escalate privileges</td>
+                    <td id="can_escalate_privs"></td>
+                  </tr>
+                  <tr>
+                    <td>Is disabled</td>
+                    <td id="is_disabled"></td>
+                  </tr>
+                <tr>
+                    <td>Account created</td>
+                    <td id="account_created"></td>
+                  </tr>
+                <tr>
+                    <td>Account expires</td>
+                    <td id="account_expires"></td>
+                  </tr>
+                <tr>
+                    <td>Password last changed</td>
+                    <td id="password_last_changed"></td>
+                  </tr>
+                <tr>
+                    <td>Account first login</td>
+                    <td id="account_first_login"></td>
+                  </tr>
+                <tr>
+                    <td>Account last login</td>
+                    <td id="account_last_login"></td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="windows-registry-key">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Windows registry key</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Key</td>
+                    <td id="key"></td>
+                  </tr>
+                <tr>
+                    <td>Modified</td>
+                    <td id="modified"></td>
+                  </tr>
+                <tr>
+                    <td>Creator user reference</td>
+                    <td id="creator_user_ref"></td>
+                  </tr>
+                <tr>
+                    <td>Number of subkeys</td>
+                    <td id="number_of_subkeys"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+<div class="modal fade" id="x509-certificate">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">X509-Certificate</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <div class="container">
+
+                <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Values</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sno</td>
+                    <td id="sno"></td>
+                  </tr>
+                  <tr>
+                    <td>Is self signed</td>
+                    <td id="is_self_signed"></td>
+                  </tr>
+                <tr>
+                    <td>Hash type</td>
+                    <td id="hash_type"></td>
+                  </tr>
+                <tr>
+                    <td>Hash value</td>
+                    <td id="hash_value"></td>
+                  </tr>
+                <tr>
+                    <td>Version</td>
+                    <td id="version"></td>
+                  </tr>
+                <tr>
+                    <td>Serial number</td>
+                    <td id="serial_number"></td>
+                  </tr>
+                <tr>
+                    <td>Signature algorithm</td>
+                    <td id="signature_algorithm"></td>
+                  </tr>
+                <tr>
+                    <td>Issuer</td>
+                    <td id="issuer"></td>
+                  </tr>
+                <tr>
+                    <td>Validity not before</td>
+                    <td id="validity_not_before"></td>
+                  </tr>
+                <tr>
+                    <td>Validity not after</td>
+                    <td id="validity_not_after"></td>
+                  </tr>
+                <tr>
+                    <td>Subject</td>
+                    <td id="subject"></td>
+                  </tr>
+                <tr>
+                    <td>Subject public key algorithm</td>
+                    <td id="subject_public_key_algorithm"></td>
+                  </tr>
+                <tr>
+                    <td>Subject public key modulus</td>
+                    <td id="subject_public_key_modulus"></td>
+                  </tr>
+                <tr>
+                    <td>Subject public key exponent</td>
+                    <td id="subject_public_key_exponent"></td>
+                  </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
 </body>
 </html>

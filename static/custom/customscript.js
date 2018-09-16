@@ -217,33 +217,39 @@ src_type.change(function(){
     src_type_value = $(this).val();
     // attack-pattern
     if(src_type_value == "attack-pattern"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="targets">targets</option>');
         relationship_type.append('<option value="uses">uses</option>');
     }
     // campaign
     if(src_type_value == "campaign"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="attributed-to">attributed-to</option>');
         relationship_type.append('<option value="targets">targets</option>');
         relationship_type.append('<option value="uses">uses</option>');
     }
     // Indicator
     if(src_type_value == "indicator"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="indicates">indicates</option>');
     }
     // intrusion-set
     if(src_type_value == "intrusion-set"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="attributed-to">attributed-to</option>');
         relationship_type.append('<option value="targets">targets</option>');
         relationship_type.append('<option value="uses">uses</option>');
     }
     // malware
     if(src_type_value == "malware"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="targets">targets</option>');
         relationship_type.append('<option value="uses">uses</option>');
         relationship_type.append('<option value="variant-of">variant-of</option>');
     }
     // threat-actor
     if(src_type_value == "threat-actor"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="attributed-to">attributed-to</option>');
         relationship_type.append('<option value="impersonates">impersonates</option>');
         relationship_type.append('<option value="targets">targets</option>');
@@ -251,36 +257,73 @@ src_type.change(function(){
     }
     // tool
     if(src_type_value == "tool"){
+        relationship_type.children('option:not(:first)').remove();
         relationship_type.append('<option value="targets">targets</option>');
+    }
+    // behavior
+    if(src_type_value == "behavior"){
+        relationship_type.children('option:not(:first)').remove();
+        relationship_type.append('<option value="dependent-on">dependent-on</option>');
+        relationship_type.append('<option value="discovered-by">discovered-by</option>');
+    }
+    // Malware action
+    if(src_type_value == "malware-action"){
+        relationship_type.children('option:not(:first)').remove();
+        relationship_type.append('<option value="dependent-on">dependent-on</option>');
+        relationship_type.append('<option value="discovered-by">discovered-by</option>');
+    }
+    // Malware family
+    if(src_type_value == "malware-family"){
+        relationship_type.children('option:not(:first)').remove();
+        relationship_type.append('<option value="dropped-by">dropped-by</option>');
+        relationship_type.append('<option value="derived-from">derived-from</option>');
+    }
+    // Malware instance
+    if(src_type_value == "malware-instance"){
+        relationship_type.children('option:not(:first)').remove();
+        relationship_type.append('<option value="ancestor-of">ancestor-of</option>');
+        relationship_type.append('<option value="downloaded-by">downloaded-by</option>');
+        relationship_type.append('<option value="dropped-by">dropped-by</option>');
+        relationship_type.append('<option value="derived-from ">derived-from</option>');
+        relationship_type.append('<option value="extracted-from">extracted-from</option>');
+        relationship_type.append('<option value="has-distance ">has-distance</option>');
+        relationship_type.append('<option value="installed-by">installed-by</option>');
+        relationship_type.append('<option value="variant-of">variant-of</option>');
     }
 });
 relationship_type.change(function(){
     relationship_type_value = $(this).val();
     // attack pattern - targets, uses
     if(src_type_value == "attack-pattern" && relationship_type_value == "targets"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="vulnerability">vulnerability</option>');
         target_type.append('<option value="identity">identity</option>');
     }
     if(src_type_value== "attack-pattern" && relationship_type_value == "uses"){
+        target_type.children('option:not(:first)').remove();
         $('#target_type').append('<option value="malware">malware</option>');
         $('#target_type').append('<option value="tool">tool</option>');
     }
     // campaign - attributed-to, targets, uses
     if(src_type_value == "campaign" && relationship_type_value == "attributed-to"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="intrusion-set">intrusion-set</option>');
         target_type.append('<option value="threat-actor">threat-actor</option>');
     }
     if(src_type_value == "campaign" && relationship_type_value == "targets"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
         target_type.append('<option value="vulnerability">vulnerability</option>');
     }
     if(src_type_value == "campaign" && relationship_type_value == "uses"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="attack-pattern">attack-pattern</option>');
         target_type.append('<option value="malware">malware</option>');
         target_type.append('<option value="tool">tool</option>');
     }
     // Indicator - indicates
     if(src_type_value == "indicator" && relationship_type_value == "indicates"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="attack-pattern">attack-pattern</option>');
         target_type.append('<option value="campaign">campaign</option>');
         target_type.append('<option value="intrusion-set">intrusion-set</option>');
@@ -290,48 +333,124 @@ relationship_type.change(function(){
     }
     // intrusion-set  - attributed-to, targets, uses
     if(src_type_value == "intrusion-set" && relationship_type_value == "attributed-to"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="threat-actor">threat-actor</option>');
     }
     if(src_type_value == "intrusion-set" && relationship_type_value == "targets"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
         target_type.append('<option value="vulnerability">vulnerability</option>');
     }
     if(src_type_value == "intrusion-set" && relationship_type_value == "uses"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="attack-pattern">attack-pattern</option>');
         target_type.append('<option value="malware">malware</option>');
         target_type.append('<option value="tool">tool</option>');
     }
     // malware  -  targets, uses, variant-of
     if(src_type_value == "malware" && relationship_type_value == "targets"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
         target_type.append('<option value="vulnerability">vulnerability</option>');
     }
     if(src_type_value == "malware" && relationship_type_value == "uses"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="tool">tool</option>');
     }
     if(src_type_value == "malware" && relationship_type_value == "variant-of"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="malware">malware</option>');
     }
     // threat-actor  - attributed-to , impersonates,  targets, uses
     if(src_type_value == "threat-actor" && relationship_type_value == "attributed-to"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
     }
     if(src_type_value == "threat-actor" && relationship_type_value == "impersonates"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
     }
     if(src_type_value == "threat-actor" && relationship_type_value == "targets"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
         target_type.append('<option value="vulnerability">vulnerability</option>');
     }
     if(src_type_value == "threat-actor" && relationship_type_value == "uses"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="attack-pattern">attack-pattern</option>');
         target_type.append('<option value="malware">malware</option>');
         target_type.append('<option value="tool">tool</option>');
     }
     // tool - targets
     if(src_type_value == "tool" && relationship_type_value == "targets"){
+        target_type.children('option:not(:first)').remove();
         target_type.append('<option value="identity">identity</option>');
         target_type.append('<option value="vulnerability">vulnerability</option>');
+    }
+    // Behavior - targets
+    if(src_type_value == "behavior" && relationship_type_value == "dependent-on"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="behavior">behavior</option>');
+    }
+    if(src_type_value == "behavior" && relationship_type_value == "discovered-by"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="software">software</option>');
+    }
+    // Malware action - targets
+    if(src_type_value == "malware-action" && relationship_type_value == "dependent-on"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-action">malware-action</option>');
+    }
+    if(src_type_value == "malware-action" && relationship_type_value == "discovered-by"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="software">software</option>');
+    }
+    // Malware family - targets
+    if(src_type_value == "malware-family" && relationship_type_value == "dropped-by"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+    }
+    if(src_type_value == "malware-family" && relationship_type_value == "derived-from"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+    }
+    // Malware instance - targets
+    if(src_type_value == "malware-instance" && relationship_type_value == "ancestor-of"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "downloaded-by"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+        target_type.append('<option value="malware-instance">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "dropped-by"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+        target_type.append('<option value="malware-instance">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "derived-from"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+        target_type.append('<option value="malware-instance">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "extracted-from"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-instance">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "has-distance"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-instance">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "installed-by"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+        target_type.append('<option value="malware-instance">malware-instance</option>');
+    }
+    if(src_type_value == "malware-instance" && relationship_type_value == "variant-of"){
+        target_type.children('option:not(:first)').remove();
+        target_type.append('<option value="malware-family">malware-family</option>');
+        target_type.append('<option value="malware-instance">malware-instance</option>');
     }
 });
 

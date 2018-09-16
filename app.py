@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, flash, url_for, redirect, session, g, json, jsonify, send_file
 from flask_mysqldb import MySQL
 from stix2 import *
+import uuid
+import os.path , io
 from datetime import datetime
 
 
@@ -235,9 +237,9 @@ def home():
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'name': row[2],
-                'description': row[3],
-                'created_by': row[4]
+                'name': row[3],
+                'description': row[4],
+                'created_by': row[9]
             }
             mainlist.append(rowdict)
             maecobjs.append(rowdict)
@@ -250,8 +252,9 @@ def home():
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'description': row[2],
-                'created_by': row[4]
+                'name': row[2],
+                'description': row[3],
+                'created_by': row[7]
             }
             mainlist.append(rowdict)
             maecobjs.append(rowdict)
@@ -304,6 +307,7 @@ def home():
             maecobjs.append(rowdict)
         output = json.dumps(mainlist, sort_keys=True, indent=4)
         resp = json.loads(output)
+
         # query for all stix - relationship objects
         relationshiplist =[]
         query_relationship = "select * from `relationship`  where created_by='" + user + "'"
@@ -357,11 +361,44 @@ def home():
             bundlecontent.append(rowdict)
         output_bundlecontent = json.dumps(bundlecontent, sort_keys=True, indent=4)
         bundlecontentresp = json.loads(output_bundlecontent)
+        # query  to display all the produced MAEC content
+        maeccontent = []
+        query_maeccontent = "select * from `maec_content`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_maeccontent)
+        rows_maeccontent = cur.fetchall()
+        for row in rows_maeccontent:
+            rowdict = {
+                'id': row[0],
+                'type': row[1],
+                'maec_id': row[2],
+                'reference_id': row[3],
+                'timestamp': row[5]
+            }
+            maeccontent.append(rowdict)
+        output_maeccontent = json.dumps(maeccontent, sort_keys=True, indent=4)
+        maeccontentresp = json.loads(output_maeccontent)
+        # query  to display all package content
+        packagecontent = []
+        query_packagecontent = "select * from `package`  where created_by='" + user + "'"
+        cur = mysql.connection.cursor()
+        cur.execute(query_packagecontent)
+        rows_packagecontent = cur.fetchall()
+        for row in rows_packagecontent:
+            rowdict = {
+                'id': row[0],
+                'package_id': row[1]
+
+            }
+            packagecontent.append(rowdict)
+        output_packagecontent = json.dumps(packagecontent, sort_keys=True, indent=4)
+        packagecontentresp = json.loads(output_packagecontent)
 
         output = json.dumps(mainlist, sort_keys=True, indent=4)
         resp = json.loads(output)
         return render_template('home.html', data=resp,stixdata=stixobjs,maecdata=maecobjs, relationshipdata=relationshipresp,
-                               stixcontentdata=stixcontentresp, bundledata=bundlecontentresp)
+                               stixcontentdata=stixcontentresp, bundledata=bundlecontentresp, maeccontentdata=maeccontentresp,
+                               packagedata=packagecontentresp)
     else:
         flash("You are not allowed to access without authorization. Kindly enter your credentials and login!! ",
               'error')
@@ -740,13 +777,13 @@ def view_additionalinfo(objtype, id):
             main_SDO = {
                 'id': row_main[0],
                 'type': row_main[1],
-                'name': row_main[2],
-                'description': row_main[3],
-                'timestamp': row_main[4],
-                'attributes': row_main[5],
-                'action_refs': row_main[6]
-
-
+                'maec_id': row_main[2],
+                'name': row_main[3],
+                'description': row_main[4],
+                'timestamp': row_main[5],
+                'attributes': row_main[6],
+                'action_refs': row_main[7],
+                'tech_refs': row_main[8]
             }
             output = json.dumps(main_SDO, sort_keys=True, indent=4)
             resp_main = json.loads(output)
@@ -774,7 +811,8 @@ def view_additionalinfo(objtype, id):
                 row_extrefList.append(rowdict)
             output = json.dumps(row_extrefList, sort_keys=True, indent=4)
             response_extref = json.loads(output)
-            return render_template(url, main=resp_main, extreflist=response_extref)
+
+            return render_template(url, main=resp_main, extreflist=response_extref, publishedflag= row_main[10])
         elif objtype == "collection":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -786,15 +824,296 @@ def view_additionalinfo(objtype, id):
             main_SDO = {
                 'id': row_main[0],
                 'type': row_main[1],
-                'description': row_main[2],
-                'association_type': row_main[3],
-                'entity_refs': row_main[4],
-                'observable_refs': row_main[5]
+                'maec_id': row_main[2],
+                'description': row_main[3],
+                'association_type': row_main[4],
+                'entity_refs': row_main[5],
+                'observable_refs': row_main[6],
+                'entityrefs_flag': row_main[8],
+                'observablerefs_flag': row_main[9],
 
             }
             output = json.dumps(main_SDO, sort_keys=True, indent=4)
             resp_main = json.loads(output)
-            return render_template(url, main=resp_main)
+
+            # observable references
+            obs_refslist = []
+            # artifact
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from artifact where obj_id=%s and obj_type=%s and created_by=%s", (obj_id, objtype, createdBy))
+            row_artifact = cur.fetchall()
+            if len(row_artifact) is 0:
+                 # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_artifact) is not '0':
+                for row in row_artifact:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # autonomous system
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `autonomous-system` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_as = cur.fetchall()
+            if len(row_as) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_as) is not '0':
+                for row in row_as:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # directory
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `directory` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_directory = cur.fetchall()
+            if len(row_directory) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_directory) is not '0':
+                for row in row_directory:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # domain name
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `domain-name` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_domainname = cur.fetchall()
+            if len(row_domainname) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_domainname) is not '0':
+                for row in row_domainname:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # email-addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `email-addr` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_emailaddr = cur.fetchall()
+            if len(row_emailaddr) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_emailaddr) is not '0':
+                for row in row_emailaddr:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # email msg
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `email-message` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_emailmsg = cur.fetchall()
+            if len(row_emailmsg) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_emailmsg) is not '0':
+                for row in row_emailmsg:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # file
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `file` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_file = cur.fetchall()
+            if len(row_file) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_file) is not '0':
+                for row in row_file:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # ipv4 addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `ipv4-addr` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_ipv4 = cur.fetchall()
+            if len(row_ipv4) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_ipv4) is not '0':
+                for row in row_ipv4:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # ipv6 addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `ipv6-addr` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_ipv6 = cur.fetchall()
+            if len(row_ipv6) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_ipv6) is not '0':
+                for row in row_ipv6:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # mac-addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `mac-addr` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_mac = cur.fetchall()
+            if len(row_mac) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_mac) is not '0':
+                for row in row_mac:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # network-traffic
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `network-traffic` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_nettraffic = cur.fetchall()
+            if len(row_nettraffic) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_nettraffic) is not '0':
+                for row in row_nettraffic:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # process
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `process` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_process = cur.fetchall()
+            if len(row_process) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_process) is not '0':
+                for row in row_process:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # software
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `software` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_software = cur.fetchall()
+            if len(row_software) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_software) is not '0':
+                for row in row_software:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # url
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `url` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_url = cur.fetchall()
+            if len(row_url) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_url) is not '0':
+                for row in row_url:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # user-account
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `user-account` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_useracc = cur.fetchall()
+            if len(row_useracc) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_useracc) is not '0':
+                for row in row_useracc:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # windows reg key
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `windows-registry-key` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_winregkey = cur.fetchall()
+            if len(row_winregkey) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_winregkey) is not '0':
+                for row in row_winregkey:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # x509 certificate
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type from `x509-certificate` where obj_id=%s and obj_type=%s and created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_x509 = cur.fetchall()
+            if len(row_x509) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_x509) is not '0':
+                for row in row_x509:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            output2 = json.dumps(obs_refslist,sort_keys=True, indent=4)
+            obsdata_resp = json.loads(output2)
+            return render_template(url, main=resp_main, obsdata=obsdata_resp,entityref_flag = resp_main['entityrefs_flag'],
+                                   observableref_flag = resp_main['observablerefs_flag'])
         elif objtype == "malware-action":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -834,7 +1153,903 @@ def view_additionalinfo(objtype, id):
                 row_apicall_list.append(rowdict)
             output = json.dumps(row_apicall_list, sort_keys=True, indent=4)
             resp_apicall = json.loads(output)
-            return render_template(url, main=resp_main, apidata=resp_apicall)
+
+            # input observable references
+            obs_refslist = []
+            # artifact
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from artifact where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_artifact = cur.fetchall()
+            if len(row_artifact) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_artifact) is not '0':
+                for row in row_artifact:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # autonomous system
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `autonomous-system` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_as = cur.fetchall()
+            if len(row_as) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_as) is not '0':
+                for row in row_as:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # directory
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `directory` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_directory = cur.fetchall()
+            if len(row_directory) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_directory) is not '0':
+                for row in row_directory:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # domain name
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `domain-name` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_domainname = cur.fetchall()
+            if len(row_domainname) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_domainname) is not '0':
+                for row in row_domainname:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # email-addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `email-addr` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_emailaddr = cur.fetchall()
+            if len(row_emailaddr) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_emailaddr) is not '0':
+                for row in row_emailaddr:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # email msg
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `email-message` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_emailmsg = cur.fetchall()
+            if len(row_emailmsg) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_emailmsg) is not '0':
+                for row in row_emailmsg:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # file
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `file` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_file = cur.fetchall()
+            if len(row_file) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_file) is not '0':
+                for row in row_file:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # ipv4 addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `ipv4-addr` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_ipv4 = cur.fetchall()
+            if len(row_ipv4) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_ipv4) is not '0':
+                for row in row_ipv4:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # ipv6 addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `ipv6-addr` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_ipv6 = cur.fetchall()
+            if len(row_ipv6) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_ipv6) is not '0':
+                for row in row_ipv6:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # mac-addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `mac-addr` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_mac = cur.fetchall()
+            if len(row_mac) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_mac) is not '0':
+                for row in row_mac:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # network-traffic
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `network-traffic` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_nettraffic = cur.fetchall()
+            if len(row_nettraffic) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_nettraffic) is not '0':
+                for row in row_nettraffic:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # process
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `process` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_process = cur.fetchall()
+            if len(row_process) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_process) is not '0':
+                for row in row_process:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # software
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `software` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_software = cur.fetchall()
+            if len(row_software) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_software) is not '0':
+                for row in row_software:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # url
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `url` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_url = cur.fetchall()
+            if len(row_url) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_url) is not '0':
+                for row in row_url:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # user-account
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `user-account` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_useracc = cur.fetchall()
+            if len(row_useracc) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_useracc) is not '0':
+                for row in row_useracc:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # windows reg key
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type from `windows-registry-key` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_winregkey = cur.fetchall()
+            if len(row_winregkey) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_winregkey) is not '0':
+                for row in row_winregkey:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            # x509 certificate
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type from `x509-certificate` where obj_id=%s and obj_type=%s and ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_x509 = cur.fetchall()
+            if len(row_x509) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_x509) is not '0':
+                for row in row_x509:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_refslist.append(mainrowdict)
+            output2 = json.dumps(obs_refslist, sort_keys=True, indent=4)
+            input_resp = json.loads(output2)
+
+            # output observable references
+            obs_output_refslist = []
+            # artifact
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from artifact where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_artifact = cur.fetchall()
+            if len(row_artifact) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_artifact) is not '0':
+                for row in row_artifact:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # autonomous system
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `autonomous-system` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_as = cur.fetchall()
+            if len(row_as) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_as) is not '0':
+                for row in row_as:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # directory
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `directory` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_directory = cur.fetchall()
+            if len(row_directory) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_directory) is not '0':
+                for row in row_directory:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # domain name
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `domain-name` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_domainname = cur.fetchall()
+            if len(row_domainname) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_domainname) is not '0':
+                for row in row_domainname:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # email-addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `email-addr` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_emailaddr = cur.fetchall()
+            if len(row_emailaddr) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_emailaddr) is not '0':
+                for row in row_emailaddr:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # email msg
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `email-message` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_emailmsg = cur.fetchall()
+            if len(row_emailmsg) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_emailmsg) is not '0':
+                for row in row_emailmsg:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # file
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `file` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_file = cur.fetchall()
+            if len(row_file) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_file) is not '0':
+                for row in row_file:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # ipv4 addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `ipv4-addr` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_ipv4 = cur.fetchall()
+            if len(row_ipv4) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_ipv4) is not '0':
+                for row in row_ipv4:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # ipv6 addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `ipv6-addr` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_ipv6 = cur.fetchall()
+            if len(row_ipv6) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_ipv6) is not '0':
+                for row in row_ipv6:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # mac-addr
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `mac-addr` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_mac = cur.fetchall()
+            if len(row_mac) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_mac) is not '0':
+                for row in row_mac:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # network-traffic
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `network-traffic` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_nettraffic = cur.fetchall()
+            if len(row_nettraffic) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_nettraffic) is not '0':
+                for row in row_nettraffic:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # process
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `process` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_process = cur.fetchall()
+            if len(row_process) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_process) is not '0':
+                for row in row_process:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # software
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `software` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_software = cur.fetchall()
+            if len(row_software) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_software) is not '0':
+                for row in row_software:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # url
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `url` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_url = cur.fetchall()
+            if len(row_url) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_url) is not '0':
+                for row in row_url:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # user-account
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type from `user-account` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            row_useracc = cur.fetchall()
+            if len(row_useracc) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_useracc) is not '0':
+                for row in row_useracc:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # windows reg key
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type from `windows-registry-key` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_winregkey = cur.fetchall()
+            if len(row_winregkey) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_winregkey) is not '0':
+                for row in row_winregkey:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            # x509 certificate
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type from `x509-certificate` where obj_id=%s and obj_type=%s and ref_type='output' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_x509 = cur.fetchall()
+            if len(row_x509) is 0:
+                # we do nothing
+                print('No records so not appending data!')
+
+            elif len(row_x509) is not '0':
+                for row in row_x509:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': row[1]
+                    }
+                    obs_output_refslist.append(mainrowdict)
+            output3 = json.dumps(obs_output_refslist, sort_keys=True, indent=4)
+            output_resp = json.loads(output3)
+
+            return render_template(url, main=resp_main, apidata=resp_apicall, inputrefs_resp=input_resp, outputrefs_resp=output_resp)
+        elif objtype == "malware-family":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'maec_id': row_main[2],
+                'labels': row_main[3],
+                'description': row_main[4],
+                'common_strings': row_main[5],
+                'common_behaviorrefs': row_main[8]
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # field data
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `field-data` where obj_id=%s and obj_type=%s and created_by=%s", (obj_id, objtype, createdBy))
+            result_fielddata = cur.fetchall()
+            field_datafinal = []
+            for row in result_fielddata:
+                maindict = {
+                    "id": row[0],
+                    "delivery_vectors": row[3],
+                    "first_seen": row[4],
+                    "last_seen": row[5]
+                }
+                field_datafinal.append(maindict)
+            output2 = json.dumps(field_datafinal,sort_keys=True, indent=4)
+            resp_fielddata = json.loads(output2)
+            # capability
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `capability` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_capability = cur.fetchall()
+            field_capability = []
+            for row in result_capability:
+                maindict = {
+                    "id": row[0],
+                    "name": row[3],
+                    "refined_capabilities": row[4],
+                    "description": row[5],
+                    "attributes": row[6],
+                    "behavior_refs": row[7],
+                    "references": row[8]
+                }
+                field_capability.append(maindict)
+            output3 = json.dumps(field_capability, sort_keys=True, indent=4)
+            resp_capability = json.loads(output3)
+            # objec-ref : artifact
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `artifact` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_artifact = cur.fetchall()
+            field_artifact = []
+            for row in result_artifact:
+                maindict = {
+                    "id": row[0],
+                    "mime_type": row[5],
+                    "payload_bin": row[6],
+                    "url": row[7],
+                    "hash_type": row[8],
+                    "hash_value": row[9]
+                }
+                field_artifact.append(maindict)
+            output4 = json.dumps(field_artifact, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output4)
+            # references: external references
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `external_references` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_extref = cur.fetchall()
+            field_extref = []
+            for row in result_extref:
+                maindict = {
+                    "id": row[0],
+                    "src_name": row[3],
+                    "description": row[4],
+                    "url": row[5],
+                    "hash_type": row[6],
+                    "hash_value": row[7],
+                    "external_id": row[8]
+                }
+                field_extref.append(maindict)
+            output5 = json.dumps(field_extref, sort_keys=True, indent=4)
+            resp_extref = json.loads(output5)
+
+            return render_template(url, main=resp_main, fielddata=resp_fielddata, capabilitydata=resp_capability,commoncodedata=resp_artifact, extrefdata=resp_extref)
+        elif objtype == "malware-instance":
+            url = 'view_templates/' + objtype + '.html'
+            obj_id = id
+            createdBy = g.user
+            # Main campaign SDO
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `" + objtype + "` where sno=%s and created_by=%s", (obj_id, createdBy))
+            row_main = cur.fetchone()
+            main_SDO = {
+                'id': row_main[0],
+                'type': row_main[1],
+                'maec_id': row_main[2],
+                'input_objrefs': row_main[3],
+                'labels': row_main[4],
+                'description': row_main[5],
+                'os_execenv': row_main[6],
+                'arch_execenv': row_main[7],
+                'os_features': row_main[8]
+            }
+            output = json.dumps(main_SDO, sort_keys=True, indent=4)
+            resp_main = json.loads(output)
+            # references: external references
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `external_references` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_extref = cur.fetchall()
+            field_extref = []
+            for row in result_extref:
+                maindict = {
+                    "id": row[0],
+                    "src_name": row[3],
+                    "description": row[4],
+                    "url": row[5],
+                    "hash_type": row[6],
+                    "hash_value": row[7],
+                    "external_id": row[8]
+                }
+                field_extref.append(maindict)
+            output1 = json.dumps(field_extref, sort_keys=True, indent=4)
+            resp_extref = json.loads(output1)
+            # Aliases
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `aliases` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_aliases = cur.fetchall()
+            field_aliases = []
+            for row in result_aliases:
+                maindict = {
+                    "id": row[0],
+                    "value": row[1],
+                    "source": row[2],
+                    "confidence": row[3]
+                }
+                field_aliases.append(maindict)
+            output2 = json.dumps(field_aliases,sort_keys=True, indent=4)
+            resp_aliases = json.loads(output2)
+            # field data
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `field-data` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_fielddata = cur.fetchall()
+            field_datafinal = []
+            for row in result_fielddata:
+                maindict = {
+                    "id": row[0],
+                    "delivery_vectors": row[3],
+                    "first_seen": row[4],
+                    "last_seen": row[5]
+                }
+                field_datafinal.append(maindict)
+            output3 = json.dumps(field_datafinal, sort_keys=True, indent=4)
+            resp_fielddata = json.loads(output3)
+            # capability
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `capability` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_capability = cur.fetchall()
+            field_capability = []
+            for row in result_capability:
+                maindict = {
+                    "id": row[0],
+                    "name": row[3],
+                    "refined_capabilities": row[4],
+                    "description": row[5],
+                    "attributes": row[6],
+                    "behavior_refs": row[7],
+                    "references": row[8]
+                }
+                field_capability.append(maindict)
+            output4 = json.dumps(field_capability, sort_keys=True, indent=4)
+            resp_capability = json.loads(output4)
+            # objec-ref : file
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `file` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_file = cur.fetchall()
+            field_file = []
+            for row in result_file:
+                maindict = {
+                    "id": row[0],
+                    "extensions": row[5],
+                    "hashes": row[6],
+                    "size": row[7],
+                    "name": row[8],
+                    "name_enc": row[9],
+                    "magic_number_hex": row[10],
+                    "mime_type": row[11]
+
+                }
+                field_file.append(maindict)
+            output5 = json.dumps(field_file, sort_keys=True, indent=4)
+            resp_file= json.loads(output5)
+            # Dynamic features
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `dynamic-features` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_dynamicfeatures = cur.fetchall()
+            field_dynamicfeatures = []
+            for row in result_dynamicfeatures:
+                maindict = {
+                    "id": row[0],
+                    "behavior_refs": row[3],
+                    "action_refs": row[4],
+                    "networktraffic_refs": row[5],
+                    "process_tree": row[6],
+
+                }
+                field_dynamicfeatures.append(maindict)
+            output6 = json.dumps(field_dynamicfeatures, sort_keys=True, indent=4)
+            resp_dynamicfeatures = json.loads(output6)
+            # process tree node
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `process-tree-node` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_processtreenode = cur.fetchall()
+            field_processtreenode = []
+            for row in result_processtreenode:
+                maindict = {
+                    "id": row[0],
+                    "process_ref": row[3],
+                    "parent_actionref": row[4],
+                    "ordinal_position": row[5],
+                    "initiated_actionrefs": row[6],
+
+                }
+                field_processtreenode.append(maindict)
+            output7 = json.dumps(field_processtreenode, sort_keys=True, indent=4)
+            resp_processtreenode = json.loads(output7)
+            # Static features
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `static-features` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_staticfeatures = cur.fetchall()
+            field_staticfeatures = []
+            for row in result_staticfeatures:
+                maindict = {
+                    "id": row[0],
+                    "strings": row[3],
+                    "obfuscation_methods": row[4],
+                    "certificates": row[5],
+                    "file_headers": row[6],
+                    "configuration_params": row[7],
+                    "development_env": row[8]
+
+                }
+                field_staticfeatures.append(maindict)
+            output8 = json.dumps(field_staticfeatures, sort_keys=True, indent=4)
+            resp_staticfeatures = json.loads(output8)
+            # binary obfuscation
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `binary-obfuscation` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_binobfs = cur.fetchall()
+            field_binobfs = []
+            for row in result_binobfs:
+                maindict = {
+                    "id": row[0],
+                    "method": row[3],
+                    "layer_order": row[4],
+                    "encryption_algo": row[5],
+                    "packer_name": row[6],
+                    "packer_ver": row[7]
+                }
+                field_binobfs.append(maindict)
+            output9 = json.dumps(field_binobfs, sort_keys=True, indent=4)
+            resp_binobfs = json.loads(output9)
+            # malware dev env
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `malware-development-environment` where obj_id=%s and obj_type=%s and created_by=%s",
+                        (obj_id, objtype, createdBy))
+            result_maldevenv = cur.fetchall()
+            field_maldevenv = []
+            for row in result_maldevenv:
+                maindict = {
+                    "id": row[0],
+                    "tool_refs": row[3],
+                    "debugging_filerefs": row[4]
+                }
+                field_maldevenv.append(maindict)
+            output10 = json.dumps(field_maldevenv, sort_keys=True, indent=4)
+            resp_maldevenv = json.loads(output10)
+            # Analysis Metadata
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select * from `analysis-metadata` where obj_id=%s and obj_type=%s and created_by=%s",
+                (obj_id, objtype, createdBy))
+            result_analysismetadata = cur.fetchall()
+            field_analysismetadata = []
+            for row in result_analysismetadata:
+                maindict = {
+                    "id": row[0],
+                    "is_automated": row[3],
+                    "start_time": row[4],
+                    "end_time": row[5],
+                    "confidence": row[7],
+                    "description": row[13],
+                    "conclusion": row[14]
+
+                }
+                field_analysismetadata.append(maindict)
+            output11 = json.dumps(field_analysismetadata, sort_keys=True, indent=4)
+            resp_analysismetadata = json.loads(output11)
+            # signature metadata
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select * from `signature-metadata` where obj_id=%s and obj_type=%s and created_by=%s",
+                (obj_id, objtype, createdBy))
+            result_sigmetadata = cur.fetchall()
+            field_sigmetadata = []
+            for row in result_sigmetadata:
+                maindict = {
+                    "id": row[0],
+                    "signature_type": row[3],
+                    "name": row[4],
+                    "description": row[5],
+                    "author": row[6]
+                }
+                field_sigmetadata.append(maindict)
+            output12 = json.dumps(field_sigmetadata, sort_keys=True, indent=4)
+            resp_sigmetadata = json.loads(output12)
+            return render_template(url, main=resp_main, extrefdata=resp_extref, aliasesdata=resp_aliases, fielddata=resp_fielddata, capabilitydata=resp_capability
+                               , filedata=resp_file, dynamicfeaturesdata=resp_dynamicfeatures, processtreenodedata=resp_processtreenode,
+                               staticfeaturesdata= resp_staticfeatures, binaryobfsdata=resp_binobfs, malwaredevenvdata=resp_maldevenv,
+                               analysismetadata=resp_analysismetadata, signaturemetadata=resp_sigmetadata  )
+
 
     return redirect(url_for('index'))
 
@@ -1081,16 +2296,57 @@ def update_entry(objtype, id):
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'name': row[2],
-                'description': row[3],
-                'timestamp': row[4].strftime('%Y-%m-%dT%H:%M'),
-                'attributes': row[5],
-                'action_refs': row[6]
+                'maec_id': row[2],
+                'name': row[3],
+                'description': row[4],
+                'timestamp': row[5].strftime('%Y-%m-%dT%H:%M'),
+                'attributes': row[6],
+                'action_refs': row[7],
+                'tech_refs': row[8],
+                'publishedflag': row[10]
 
             }
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
-            return render_template(url, data=resp)
+            # Action references
+            cur = mysql.connection.cursor()
+            query3 = "select * from `malware-action` where created_by=%s"
+            cur.execute(query3, (g.user,))
+            row_actref  = cur.fetchall()
+            row_actrefslist = []
+            for row in row_actref:
+                rowdict = {
+                    'id': row[0],
+                    'type': row[1],
+                    'maec_id': row[2],
+                    'name': row[3]
+                }
+                row_actrefslist.append(rowdict)
+            output2 = json.dumps(row_actrefslist, sort_keys=True, indent=4)
+            resp_actrefs = json.loads(output2)
+            # External_references
+            cur = mysql.connection.cursor()
+            query2 = "SELECT ER.sno, ER.obj_id, ER.obj_type, ER.src_name, ER.description, ER.url, ER.external_id, ER.created_by \
+                      FROM `external_references` AS ER \
+                      INNER JOIN `behavior` AS BE on ER.obj_id = BE.sno AND  ER.obj_type = BE.type AND ER.obj_id = %s AND ER.obj_type = %s AND ER.created_by=%s"
+            cur.execute(query2, (obj_id, objtype, createdBy))
+            row_extref = cur.fetchall()
+            row_extrefList = []
+            for row in row_extref:
+                rowdict = {
+                    'id': row[0],
+                    'ref_id': row[1],
+                    'ref_type': row[2],
+                    'src_name': row[3],
+                    'description': row[4],
+                    'url': row[5],
+                    'external_id': row[6],
+                    'created_by': row[7]
+                }
+                row_extrefList.append(rowdict)
+            output3 = json.dumps(row_extrefList, sort_keys=True, indent=4)
+            response_extref = json.loads(output3)
+            return render_template(url, data=resp, actreflist=resp_actrefs, extreflist=response_extref )
         elif objtype == "collection":
             url = 'update_templates/' + objtype + '.html'
             obj_id = id
@@ -1101,14 +2357,377 @@ def update_entry(objtype, id):
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'description': row[2],
-                'association_type': row[3],
-                'entity_refs': row[4],
-                'observable_refs': row[5]
+                'maec_id': row[2],
+                'description': row[3],
+                'association_type': row[4],
+                'entity_refs': row[5],
+                'observable_refs': row[6],
+                'entityrefs_flag': row[8],
+                'observablerefs_flag': row[9]
             }
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
-            return render_template(url, data=resp)
+
+            # entity refs
+            all_entityrefs =[]
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type, maec_id from `behavior` where created_by=%s",(createdBy,))
+            behavior = cur.fetchall()
+            for row in behavior:
+                rowdict1 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'maec_id': row[2]
+                }
+                all_entityrefs.append(rowdict1)
+
+            # cur = mysql.connection.cursor()
+            # cur.execute("select sno, type from `collection` where created_by=%s", (createdBy,))
+            # collection = cur.fetchall()
+            # for row in collection:
+            #     rowdict2 = {
+            #         'id': row[0],
+            #         'type': row[1]
+            #     }
+            #     all_entityrefs.append(rowdict2)
+
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type, maec_id from `malware-action` where created_by=%s", (createdBy,))
+            mal_action = cur.fetchall()
+            for row in mal_action:
+                rowdict3 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'maec_id': row[2]
+                }
+                all_entityrefs.append(rowdict3)
+
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type, maec_id from `malware-family` where created_by=%s", (createdBy,))
+            mal_family = cur.fetchall()
+            for row in mal_family:
+                rowdict4 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'maec_id': row[2]
+                }
+                all_entityrefs.append(rowdict4)
+
+            cur = mysql.connection.cursor()
+            cur.execute("select sno, type, maec_id from `malware-instance` where created_by=%s", (createdBy,))
+            mal_instance = cur.fetchall()
+            for row in mal_instance:
+                rowdict5 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'maec_id': row[2]
+                }
+                all_entityrefs.append(rowdict5)
+
+            output2 = json.dumps(all_entityrefs, sort_keys=True, indent=4)
+            entity_refs_resp = json.loads(output2)
+
+            # input ref's for directory
+            # ------------------------
+            artdir_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, name from `file` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            artifact_input_results = cur.fetchall()
+            for row in artifact_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                artdir_input_list.append(rowdict2)
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, path from `directory` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            directory_input_results = cur.fetchall()
+            for row in directory_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                artdir_input_list.append(rowdict2)
+            output_dirinput = json.dumps(artdir_input_list, sort_keys=True, indent=4)
+            artdir_input_response = json.loads(output_dirinput)
+
+            # input ref's for domain name
+            domainrefs_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `ipv4-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            ipv4_input_results = cur.fetchall()
+            for row in ipv4_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                domainrefs_input_list.append(rowdict2)
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `ipv6-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            ipv6_input_results = cur.fetchall()
+            for row in ipv6_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                domainrefs_input_list.append(rowdict2)
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `domain-name` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            dn_input_results = cur.fetchall()
+            for row in dn_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                domainrefs_input_list.append(rowdict2)
+            domain_input = json.dumps(domainrefs_input_list, sort_keys=True, indent=4)
+            dn_input_response = json.loads(domain_input)
+
+            # input refs for email -addr
+            emailaddrrefs_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, account_login from `user-account` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            emaddr_input_results = cur.fetchall()
+            for row in emaddr_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                emailaddrrefs_input_list.append(rowdict2)
+            output_inputemaddr = json.dumps(emailaddrrefs_input_list, sort_keys=True, indent=4)
+            emaddr_input_response = json.loads(output_inputemaddr)
+
+            # input refs for email-message
+            emailmsgrefs_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `email-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            emmsg_input_results = cur.fetchall()
+            for row in emmsg_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                emailmsgrefs_input_list.append(rowdict2)
+            emailmsgrefs_input_list2 = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, mime_type from `artifact` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            emmsg_input_results = cur.fetchall()
+            for row in emmsg_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                emailmsgrefs_input_list2.append(rowdict2)
+            output_inputemmsg = json.dumps(emailmsgrefs_input_list, sort_keys=True, indent=4)
+            output_inputemmsg2 = json.dumps(emailmsgrefs_input_list2, sort_keys=True, indent=4)
+            emmsg_input_response = json.loads(output_inputemmsg)
+            emmsg_input_response2 = json.loads(output_inputemmsg2)
+
+            # input refs for file
+            dir_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, path from `directory` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            directory_input_results = cur.fetchall()
+            for row in directory_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                dir_input_list.append(rowdict2)
+            output_dirinput = json.dumps(dir_input_list, sort_keys=True, indent=4)
+            dir_input_response = json.loads(output_dirinput)
+
+            # input refs for ipv4-addr
+            ip_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `mac-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            ip_input_results = cur.fetchall()
+            for row in ip_input_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                ip_input_list.append(rowdict2)
+            output_ipinput = json.dumps(ip_input_list, sort_keys=True, indent=4)
+            ip_input_response = json.loads(output_ipinput)
+
+            ip_input_list2 = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, name from `autonomous-system` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            ip_input_results2 = cur.fetchall()
+            for row in ip_input_results2:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                ip_input_list2.append(rowdict2)
+            output_ipinput2 = json.dumps(ip_input_list2, sort_keys=True, indent=4)
+            ip_input_response2 = json.loads(output_ipinput2)
+
+            # input refs for network-traffic
+            src_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `ipv4-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            srcref_ipv4_results = cur.fetchall()
+            for row in srcref_ipv4_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                src_input_list.append(rowdict2)
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `ipv6-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            srcref_ipv6_results = cur.fetchall()
+            for row in srcref_ipv6_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                src_input_list.append(rowdict2)
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `mac-addr` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            srcref_mac_results = cur.fetchall()
+            for row in srcref_mac_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                src_input_list.append(rowdict2)
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, value from `domain-name` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            srcref_dn_results = cur.fetchall()
+            for row in srcref_dn_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                src_input_list.append(rowdict2)
+            output_srcref = json.dumps(src_input_list, sort_keys=True, indent=4)
+            srcrefin_output_response = json.loads(output_srcref)
+
+            art_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, mime_type from `artifact` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            srcref_ar_results = cur.fetchall()
+            for row in srcref_ar_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+                }
+                art_input_list.append(rowdict2)
+            output_srcref = json.dumps(art_input_list, sort_keys=True, indent=4)
+            artin_output_response = json.loads(output_srcref)
+
+            nettraffic_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type from `network-traffic` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            srcref_nt_results = cur.fetchall()
+            for row in srcref_nt_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1]
+
+                }
+                nettraffic_input_list.append(rowdict2)
+            output_srcref = json.dumps(nettraffic_input_list, sort_keys=True, indent=4)
+            nettrafficin_output_response = json.loads(output_srcref)
+
+            # input refs for process
+            file_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, name from `file` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            ref_file_results = cur.fetchall()
+            for row in ref_file_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+
+                }
+                file_input_list.append(rowdict2)
+            output_srcref = json.dumps(file_input_list, sort_keys=True, indent=4)
+            filein_output_response = json.loads(output_srcref)
+
+            process_input_list = []
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select sno, type, name from `process` where obj_id=%s AND obj_type=%s AND ref_type='input' and created_by=%s",
+                (obj_id, objtype, createdBy))
+            ref_process_results = cur.fetchall()
+            for row in ref_process_results:
+                rowdict2 = {
+                    'id': row[0],
+                    'type': row[1],
+                    'ref': row[2]
+
+                }
+                process_input_list.append(rowdict2)
+            output_srcref = json.dumps(process_input_list, sort_keys=True, indent=4)
+            processin_output_response = json.loads(output_srcref)
+
+
+
+            return render_template(url, data=resp, entity_refs=entity_refs_resp,dirinputdata=artdir_input_response,
+                                   domainname_inputrefs=dn_input_response, emaddr_inputrefs=emaddr_input_response,
+                                   emmsg_inputrefs=emmsg_input_response, emmsg_inputrefs2=emmsg_input_response2,
+                                   file_inputrefs=emmsg_input_response2, file_input_dirrefs=dir_input_response,
+                                   ip_input_macrefs=ip_input_response, ip_input_asrefs=ip_input_response2,
+                                   nt_input_refs=srcrefin_output_response,art_input_refs=artin_output_response,
+                                   nettraffic_input_refs=nettrafficin_output_response,file_input_refs=filein_output_response,
+                                   process_input_refs=processin_output_response, entityref_flag = resp['entityrefs_flag'],
+                                   observableref_flag = resp['observablerefs_flag'])
         elif objtype == "malware-action":
             url = 'update_templates/' + objtype + '.html'
             obj_id = id
@@ -1120,10 +2739,13 @@ def update_entry(objtype, id):
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'name': row[2],
-                'description': row[3],
-                'is_successful': row[4],
-                'timestamp': row[5].strftime('%Y-%m-%dT%H:%M')
+                'maec_id': row[2],
+                'name': row[3],
+                'description': row[4],
+                'is_successful': row[5],
+                'timestamp': row[6].strftime('%Y-%m-%dT%H:%M'),
+                'input_refs': row[7],
+                'output_refs': row[8]
             }
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
@@ -2134,13 +3756,13 @@ def update_entry(objtype, id):
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'labels': row[2],
-                'description': row[3],
-                'common_strings': row[4],
-                'common_capabilities': row[5],
-                'common_coderefs': row[6],
-                'common_behaviorrefs': row[7],
-                'references': row[8]
+                'labels': row[3],
+                'description': row[4],
+                'common_strings': row[5],
+                'common_capabilities': row[6],
+                'common_coderefs': row[7],
+                'common_behaviorrefs': row[8],
+                'references': row[9]
             }
 
             output = json.dumps(rowdict, sort_keys=True, indent=4)
@@ -2255,12 +3877,12 @@ def update_entry(objtype, id):
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'inputobjrefs': row[2],
-                'labels': row[3],
-                'description': row[4],
-                'os_execenv': row[5],
-                'arch_execenv': row[6],
-                'os_features': row[7]
+                'inputobjrefs': row[3],
+                'labels': row[4],
+                'description': row[5],
+                'os_execenv': row[6],
+                'arch_execenv': row[7],
+                'os_features': row[8]
             }
             output = json.dumps(rowdict, sort_keys=True, indent=4)
             resp = json.loads(output)
@@ -2585,34 +4207,34 @@ def update_entry(objtype, id):
                     }
                     proctreenodelist.append(mainrowdict)
 
-                    proctreenode_output = json.dumps(proctreenodelist, sort_keys=True, indent=4)
-                    proctreenode_response = json.loads(proctreenode_output)
-                    # for binary obfuscation in main of static features
-                    cur = mysql.connection.cursor()
-                    row_binobf_count = cur.execute(
-                        "select * from `binary-obfuscation` where obj_id=%s AND obj_type=%s AND created_by=%s",
-                        (obj_id, objtype, createdBy))
-                    row_binobf = cur.fetchall()
-                    binobflist = []
-                    if len(row_binobf) is 0:
-                        mainbinobfdict = {
-                            'id': 'None',
-                            'type': 'binary-obfuscation',
-                            'result': 'None'
-                        }
-                        binobflist.append(mainbinobfdict)
+            proctreenode_output = json.dumps(proctreenodelist, sort_keys=True, indent=4)
+            proctreenode_response = json.loads(proctreenode_output)
+            # for binary obfuscation in main of static features
+            cur = mysql.connection.cursor()
+            row_binobf_count = cur.execute(
+                "select * from `binary-obfuscation` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_binobf = cur.fetchall()
+            binobflist = []
+            if len(row_binobf) is 0:
+                mainbinobfdict = {
+                    'id': 'None',
+                    'type': 'binary-obfuscation',
+                    'result': 'None'
+                }
+                binobflist.append(mainbinobfdict)
 
-                    elif len(row_binobf) is not '0':
-                        for row in row_binobf:
-                            mainrowdict = {
-                                'id': row[0],
-                                'type': 'binary-obfuscation',
-                                'result': row[3]
-                            }
-                            binobflist.append(mainrowdict)
+            elif len(row_binobf) is not '0':
+                for row in row_binobf:
+                    mainrowdict = {
+                        'id': row[0],
+                        'type': 'binary-obfuscation',
+                        'result': row[3]
+                    }
+                    binobflist.append(mainrowdict)
 
-                            binaryobfuscation_output = json.dumps(binobflist, sort_keys=True, indent=4)
-                            binaryobfuscation_response = json.loads(binaryobfuscation_output)
+            binaryobfuscation_output = json.dumps(binobflist, sort_keys=True, indent=4)
+            binaryobfuscation_response = json.loads(binaryobfuscation_output)
 
             return render_template(url, data=resp, namedata=name_response, aliasesdata=aliases_response,
                                    filedata=file_response, behaviordata=behavior_response, malactiondata=malaction_response,
@@ -2753,6 +4375,87 @@ def delete_all_entry():
                 cur = mysql.connection.cursor()
                 cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
                 mysql.connection.commit()
+                # deleting observable refs
+                #delete artifact
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from artifact where obj_id=%s and obj_type=%s and  created_by=%s", (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete autonomous-system
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `autonomous-system` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete directory
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `directory` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete email-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `email-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete email-message
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `email-message` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete file
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `file` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete ipv4-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `ipv4-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete ipv6-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `ipv6-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete mac-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `mac-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete network-traffic
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `network-traffic` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete process
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `process` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete software
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `software` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete url
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `url` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete user-account
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `user-account` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete windows-registry-key
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `windows-registry-key` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete x509-certificate
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `x509-certificate` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+
                 print "Entries deleted successfully"
                 return redirect(url_for('home'))
             elif obj_type == 'malware-action':
@@ -2760,6 +4463,135 @@ def delete_all_entry():
                 cur = mysql.connection.cursor()
                 cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
                 mysql.connection.commit()
+
+                # deleting observable refs
+                # delete artifact
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from artifact where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete autonomous-system
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `autonomous-system` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete directory
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `directory` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete email-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `email-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete email-message
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `email-message` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete file
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `file` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete ipv4-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `ipv4-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete ipv6-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `ipv6-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete mac-addr
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `mac-addr` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete network-traffic
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `network-traffic` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete process
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `process` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete software
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `software` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete url
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `url` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete user-account
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `user-account` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete windows-registry-key
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `windows-registry-key` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # delete x509-certificate
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `x509-certificate` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+
+                # api call
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `api-call` where obj_id=%s and obj_type=%s and  created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
+            elif obj_type == 'malware-family':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+
+                # deleting name
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `name` where obj_id=%s and obj_type=%s and created_by=%s", (id,obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting aliases
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `aliases` where obj_id=%s and obj_type=%s and created_by=%s", (id,obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting field-data
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `field-data` where obj_id=%s and obj_type=%s and created_by=%s", (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting refined_capability
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `refined_capability` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting capability
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `capability` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting capability
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `artifact` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting external-references
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `external_references` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+
                 print "Entries deleted successfully"
                 return redirect(url_for('home'))
 
@@ -2823,9 +4655,10 @@ def update_analysismetadata():
 @app.route('/delete_analysismetadata', methods=['POST'])
 def delete_analysismetadata():
     id = request.json['id']
-    query = "delete from `analysis-metadata` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `analysis-metadata` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype,g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -2874,9 +4707,10 @@ def update_signaturemetadata():
 @app.route('/delete_signaturemetadata', methods=['POST'])
 def delete_signaturemetadata():
     id = request.json['id']
-    query = "delete from `signature-metadata` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `signature-metadata` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype,g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -2917,9 +4751,10 @@ def update_malwaredevenv():
 @app.route('/delete_malwaredevenv', methods=['POST'])
 def delete_malwaredevenv():
     id = request.json['id']
-    query = "delete from `malware-development-environment` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `malware-development-environment` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype,g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -2967,9 +4802,10 @@ def update_binaryobfuscation():
 @app.route('/delete_binaryobfuscation', methods=['POST'])
 def delete_binaryobfuscation():
     id = request.json['id']
-    query = "delete from `binary-obfuscation` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `binary-obfuscation` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype,g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -3016,9 +4852,10 @@ def update_staticfeatures():
 @app.route('/delete_staticfeatures', methods=['POST'])
 def delete_staticfeatures():
     id = request.json['id']
-    query = "delete from `static-features` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `static-features` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype,g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -3062,9 +4899,10 @@ def update_processtreenode():
 @app.route('/delete_processtreenode', methods=['POST'])
 def delete_processtreenode():
     id = request.json['id']
-    query = "delete from `process-tree-node` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `process-tree-node` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id, objtype, g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -3108,9 +4946,10 @@ def update_dynamicfeatures():
 @app.route('/delete_dynamicfeatures', methods=['POST'])
 def delete_dynamicfeatures():
     id = request.json['id']
-    query = "delete from `dynamic-features` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `dynamic-features` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype, g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -3120,6 +4959,7 @@ def delete_dynamicfeatures():
 def insert_name():
     if g.user:
         if request.method == 'POST':
+            id = request.form['id']
             value = request.form['name_value']
             source = request.form['source']
             confidence = request.form['confidence']
@@ -3127,8 +4967,8 @@ def insert_name():
             ref_type = request.form['obj_type']
             created_by = request.form['created_by']
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO name (obj_id, obj_type, value, source, confidence, created_by)
-                        values (%s , %s, %s, %s, %s, %s)''',(ref_id, ref_type, value, source, confidence, created_by))
+            cur.execute('''Replace INTO name (sno,obj_id, obj_type, value, source, confidence, created_by)
+                        values (%s, %s , %s, %s, %s, %s, %s)''',(id, ref_id, ref_type, value, source, confidence, created_by))
             mysql.connection.commit()
             print('Successfully entered Name')
             return jsonify({'result': 'success'})
@@ -3198,9 +5038,10 @@ def update_aliases():
 @app.route('/deletealiases', methods=['POST'])
 def delete_aliases():
     id = request.json['id']
-    query = "delete from aliases where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from aliases where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id,objtype, g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -3242,13 +5083,17 @@ def update_fielddata():
 # Field data - delete(ajax post query)
 @app.route('/deletefielddata', methods=['POST'])
 def delete_fielddata():
-    id = request.json['id']
-    query = "delete from `field-data` where sno=%s"
-    cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
-    mysql.connection.commit()
-    print "successfully deleted"
-    return jsonify({'result': 'success'})
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            objtype = request.json['objtype']
+            query = "delete from `field-data` where sno=%s and obj_type=%s and created_by=%s"
+            cur = mysql.connection.cursor()
+            cur.execute(query, (id,objtype,  g.user))
+            mysql.connection.commit()
+            print "successfully deleted"
+            return jsonify({'result': 'success'})
+
 
 # Refined capability - Insert (Ajax post query)
 @app.route('/insertrefinedcapability', methods=['POST'])
@@ -3338,9 +5183,10 @@ def update_capability():
 @app.route('/deletecapability', methods=['POST'])
 def delete_capability():
     id = request.json['id']
-    query = "delete from `capability` where sno=%s"
+    objtype = request.json['objtype']
+    query = "delete from `capability` where sno=%s and obj_type=%s and created_by=%s"
     cur = mysql.connection.cursor()
-    cur.execute(query, (id,))
+    cur.execute(query, (id, objtype, g.user))
     mysql.connection.commit()
     print "successfully deleted"
     return jsonify({'result': 'success'})
@@ -3403,7 +5249,7 @@ def insert_extref():
             hash_type = request.form['hash_type']
             hash_val = request.form['hash_value']
             ext_id = request.form['extref_extid']
-            created_by = request.form['created_by']
+            created_by = g.user
 
             cur = mysql.connection.cursor()
             cur.execute('''INSERT INTO external_references (obj_id, obj_type, src_name, description, url, hash_type,
@@ -3430,15 +5276,16 @@ def update_extref():
             return jsonify({'result': 'success'})
 
 
-# External references - update (Ajax post query)
+# External references - Delete (Ajax post query)
 @app.route('/deleteextrefdata', methods=['POST'])
 def delete_extrefdata():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            query = "delete from external_references where sno=%s"
+            objtype = request.json['objtype']
+            query = "delete from external_references where sno=%s and obj_type=%s and created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id,))
+            cur.execute(query, (id,objtype,g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3489,9 +5336,10 @@ def delete_apicall():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            query = "delete from `api-call` where sno=%s"
+            objtype = request.json['objtype']
+            query = "delete from `api-call` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id,))
+            cur.execute(query, (id,objtype,g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3537,16 +5385,40 @@ def update_artifact():
             print "successfully Updated"
             return jsonify({'result': 'success'})
 
+# Artifact -fetch (Ajax port query)
+@app.route('/fetch_artifact', methods=['POST'])
+def fetch_artifact():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `artifact` where sno=%s AND obj_type=%s AND created_by=%s",(id, obj_type, g.user))
+            result = cur.fetchone()
+            print result
+            maindict = {
+                'id': result[0],
+                'mime_type': result[5],
+                'payload_bin': result[6],
+                'url': result[7],
+                'hash_type': result[8],
+                'hash_value': result[9]
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
+
 # Artifact - Delete (Ajax post query)
 @app.route('/delete_artifact', methods=['POST'])
 def delete_artifact():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `artifact` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `artifact` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3592,6 +5464,29 @@ def update_autonomoussystem():
             print "successfully Updated"
             return jsonify({'result': 'success'})
 
+# Autonomous system - Fetch ( Ajax post query)
+@app.route('/fetch_autonomoussystem', methods=['POST'])
+def fetch_autonomoussystem():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `autonomous-system` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            print result
+            maindict = {
+                'id': result[0],
+                'number': result[5],
+                'name': result[6],
+                'rir': result[7]
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
+
 
 # Autonomous system - Delete ( Ajax post query)
 @app.route('/delete_autonomoussystem', methods=['POST'])
@@ -3599,10 +5494,10 @@ def delete_autonomoussystem():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `autonomous-system` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `autonomous-system` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3653,17 +5548,41 @@ def update_directory():
             print('successfully inserted')
             return jsonify({'result': 'success'})
 
+# Directory - Fetch (Ajax post query)
+@app.route('/fetch_directory', methods=['POST'])
+def fetch_directory():
+    id = request.json['id']
+    observable_type = request.json['obs_type']
+    obj_type = request.json['objtype']
+    cur = mysql.connection.cursor()
+    cur.execute("select * from `directory` where sno=%s AND obj_type=%s AND created_by=%s",
+                (id, obj_type, g.user))
+    result = cur.fetchone()
+    print result
+    maindict = {
+        'id': result[0],
+        'path': result[5],
+        'path_enc': result[6],
+        'created': result[7],
+        'modified': result[8],
+        'accessed': result[9],
+        'contains_refs': result[10]
+    }
+    output = json.dumps(maindict, sort_keys=True, indent=4)
+    resp_artifact = json.loads(output)
+    return output
+
 
 # Directory - Delete ( Ajax post query)
 @app.route('/delete_directory', methods=['POST'])
 def delete_directory():
-    if g.user():
+    if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `directory` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `directory` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3707,16 +5626,38 @@ def update_domainname():
             print('successfully inserted')
             return jsonify({'result': 'success'})
 
+# Domain name - Fetch (Ajax post query)
+@app.route('/fetch_domainname', methods=['POST'])
+def fetch_domainname():
+    id = request.json['id']
+    observable_type = request.json['obs_type']
+    obj_type = request.json['objtype']
+    cur = mysql.connection.cursor()
+    cur.execute("select * from `domain-name` where sno=%s AND obj_type=%s AND created_by=%s",
+                (id, obj_type, g.user))
+    result = cur.fetchone()
+    print result
+    maindict = {
+        'id': result[0],
+        'value': result[5],
+        'resolves_to_refs': result[6]
+
+    }
+    output = json.dumps(maindict, sort_keys=True, indent=4)
+    resp_artifact = json.loads(output)
+    return output
+
+
 # Domain name - Delete ( Ajax post query)
 @app.route('/delete_domainname', methods=['POST'])
 def delete_domainname():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `domain-name` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `domain-name` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3741,6 +5682,30 @@ def insert_emailaddr():
             mysql.connection.commit()
             print('successfully inserted')
             return jsonify({'result': 'success'})
+
+# email addr - fetch ( Ajax post query)
+@app.route('/fetch_emailaddr', methods=['POST'])
+def fetch_emailaddr():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `email-addr` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            print result
+            maindict = {
+                'id': result[0],
+                'value': result[5],
+                'display_name': result[6],
+                'belongs_to_ref': result[7],
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 
 # email addr - Update ( Ajax post query)
@@ -3770,10 +5735,10 @@ def delete_emailaddr():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `email-addr` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `email-addr` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3845,6 +5810,38 @@ def update_emailmsg():
             print('successfully update')
             return jsonify({'result': 'success'})
 
+# email msg - Fetch (Ajax post query)
+@app.route('/fetch_emailmsg', methods=['POST'])
+def fetch_emailmsg():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `email-message` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'is_multipart': result[5],
+                'date': result[6],
+                'content_type': result[7],
+                'from_ref': result[8],
+                'sender_ref': result[9],
+                'to_refs': result[10],
+                'cc_refs': result[11],
+                'bcc_refs': result[12],
+                'subject': result[13],
+                'received_lines': result[14],
+                'additional_header_fields': result[15],
+                'body': result[16],
+                'raw_email_ref': result[17]
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # email msg - Delete ( Ajax post query)
 @app.route('/delete_emailmsg', methods=['POST'])
@@ -3852,10 +5849,10 @@ def delete_emailmsg():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `email-message` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `email-message` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3896,7 +5893,40 @@ def insert_file():
             print('successfully inserted')
             return jsonify({'result': 'success'})
 
+# file - Fetch ( Ajax post query)
+@app.route('/fetch_file', methods=['POST'])
+def fetch_file():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `file` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'extensions': result[5],
+                'hashes': result[6],
+                'size': result[7],
+                'name': result[8],
+                'name_enc': result[9],
+                'magic_number_hex': result[10],
+                'mime_type': result[11],
+                'created': result[12],
+                'modified': result[13],
+                'accessed': result[14],
+                'parent_directory_ref': result[15],
+                'is_encrypted': result[16],
+                'encryption_algorithm': result[17],
+                'decryption_key': result[18],
+                'content_ref': result[19]
 
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 # file - Update ( Ajax post query)  -- to be updated
 @app.route('/update_file', methods=['POST'])
 def update_file():
@@ -3936,10 +5966,10 @@ def delete_file():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `file` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `file` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -3965,6 +5995,27 @@ def insert_ipv4():
             print('successfully inserted')
             return jsonify({'result': 'success'})
 
+# ipv4 - Fetch ( Ajax post query)
+@app.route('/fetch_ipv4', methods=['POST'])
+def fetch_ipv4():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `ipv4-addr` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'value': result[5],
+                'resolves_to_refs': result[6],
+                'belongs_to_refs': result[7],
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # ipv4 - Update ( Ajax post query)
 @app.route('/update_ipv4', methods=['POST'])
@@ -3989,10 +6040,10 @@ def delete_ipv4():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `ipv4-addr` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `ipv4-addr` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4018,6 +6069,27 @@ def insert_ipv6():
             print('successfully inserted')
             return jsonify({'result': 'success'})
 
+# ipv4 - Fetch ( Ajax post query)
+@app.route('/fetch_ipv6', methods=['POST'])
+def fetch_ipv6():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `ipv6-addr` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'value': result[5],
+                'resolves_to_refs': result[6],
+                'belongs_to_refs': result[7],
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # ipv6 - Update ( Ajax post query)
 @app.route('/update_ipv6', methods=['POST'])
@@ -4042,10 +6114,10 @@ def delete_ipv6():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `ipv6-addr` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `ipv6-addr` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4086,6 +6158,25 @@ def update_mac():
             print('successfully update')
             return jsonify({'result': 'success'})
 
+# mac - Fetch ( Ajax post query)
+@app.route('/fetch_mac', methods=['POST'])
+def fetch_mac():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `mac-addr` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'value': result[5]
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # mac - Delete ( Ajax post query)
 @app.route('/delete_mac', methods=['POST'])
@@ -4093,10 +6184,10 @@ def delete_mac():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `mac-addr` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `mac-addr` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type ,g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4161,6 +6252,43 @@ def update_networktraffic():
             print('successfully update')
             return jsonify({'result': 'success'})
 
+# Network traffic - Fetch ( Ajax post query)
+@app.route('/fetch_networktraffic', methods=['POST'])
+def fetch_networktraffic():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `network-traffic` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'extensions': result[5],
+                'start': result[5],
+                'end': result[5],
+                'is_active': result[5],
+                'src_ref': result[5],
+                'dst_ref': result[5],
+                'src_port': result[5],
+                'dst_port': result[5],
+                'protocols': result[5],
+                'src_byte_count': result[5],
+                'dst_byte_count': result[5],
+                'src_packets': result[5],
+                'dst_packets': result[5],
+                'ipfix': result[5],
+                'src_payload_ref': result[5],
+                'dst_payload_ref': result[5],
+                'encapsulated_refs': result[5],
+                'encapsulated_by_ref': result[5],
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # network-traffic - Delete ( Ajax post query)
 @app.route('/delete_networktraffic', methods=['POST'])
@@ -4168,10 +6296,10 @@ def delete_networktraffic():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `network-traffic` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `network-traffic` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4213,6 +6341,40 @@ def insert_process():
             print('successfully inserted')
             return jsonify({'result': 'success'})
 
+# Process - Fetch ( Ajax post query)
+@app.route('/fetch_process', methods=['POST'])
+def fetch_process():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `process` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'extensions': result[5],
+                'is_hidden': result[6],
+                'pid': result[7],
+                'name': result[8],
+                'created': result[9],
+                'cwd': result[10],
+                'arguments': result[11],
+                'command_line': result[12],
+                'environment_variables': result[13],
+                'opened_connection_refs': result[14],
+                'creator_user_ref': result[15],
+                'binary_ref': result[16],
+                'parent_ref': result[17],
+                'child_refs': result[18]
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
+
 
 # process - Update ( Ajax post query)
 @app.route('/update_process', methods=['POST'])  # -- to be updated
@@ -4237,10 +6399,10 @@ def delete_process():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `process` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `process` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4286,6 +6448,31 @@ def update_software():
             print('successfully update')
             return jsonify({'result': 'success'})
 
+# Software - Fetch ( Ajax post query)
+@app.route('/fetch_software', methods=['POST'])
+def fetch_software():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `software` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'name': result[5],
+                'cpe': result[6],
+                'languages': result[7],
+                'vendor': result[8],
+                'version': result[9]
+
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # software - Delete ( Ajax post query)
 @app.route('/delete_software', methods=['POST'])
@@ -4293,10 +6480,10 @@ def delete_software():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `software` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `software` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4338,6 +6525,28 @@ def update_url():
             print('successfully update')
             return jsonify({'result': 'success'})
 
+# URL - Fetch ( Ajax post query)
+@app.route('/fetch_url', methods=['POST'])
+def fetch_url():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `url` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'value': result[5]
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
+
+
 
 # URL - Delete ( Ajax post query)
 @app.route('/delete_url', methods=['POST'])
@@ -4345,10 +6554,10 @@ def delete_url():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `url` where sno=%s AND ref_type=%s"
+            objtype = request.json['objtype']
+            query = "delete from `url` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, objtype, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4407,16 +6616,49 @@ def update_useracc():
             return jsonify({'result': 'success'})
 
 
+# user-account - Fetch ( Ajax post query)
+@app.route('/fetch_useracc', methods=['POST'])
+def fetch_useracc():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `user-account` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'extensions': result[5],
+                'user_id': result[6],
+                'account_login': result[7],
+                'account_type': result[8],
+                'display_name': result[9],
+                'is_service_account': result[10],
+                'is_privileged': result[11],
+                'can_escalate_privs': result[12],
+                'is_disabled': result[13],
+                'account_created': result[14],
+                'account_expires': result[15],
+                'password_last_changed': result[16],
+                'account_first_login': result[17],
+                'account_last_login': result[18]
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
+
 # user-account - Delete ( Ajax post query)
 @app.route('/delete_useracc', methods=['POST'])
 def delete_useracc():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `user-account` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `user-account` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4461,6 +6703,29 @@ def update_winregkey():
             print('successfully update')
             return jsonify({'result': 'success'})
 
+# Windows reg key- Fetch ( Ajax post query)
+@app.route('/fetch_winregkey', methods=['POST'])
+def fetch_winregkey():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `windows-registry-key` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'key': result[5],
+                'modified': result[6],
+                'creator_user_ref': result[7],
+                'number_of_subkeys': result[8]
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
 
 # windows reg key - Delete ( Ajax post query)
 @app.route('/delete_winregkey', methods=['POST'])
@@ -4468,10 +6733,10 @@ def delete_winregkey():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `windows-registry-key` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `windows-registry-key` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -4513,6 +6778,39 @@ def insert_x509():
             return jsonify({'result': 'success'})
 
 
+# x509 certificate- Fetch ( Ajax post query)
+@app.route('/fetch_x509', methods=['POST'])
+def fetch_x509():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['id']
+            observable_type = request.json['obs_type']
+            obj_type = request.json['objtype']
+            cur = mysql.connection.cursor()
+            cur.execute("select * from `x509-certificate` where sno=%s AND obj_type=%s AND created_by=%s",
+                        (id, obj_type, g.user))
+            result = cur.fetchone()
+            maindict = {
+                'id': result[0],
+                'is_self_signed': result[5],
+                'hash_type': result[6],
+                'hash_value': result[7],
+                'version': result[8],
+                'serial_number': result[9],
+                'signature_algorithm': result[10],
+                'issuer': result[11],
+                'validity_not_before': result[12],
+                'validity_not_after': result[13],
+                'subject': result[14],
+                'subject_public_key_algorithm': result[15],
+                'subject_public_key_modulus': result[16],
+                'subject_public_key_exponent': result[17],
+
+            }
+            output = json.dumps(maindict, sort_keys=True, indent=4)
+            resp_artifact = json.loads(output)
+            return output
+
 # x509- Update ( Ajax post query)
 @app.route('/update_x509', methods=['POST'])  # -- to be updated
 def update_x509():
@@ -4536,10 +6834,10 @@ def delete_x509():
     if g.user:
         if request.method == 'POST':
             id = request.json['id']
-            ref_type = request.json['ref_type']
-            query = "delete from `x509-certificate` where sno=%s AND ref_type=%s"
+            obj_type = request.json['objtype']
+            query = "delete from `x509-certificate` where sno=%s AND obj_type=%s AND created_by=%s"
             cur = mysql.connection.cursor()
-            cur.execute(query, (id, ref_type))
+            cur.execute(query, (id, obj_type, g.user))
             mysql.connection.commit()
             print "successfully deleted"
             return jsonify({'result': 'success'})
@@ -5083,11 +7381,13 @@ def create_behavior():
             description = request.form['desc']
             timestamp = request.form['timestmp']
             created_by = g.user
+            id_gen = uuid.uuid4()
+            MAEC_ID = "behavior--" + str(id_gen)
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `behavior` (type, name, description, timestamp, created_by) 
-                 values (%s, %s, %s, %s, %s)''',
-                (type, name, description, timestamp, created_by))
+                '''INSERT INTO `behavior` (type, maec_id, name, description, timestamp, created_by) 
+                 values (%s,%s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, name, description, timestamp, created_by))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -5105,10 +7405,11 @@ def update_behavior():
             timestamp = request.form['timestmp']
             attributes = request.form['attr_val_final']
             action_refs = request.form['action_refs']
+            tech_refs = request.form['technique_refs']
             cur = mysql.connection.cursor()
             cur.execute(
-                '''UPDATE `behavior` SET name=%s, description=%s, timestamp=%s, attributes=%s, action_refs=%s  WHERE sno=%s ''',
-                (name, description, timestamp, attributes, action_refs,  id))
+                '''UPDATE `behavior` SET name=%s, description=%s, `timestamp`=%s, attributes=%s, action_refs=%s, technique_refs=%s  WHERE sno=%s ''',
+                (name, description, timestamp, attributes, action_refs, tech_refs, id))
             mysql.connection.commit()
             print "successfully Updated behavior"
         return redirect(url_for('home'))
@@ -5127,11 +7428,15 @@ def create_collection():
             description = request.form['desc']
             association_type = request.form['assoc_type']
             created_by = g.user
+            id_gen = uuid.uuid4()
+            MAEC_ID = "collection--" + str(id_gen)
+            entity_flag = 0
+            observable_flag = 0
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `collection` (type, description, association_type, created_by) 
-                 values (%s, %s, %s, %s)''',
-                (type, description, association_type, created_by))
+                '''INSERT INTO `collection` (type, maec_id, description, association_type, created_by, entityrefs_flag, observablerefs_flag) 
+                 values (%s, %s, %s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, description, association_type, created_by, entity_flag, observable_flag))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -5157,6 +7462,42 @@ def update_collection():
     else:
         return redirect(url_for('index'))
 
+@app.route('/update_collection_entityrefs', methods=['POST'])
+def update_collection_entityrefs():
+    if g.user:
+        if request.method == 'POST':
+            id = request.form['id']
+           # maec_id = request.form['maec_id']
+            entity_refs = request.form['ent_refs']
+            entity_flag = 1
+            observable_flag = 0
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `collection` SET  entity_refs=%s, entityrefs_flag=%s  WHERE sno=%s  AND created_by=%s ''',
+                (entity_refs, entity_flag, id, g.user))
+            mysql.connection.commit()
+            print "successfully Updated collection"
+        return redirect(url_for('home'))
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/update_collection_observablerefs',methods=['POST'])
+def update_collection_observablerefs():
+    if g.user:
+        if request.method == 'POST':
+            id = request.json['obj_id']
+            # maec_id = request.form['maec_id']
+
+            observable_flag = 1
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''UPDATE `collection` SET  observablerefs_flag=%s  WHERE sno=%s  AND created_by=%s ''',
+                ( observable_flag, id, g.user))
+            mysql.connection.commit()
+            print "successfully Updated observable flag for Collection object"
+            return jsonify({'result': 'success'})
+    else:
+        return redirect(url_for('index'))
 ################ End of Collection #####################
 # ********* MAEC Malware action  ********************
 
@@ -5171,11 +7512,13 @@ def create_malaction():
             is_successful = request.form['is_successful']
             timestmp = request.form['timestmp']
             created_by = g.user
+            id_gen = uuid.uuid4()
+            MAEC_ID = "malware-action--" + str(id_gen)
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `malware-action` (type, name,  description, is_successful, timestamp, created_by) 
-                 values (%s, %s, %s, %s, %s, %s)''',
-                (type, name,  description, is_successful, timestmp, created_by))
+                '''INSERT INTO `malware-action` (type, maec_id, name,  description, is_successful, timestamp, created_by) 
+                 values (%s, %s, %s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, name,  description, is_successful, timestmp, created_by))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -5216,11 +7559,13 @@ def create_malwarefamily():
             description = request.form['desc']
             comm_strings = request.form['comm_strings']
             created_by = g.user
+            id_gen = uuid.uuid4()
+            MAEC_ID = "malware-family--" + str(id_gen)
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `malware-family` (type, labels,  description, common_strings, created_by) 
-                 values (%s, %s, %s, %s, %s)''',
-                (type, labels, description, comm_strings, created_by))
+                '''INSERT INTO `malware-family` (type, maec_id, labels,  description, common_strings, created_by) 
+                 values (%s, %s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, labels, description, comm_strings, created_by))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -5264,11 +7609,13 @@ def create_malwareinstance():
             archexec_env = request.form['archexec_env']
             os_feat = request.form['os_feat']
             created_by = g.user
+            id_gen = uuid.uuid4()
+            MAEC_ID = "malware-instance--" + str(id_gen)
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `malware-instance` (type, labels,  description, os_execenv, arch_execenv, os_features, created_by) 
-                 values (%s, %s, %s, %s, %s, %s, %s)''',
-                (type, labels, description, osexecenv, archexec_env, os_feat, created_by))
+                '''INSERT INTO `malware-instance` (type, maec_id, labels,  description, os_execenv, arch_execenv, os_features, created_by) 
+                 values (%s, %s, %s, %s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, labels, description, osexecenv, archexec_env, os_feat, created_by))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -5717,6 +8064,7 @@ def view_stixcontent():
 
     else:
         return redirect(url_for('index'))
+
 # view bundle content
 @app.route('/view_bundle',methods=['POST'])
 def view_bundle():
@@ -5731,6 +8079,8 @@ def view_bundle():
             return output
     else:
         return redirect(url_for('index'))
+
+# create bundle content
 @app.route('/create_bundle',methods=['POST'])
 def create_bundle():
     if g.user:
@@ -5762,6 +8112,7 @@ def create_bundle():
     else:
         return redirect(url_for('index'))
 
+# for DASHBOARD - STIX
 @app.route('/publishedfeeds',methods=['POST'])
 def publishedfeeds():
     if g.user:
@@ -5784,6 +8135,345 @@ def publishedfeeds():
 
     else:
         return redirect(url_for('index'))
+
+#########################################################
+######################### MAEC 5 #######################
+# generate - MAEC 5
+
+
+@app.route('/home/maec5/generate', methods=['POST'])
+def generate_maec5():
+    if g.user:
+        if request.method == 'POST':
+            objid = request.form['id']
+            objtype = request.form['obj_type']
+
+            # maec objects
+            if objtype == 'behavior':
+                behavior_path = "/home/tarun/Documents/maec5_store/behavior"
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `behavior` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                finallist = []
+                behavior = {
+
+                    "type": main[1],
+                    "id": main[2],
+                    "name": main[3],
+
+                }
+                description_val = main[4]
+                if description_val == '' or description_val == 'None':
+                    print("description field is null/None, so not adding anything to the response!!")
+                else:
+                    behavior["description"] = description_val
+
+                timestamp_val = main[5]
+                if timestamp_val == '' or timestamp_val == 'None':
+                    print("timestamp field is null/none, so not adding anything to the response!!")
+                else:
+                    behavior["timestamp"] = timestamp_val.strftime('%Y-%m-%dT%H:%M')
+
+                attributes_val = main[6]
+                if attributes_val == '' or attributes_val == 'None':
+                    print("attributes field is null/none, so not adding anything to the response!!")
+                else:
+                    attrb_tuple = tuple(main[6].split(':'))
+                    behavior["attributes"] = str(attrb_tuple[0])+ ':'+str(attrb_tuple[1])
+
+
+                # Action references
+                actionrefs_val = main[7]
+                if actionrefs_val == '' or actionrefs_val == 'None':
+                    print("Action references field is null/none, so not adding anything to the response!!")
+                else:
+                    actionrefs_val = tuple(main[7].split(':'))
+                    behavior["action_refs"] = actionrefs_val[1]
+
+                # external references (technical ref's)
+                cur = mysql.connection.cursor()
+                cur.execute("select * from external_references where obj_id=%s AND obj_type=%s AND created_by=%s", (objid, objtype, g.user))
+                extref = cur.fetchall()
+                extreflist = []
+                if len(extref) == 0:
+                    prin("No external refs to add")
+                else:
+                    for row in extref:
+                        maindict = {
+                            "source_name": row[3],
+                            "description": row[4],
+                            "url": row[5],
+                            "hashes": {row[6]: row[7]},
+                            "external_id": row[8]
+                        }
+                        extreflist.append(maindict)
+
+                behavior["technique_refs"] = extreflist
+                finallist.append(behavior)
+                output = json.dumps(finallist, sort_keys=False, indent=4)
+                #file creation
+
+                filename = main[2] +".json"
+                location = os.path.join(behavior_path,filename)
+                file = open(location, "w")
+                #file_contents = json.dumps(result, sort_keys=True, indent=4)
+                file.write(output)
+                file.close()
+                # save a record in database
+                timestmp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `maec_content` (type, maec_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, main[2], objid, g.user, timestmp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # set flag
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''UPDATE `behavior` SET published_flag=%s WHERE sno=%s and maec_id=%s and created_by=%s''',
+                    (flag, objid, main[2], g.user))
+                mysql.connection.commit()
+                # final return point
+                return redirect(url_for('home'))
+
+            if objtype == 'collection':
+                collection_path = "/home/tarun/Documents/maec5_store/collection"
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `collection` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                finallist = []
+                collection = {
+
+                    "type": main[1],
+                    "id": main[2],
+                    "association_type": main[4]
+
+                }
+
+                description_val = main[3]
+                if description_val == '' or description_val == 'None':
+                    print("description field is null/none, so not adding anything to the response!!")
+                else:
+                    collection["description"] = description_val
+                # entity refs
+                entityrefs_val = main[5]
+                if entityrefs_val == '' or entityrefs_val == 'None':
+                    print("Entity refs field is null/none, so not adding anything to the response!!")
+                else:
+                    entity_tuple = tuple(main[5].split(','))
+                    entityrefs_list = []
+                    if len(entity_tuple) > 0:
+                        for i in entity_tuple:
+                            entityrefs_list.append(str(i))
+                        collection["entity_refs"]=entityrefs_list
+                    else:
+                        print("No entity refs to add!!")
+                # observable refs
+                observablerefs_val = main[6]
+                observablerefs_list = []
+                if observablerefs_val == '' or observablerefs_val == 'None':
+                    print("Observable refs field is null/none, so not adding anything to the response!!")
+                else:
+
+                    # artifact
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_artifact = cur.fetchall()
+                    for row in obs_artifact:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # Autonomous system
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_as = cur.fetchall()
+                    for row in obs_as:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # directory
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `directory` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_dir = cur.fetchall()
+                    for row in obs_dir:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # domain-name
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `domain-name` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_domainname = cur.fetchall()
+                    for row in obs_domainname:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # email-addr
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `email-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_emailaddr = cur.fetchall()
+                    for row in obs_emailaddr:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # email-message
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `email-message` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_emailmessage = cur.fetchall()
+                    for row in obs_emailmessage:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # file
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `file` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_file = cur.fetchall()
+                    for row in obs_file:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # ipv4-addr
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_ipv4 = cur.fetchall()
+                    for row in obs_ipv4:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # ipv6-addr
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_ipv6 = cur.fetchall()
+                    for row in obs_ipv6:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # mac-addr
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_mac = cur.fetchall()
+                    for row in obs_mac:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # network-traffic
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_nettraffic = cur.fetchall()
+                    for row in obs_nettraffic:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # process
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `process` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_process = cur.fetchall()
+                    for row in obs_process:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # software
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `software` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_software = cur.fetchall()
+                    for row in obs_software:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # url
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `url` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_url = cur.fetchall()
+                    for row in obs_url:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # user-account
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `user-account` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_useracc = cur.fetchall()
+                    for row in obs_useracc:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # win-reg-key
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_winregkey = cur.fetchall()
+                    for row in obs_winregkey:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+                    # x509 - certificate
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                    obs_x509 = cur.fetchall()
+                    for row in obs_x509:
+                        rowdict = {
+                             row[0]
+                        }
+                        observablerefs_list.append(rowdict)
+
+                    collection["observable_refs"] = observablerefs_list
+                finallist.append(collection)
+                output = json.dumps(finallist, sort_keys=False, indent=4)
+
+                # file creation
+
+                filename = main[2] + ".json"
+                location = os.path.join(collection_path, filename)
+                file = open(location, "w")
+                # file_contents = json.dumps(result, sort_keys=True, indent=4)
+                file.write(output)
+                file.close()
+                # save a record in database
+                timestmp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `maec_content` (type, maec_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, main[2], objid, g.user, timestmp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # set flag
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''UPDATE `collection` SET published_flag=%s WHERE sno=%s and maec_id=%s and created_by=%s''',
+                    (flag, objid, main[2], g.user))
+                mysql.connection.commit()
+                # final return point
+                return redirect(url_for('home'))
+
+
+    else:
+        return redirect(url_for('index'))
+
+
+
+
+
+
+
+
+
 
 #########################################################
 ################ Documentation links ####################

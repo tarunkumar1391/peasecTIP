@@ -412,14 +412,39 @@
                             </div>
                             <input type="text" name="attr_value2" id="attr_val2" disabled class="form-control form-control-sm mt-1">
                             <input type="hidden" value="{{ data.attributes }}" id="attr_val_final" name="attr_val_final">
+                            <small id="refsHelpBlock" class="form-text text-muted">
+                                Previously entered key, value is '<b>{{ data.attributes }}</b>'. If you wish to change, choose a different value from the dropdown above.
+                          </small>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label" >Action references:</label>
                         <div class="col-lg-9">
-                            <select class="form-control form-control-sm" name="action_refs">
-                                <option>Choose an option</option>
+                            <select class="form-control form-control-sm" id="action_refs" multiple>
+                                <option value="None" selected>Choose an option</option>
+                                {% for ele in actreflist %}
+                                <option value="{{ ele.id }}:{{ ele.maec_id }}">{{ ele.id }}--{{ ele.maec_id }}</option>
+                                {% endfor %}
                             </select>
+                        <small id="refsHelpBlock" class="form-text text-muted">
+                                your previously selected id's were '<b>{{ data.action_refs }}</b>'. If you wish to change, choose a different value from the dropdown above.
+                          </small>
+                        <input type="hidden" name="action_refs" id="action_refs_final" value="{{data.aciton_refs }}">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-3 col-form-label">Technique references:</label>
+                        <div class="col-lg-9">
+                            <select class="form-control form-control-sm" id="technique_refs" multiple>
+                                <option value="None" selected>Choose an option</option>
+                                {% for ele in extreflist %}
+                                <option value="{{ ele.id }}" >{{ ele.id }}--{{ ele.src_name }}</option>
+                                {% endfor %}
+                            </select>
+                        <small id="refsHelpBlock" class="form-text text-muted">
+                                your previously selected id's were '<b>{{ data.tech_refs }}</b>'. If you wish to change, choose a different value from the dropdown above.
+                          </small>
+                            <input type="hidden" name="technique_refs" id="tech_refs_final">
                         </div>
                     </div>
                     <div class="form-group row">
@@ -455,7 +480,7 @@
                       <div class="col-lg-9">
                           <input type="text" class="form-control form-control-sm" name="extref_srcname">
                           <input type="hidden" name="ref_id" value="{{ data.id }}">
-                          <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ data.type }}">
+                          <input type="hidden" class="form-control form-control-sm" name="ref_type" value="{{ data.type }}">
                            <input type="hidden" name="created_by" value="{{ session['user'] }}">
                       </div>
                   </div>
@@ -468,45 +493,11 @@
                   <div class="form-group row">
                       <label class="col-lg-3 col-form-label" >URL:</label>
                       <div class="col-lg-9">
-                          <input type="text" class="form-control form-control-sm" id="extUrl" name="extref_url" disabled>
-                          <small id="passwordHelpBlock" class="form-text text-muted">
-                                In order to add URL information, enable the check box below to also add the hash type and value information, else, leave the box unchecked.
-                          </small>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input"  id="enableURL">Submit URL along with Hash type and value
-                              </label>
-                          </div>
+                          <input type="text" class="form-control form-control-sm" id="extUrl" name="extref_url" >
+                          <input type="hidden"  name="hash_type" value="None">
+                          <input type="hidden"  name="hash_value" value="None">
                       </div>
                   </div>
-                    <div class="form-group row">
-                        <label class="col-lg-3 col-form-label" >Hash type:</label>
-                        <div class="col-lg-9">
-                            <select class="form-control form-control-sm" id="hashType" disabled name="hash_type">
-                                          <option>--Choose a hash type--</option>
-                                          <option value="MD5">MD5</option>
-                                          <option value="MD6">MD6</option>
-                                          <option value="RIPEMD-160">RIPEMD-160</option>
-                                          <option value="SHA-1">SHA-1</option>
-                                          <option value="SHA-224">SHA-224</option>
-                                          <option value="SHA-256">SHA-256</option>
-                                          <option value="SHA-384">SHA-384</option>
-                                          <option value="SHA-512">SHA-512</option>
-                                          <option value="SHA3-224">SHA3-224</option>
-                                          <option value="SHA3-256">SHA3-256</option>
-                                          <option value="SHA3-384">SHA3-384</option>
-                                          <option value="SHA3-512">SHA3-512</option>
-                                          <option value="ssdeep">ssdeep</option>
-                                          <option value="WHIRLPOOL">WHIRLPOOL</option>
-                                      </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-3 col-form-label" >Hash value:</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control form-control-sm" id="hashVal" disabled name="hash_value">
-                        </div>
-                    </div>
                     <div class="form-group row">
                       <label class="col-lg-3 col-form-label" >External Id:</label>
                       <div class="col-lg-9">
@@ -520,12 +511,12 @@
                       </div>
                   </div>
                 </form>
-                        <div class="alert alert-success" id="success-alert3">
+                        <div class="alert alert-success" id="success-alert2">
                             <button type="button" class="close" data-dismiss="alert">x</button>
                             <strong>Success! </strong>
                             Data has been updated.
                         </div>
-                        <div class="alert alert-danger" id="error-alert3">
+                        <div class="alert alert-danger" id="error-alert2">
                             <button type="button" class="close" data-dismiss="alert">x</button>
                             <strong>Error! </strong>
                             Data was not updated :(
