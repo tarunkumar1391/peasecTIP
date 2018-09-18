@@ -4966,9 +4966,10 @@ def insert_name():
             ref_id = request.form['obj_id']
             ref_type = request.form['obj_type']
             created_by = request.form['created_by']
+            flag = 1
             cur = mysql.connection.cursor()
-            cur.execute('''Replace INTO name (sno,obj_id, obj_type, value, source, confidence, created_by)
-                        values (%s, %s , %s, %s, %s, %s, %s)''',(id, ref_id, ref_type, value, source, confidence, created_by))
+            cur.execute('''Replace INTO name (sno,obj_id, obj_type, value, source, confidence, created_by, set_flag)
+                        values (%s, %s , %s, %s, %s, %s, %s, %s)''',(id, ref_id, ref_type, value, source, confidence, created_by, flag))
             mysql.connection.commit()
             print('Successfully entered Name')
             return jsonify({'result': 'success'})
@@ -5057,9 +5058,10 @@ def insert_fielddata():
             ref_id = request.form['obj_id']
             ref_type = request.form['obj_type']
             created_by = request.form['created_by']
+            flag = 1
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO `field-data` (obj_id, obj_type, delivery_vectors, first_seen, last_seen, created_by)
-                        values (%s , %s, %s, %s, %s, %s)''',(ref_id, ref_type, delivery_vectors, first_seen, last_seen, created_by))
+            cur.execute('''INSERT INTO `field-data` (obj_id, obj_type, delivery_vectors, first_seen, last_seen, created_by, set_flag)
+                        values (%s , %s, %s, %s, %s, %s, %s)''',(ref_id, ref_type, delivery_vectors, first_seen, last_seen, created_by, flag))
             mysql.connection.commit()
             print('Successfully entered field data')
             return jsonify({'result': 'success'})
@@ -5302,11 +5304,12 @@ def insert_apicall():
             return_value = request.form['return_val']
             parameters = request.form['parameters']
             function_name = request.form['func_name']
+            set_flag = 1
             created_by = g.user
             cur = mysql.connection.cursor()
-            query = '''INSERT INTO `api-call` (obj_id, obj_type, address, return_value, parameters, function_name, created_by)
-                             values (%s, %s, %s, %s, %s, %s, %s)'''
-            cur.execute(query, (ref_id, ref_type, address, return_value, parameters, function_name, created_by))
+            query = '''INSERT INTO `api-call` (obj_id, obj_type, address, return_value, parameters, function_name, created_by, set_flag)
+                             values (%s, %s, %s, %s, %s, %s, %s, %s)'''
+            cur.execute(query, (ref_id, ref_type, address, return_value, parameters, function_name, created_by, set_flag))
             mysql.connection.commit()
             print('Successfully entered API call !!')
             return jsonify({'result': 'success'})
@@ -7561,11 +7564,12 @@ def create_malwarefamily():
             created_by = g.user
             id_gen = uuid.uuid4()
             MAEC_ID = "malware-family--" + str(id_gen)
+            flag = 1
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `malware-family` (type, maec_id, labels,  description, common_strings, created_by) 
-                 values (%s, %s, %s, %s, %s, %s)''',
-                (type, MAEC_ID, labels, description, comm_strings, created_by))
+                '''INSERT INTO `malware-family` (type, maec_id, labels,  description, common_strings, created_by, published_flag) 
+                 values (%s, %s, %s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, labels, description, comm_strings, created_by, flag))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -7581,15 +7585,15 @@ def update_malwarefamily():
             labels = request.form['labels']
             description = request.form['desc']
             comm_strings = request.form['comm_strings']
-            comm_capabilities = request.form['comm_capabilities']
+            #comm_capabilities = request.form['comm_capabilities']
             comm_coderefs = request.form['comm_coderefs']
             comm_behaviorrefs = request.form['comm_behaviorrefs']
             references = request.form['references']
             created_by = g.user
             cur = mysql.connection.cursor()
-            cur.execute('''UPDATE `malware-family` SET labels=%s, description=%s, common_strings=%s, common_capabilities=%s,
-             common_coderefs=%s, common_behaviorRefs=%s, `references`=%s WHERE sno=%s and created_by=%s''',
-                        (labels, description, comm_strings, comm_capabilities, comm_coderefs, comm_behaviorrefs, references, id, created_by))
+            cur.execute('''UPDATE `malware-family` SET labels=%s, description=%s, common_strings=%s, common_coderefs=%s,
+             common_behaviorRefs=%s, `references`=%s WHERE sno=%s and created_by=%s''',
+                        (labels, description, comm_strings, comm_coderefs, comm_behaviorrefs, references, id, created_by))
             mysql.connection.commit()
             print('successfully updated!!')
         return redirect(url_for('home'))
@@ -8065,6 +8069,41 @@ def view_stixcontent():
     else:
         return redirect(url_for('index'))
 
+# view maec content from filesystem
+@app.route('/view_maeccontent', methods=['POST'])
+def view_maeccontent():
+    if g.user:
+        if request.method == 'POST':
+            type = request.json['type']
+            maecid = request.json['maecid']
+            file_name = maecid + '.json'
+            if type == 'behavior':
+                file= "/home/tarun/Documents/maec5_store/behavior/" + file_name
+                with open(file, 'r') as f:
+                    file_content = f.read()
+                return file_content
+            if type == 'collection':
+                file= "/home/tarun/Documents/maec5_store/collection/" + file_name
+                with open(file, 'r') as f:
+                    file_content = f.read()
+                return file_content
+            if type == 'malware-action':
+                file= "/home/tarun/Documents/maec5_store/malware-action/" + file_name
+                with open(file, 'r') as f:
+                    file_content = f.read()
+                return file_content
+            if type == 'malware-family':
+                file= "/home/tarun/Documents/maec5_store/malware-family/" + file_name
+                with open(file, 'r') as f:
+                    file_content = f.read()
+                return file_content
+            if type == 'malware-instance':
+                file= "/home/tarun/Documents/maec5_store/malware-instance/" + file_name
+                with open(file, 'r') as f:
+                    file_content = f.read()
+                return file_content
+    else:
+        return redirect(url_for('index'))
 # view bundle content
 @app.route('/view_bundle',methods=['POST'])
 def view_bundle():
@@ -8120,6 +8159,29 @@ def publishedfeeds():
             table = request.json['table']
             cur= mysql.connection.cursor()
             cur.execute("select type AS TYPE, count(*)  AS feedcount from stix_content where created_by=%s group by type",
+                        (g.user,))
+            result = cur.fetchall()
+            final_result = []
+            for row in result:
+                rowdict = {
+                    'type': row[0],
+                    'feedcount': row[1]
+                }
+                final_result.append(rowdict)
+            output = json.dumps(final_result, sort_keys=True, indent=4)
+
+            return output
+
+    else:
+        return redirect(url_for('index'))
+
+@app.route('/publishedmaecfeeds',methods=['POST'])
+def publishedmaecfeeds():
+    if g.user:
+        if request.method == 'POST':
+            table = request.json['table']
+            cur= mysql.connection.cursor()
+            cur.execute("select type AS TYPE, count(*)  AS feedcount from maec_content where created_by=%s group by type",
                         (g.user,))
             result = cur.fetchall()
             final_result = []
@@ -8273,166 +8335,168 @@ def generate_maec5():
                         print("No entity refs to add!!")
                 # observable refs
                 observablerefs_val = main[6]
+
+
                 observablerefs_list = []
-                if observablerefs_val == '' or observablerefs_val == 'None':
-                    print("Observable refs field is null/none, so not adding anything to the response!!")
-                else:
+                observable_objs = []
 
-                    # artifact
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_artifact = cur.fetchall()
-                    for row in obs_artifact:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
+                # artifact
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_artifact = cur.fetchall()
+                for row in obs_artifact:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+
                     # Autonomous system
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_as = cur.fetchall()
-                    for row in obs_as:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # directory
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `directory` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_dir = cur.fetchall()
-                    for row in obs_dir:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # domain-name
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `domain-name` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_domainname = cur.fetchall()
-                    for row in obs_domainname:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # email-addr
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `email-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_emailaddr = cur.fetchall()
-                    for row in obs_emailaddr:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # email-message
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `email-message` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_emailmessage = cur.fetchall()
-                    for row in obs_emailmessage:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # file
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `file` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_file = cur.fetchall()
-                    for row in obs_file:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # ipv4-addr
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_ipv4 = cur.fetchall()
-                    for row in obs_ipv4:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # ipv6-addr
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_ipv6 = cur.fetchall()
-                    for row in obs_ipv6:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # mac-addr
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_mac = cur.fetchall()
-                    for row in obs_mac:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # network-traffic
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_nettraffic = cur.fetchall()
-                    for row in obs_nettraffic:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # process
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `process` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_process = cur.fetchall()
-                    for row in obs_process:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # software
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `software` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_software = cur.fetchall()
-                    for row in obs_software:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # url
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `url` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_url = cur.fetchall()
-                    for row in obs_url:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # user-account
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `user-account` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_useracc = cur.fetchall()
-                    for row in obs_useracc:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # win-reg-key
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_winregkey = cur.fetchall()
-                    for row in obs_winregkey:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
-                    # x509 - certificate
-                    cur = mysql.connection.cursor()
-                    cur.execute("select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
-                    obs_x509 = cur.fetchall()
-                    for row in obs_x509:
-                        rowdict = {
-                             row[0]
-                        }
-                        observablerefs_list.append(rowdict)
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_as = cur.fetchall()
+                for row in obs_as:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # directory
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `directory` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_dir = cur.fetchall()
+                for row in obs_dir:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # domain-name
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `domain-name` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_domainname = cur.fetchall()
+                for row in obs_domainname:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # email-addr
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `email-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_emailaddr = cur.fetchall()
+                for row in obs_emailaddr:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # email-message
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `email-message` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_emailmessage = cur.fetchall()
+                for row in obs_emailmessage:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # file
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `file` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_file = cur.fetchall()
+                for row in obs_file:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # ipv4-addr
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_ipv4 = cur.fetchall()
+                for row in obs_ipv4:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # ipv6-addr
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_ipv6 = cur.fetchall()
+                for row in obs_ipv6:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # mac-addr
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_mac = cur.fetchall()
+                for row in obs_mac:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # network-traffic
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_nettraffic = cur.fetchall()
+                for row in obs_nettraffic:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # process
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `process` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_process = cur.fetchall()
+                for row in obs_process:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # software
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `software` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_software = cur.fetchall()
+                for row in obs_software:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # url
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `url` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_url = cur.fetchall()
+                for row in obs_url:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # user-account
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `user-account` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_useracc = cur.fetchall()
+                for row in obs_useracc:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # win-reg-key
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_winregkey = cur.fetchall()
+                for row in obs_winregkey:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
+                # x509 - certificate
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                obs_x509 = cur.fetchall()
+                for row in obs_x509:
+                    rowdict = {
+                        row[0]
+                    }
+                    observablerefs_list.append(rowdict)
 
-                    collection["observable_refs"] = observablerefs_list
+                collection["observable_refs"] = observablerefs_list
+
                 finallist.append(collection)
                 output = json.dumps(finallist, sort_keys=False, indent=4)
 
@@ -8444,6 +8508,7 @@ def generate_maec5():
                 # file_contents = json.dumps(result, sort_keys=True, indent=4)
                 file.write(output)
                 file.close()
+                print("file has been created!!")
                 # save a record in database
                 timestmp = datetime.now()
                 cur = mysql.connection.cursor()
@@ -8462,9 +8527,581 @@ def generate_maec5():
                 # final return point
                 return redirect(url_for('home'))
 
+            if objtype == 'malware-action':
+                malwareaction_path = "/home/tarun/Documents/maec5_store/malware-action"
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `malware-action` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                finallist = []
+                malware_action = {
 
-    else:
-        return redirect(url_for('index'))
+                    "type": main[1],
+                    "id": main[2],
+                    "name": main[3],
+
+                }
+
+                description_val = main[4]
+                if description_val == '' or description_val == 'None':
+                    print("description field is null/None, so not adding anything to the response!!")
+                else:
+                    malware_action["description"] = description_val
+
+                is_successful_val = main[5]
+                if is_successful_val == '' or is_successful_val == 'None':
+                    print("is_successful field is null/None, so not adding anything to the response!!")
+                else:
+                    malware_action["is_successful"] = is_successful_val
+
+                timestamp_val = main[6]
+                if timestamp_val == '' or timestamp_val == 'None':
+                    print("timestamp field is null/none, so not adding anything to the response!!")
+                else:
+                    malware_action["timestamp"] = timestamp_val.strftime('%Y-%m-%dT%H:%M')
+
+                # api_call
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `api-call` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                res_apicall = cur.fetchone()
+                api_call = {
+                    "function_name": res_apicall[6]
+                }
+
+                address_val = res_apicall[3]
+                if address_val == '' or address_val == 'None':
+                    print("Address field is null/None, so not adding anything to the response!!")
+                else:
+                    api_call["address"] = address_val
+
+                returnvalue_val = res_apicall[4]
+                if returnvalue_val == '' or returnvalue_val == 'None':
+                    print("Return value field is null/None, so not adding anything to the response!!")
+                else:
+                    api_call["return_value"] = returnvalue_val
+
+                parameters_val = res_apicall[5]
+                if parameters_val == '' or parameters_val == 'None':
+                    print("Return value field is null/None, so not adding anything to the response!!")
+                else:
+                    value = tuple(res_apicall[5].split(','))
+
+                    tuple_len = len(value)
+                    if tuple_len == 1:
+                        result = value[0].split(':')
+                        api_call["parameters"]= {str(result[0]):str(result[1])}
+
+                    if tuple_len > 1:
+                        paramslist = []
+                        dict = {
+
+                        }
+                        for i,a in enumerate(value):
+                            result = value[i].split(':')
+                            print result
+                            dict[str(result[0])] = str(result[1])
+                        paramslist.append(dict)
+                        api_call["parameters"] = paramslist
+
+
+
+
+                # finally adding api-call to malware_action
+                malware_action["api-call"] = api_call
+
+                # input_refs
+
+                # output_refs
+
+                # finalising
+                finallist.append(malware_action)
+                output = json.dumps(finallist, sort_keys=False, indent=4)
+                # file creation
+
+                filename = main[2] + ".json"
+                location = os.path.join(malwareaction_path, filename)
+                file = open(location, "w")
+                # file_contents = json.dumps(result, sort_keys=True, indent=4)
+                file.write(output)
+                file.close()
+                # save a record in database
+                timestmp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `maec_content` (type, maec_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, main[2], objid, g.user, timestmp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # set flag
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''UPDATE `malware-action` SET published_flag=%s WHERE sno=%s and maec_id=%s and created_by=%s''',
+                    (flag, objid, main[2], g.user))
+                mysql.connection.commit()
+                # final return point
+                return redirect(url_for('home'))
+
+            if objtype == 'malware-family':
+                malwarefamily_path = "/home/tarun/Documents/maec5_store/malware-family"
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `malware-family` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                finallist = []
+                malware_family = {
+                    "type": main[1],
+                    "id": main[2],
+                }
+
+                # name
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `name` where  obj_id=%s AND obj_type=%s AND created_by=%s ", (objid, objtype, g.user))
+                res_main = cur.fetchone()
+                dict_name = {
+                    "value": res_main[3]
+                }
+                source_val = res_main[4]
+                if source_val == '' or source_val == 'None':
+                    print("Source field is empty, so not adding anything")
+                else:
+
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                (source_val, objid, objtype, g.user))
+                    res_extref = cur.fetchone()
+                    dict_extref = {
+                        "source_name": res_extref[3]
+                    }
+
+                    extref_description = res_extref[4]
+                    if extref_description == '' or extref_description == 'None':
+                        print("Description field is empty, so adding nothing")
+                    else:
+                        dict_extref["description"] = extref_description
+
+                    extref_url = res_extref[5]
+                    if extref_url == '' or extref_url == 'None':
+                        print("Description field is empty, so adding nothing")
+                    else:
+                        dict_extref["url"] = extref_url
+
+                    extref_hashtype = res_extref[6]
+                    extref_hashvalue= res_extref[7]
+                    if extref_hashtype == '' or extref_hashtype == 'None' and extref_hashvalue == '' or extref_hashvalue == 'None':
+                        print("hashes field is empty, so adding nothing")
+                    else:
+                        dict_extref["hashes"] = {extref_hashtype:extref_hashvalue}
+
+                    extref_externid = res_extref[8]
+                    if extref_externid == '' or extref_externid == 'None':
+                        print("external id field is empty, so adding nothing")
+                    else:
+                        dict_extref["external_id"] = extref_externid
+
+                    # adding extref dict to main dict - dict_name
+                    dict_name["source"] = dict_extref
+
+                confidence_val = res_main[5]
+                if confidence_val == '' or confidence_val == 'None':
+                    print("Confidence field is empty, so not adding anything")
+                else:
+                    dict_name["confidence"] = confidence_val
+                # adding name dict to malware_family dict
+                malware_family["name"] = dict_name
+
+                # aliases
+                aliases_list = []
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `name` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                            (objid, objtype, g.user))
+                res_aliases = cur.fetchall()
+                for row in res_aliases:
+                    aliases_dict = {
+                        "value": row[3]
+                    }
+                    source_val = row[4]
+                    cur = mysql.connection.cursor()
+                    cur.execute(
+                        "select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s AND created_by=%s ",
+                        (source_val, objid, objtype, g.user))
+                    res_extref = cur.fetchone()
+                    dict_extref = {
+                        "source_name": res_extref[3]
+                    }
+
+                    extref_description = res_extref[4]
+                    if extref_description == '' or extref_description == 'None':
+                        print("Description field is empty, so adding nothing")
+                    else:
+                        dict_extref["description"] = extref_description
+
+                    extref_url = res_extref[5]
+                    if extref_url == '' or extref_url == 'None':
+                        print("Description field is empty, so adding nothing")
+                    else:
+                        dict_extref["url"] = extref_url
+
+                    extref_hashtype = res_extref[6]
+                    extref_hashvalue= res_extref[7]
+                    if extref_hashtype == '' or extref_hashtype == 'None' and extref_hashvalue == '' or extref_hashvalue == 'None':
+                        print("hashes field is empty, so adding nothing")
+                    else:
+                        dict_extref["hashes"] = {extref_hashtype:extref_hashvalue}
+
+                    extref_externid = res_extref[8]
+                    if extref_externid == '' or extref_externid == 'None':
+                        print("external id field is empty, so adding nothing")
+                    else:
+                        dict_extref["external_id"] = extref_externid
+
+                    # adding extref dict to main dict - aliases_dict
+                    aliases_dict["source"] = dict_extref
+                    # adding confidence
+                    confidence_val = row[5]
+                    if confidence_val == '' or confidence_val == 'None':
+                        print("Confidence field is empty, so not adding anything")
+                    else:
+                        aliases_dict["confidence"] = confidence_val
+                aliases_list.append(aliases_dict)
+                # adding name dict to malware_family dict
+                malware_family["aliases"] = aliases_list
+
+                # labels
+                labels = tuple(main[3].split(','))
+                if len(labels) == 0:
+                    print("labels field is empty so adding nothing")
+                else:
+                    labels_list = []
+                    for i in labels:
+                        labels_list.append(str(i))
+                    # adding labels to malware-family dict
+                    malware_family["labels"] = labels_list
+                # description
+                description_val = main[4]
+                if description_val == '' or description_val == 'None':
+                    print("description field is empty so adding nothing")
+                else:
+                    malware_family["description"] = description_val
+
+                # field-data
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `field-data` where  obj_id=%s AND obj_type=%s AND set_flag=%s AND created_by=%s ",
+                            (objid, objtype, flag, g.user))
+                res_fielddata = cur.fetchone()
+                fielddata_dict = {
+
+                }
+
+                firstseen_datetime = str(res_fielddata[4])
+                if firstseen_datetime == '' or firstseen_datetime == 'None':
+                    print("first seen field is empty, so adding nothing")
+                else:
+                    fielddata_dict["first_seen"] = res_fielddata[4].strftime('%Y-%m-%dT%H:%M')
+
+                lastseen_datetime = str(res_fielddata[5])
+                if lastseen_datetime == '' or lastseen_datetime == 'None':
+                    print("Last seen field is empty, so adding nothing")
+                else:
+                    fielddata_dict["last_seen"] = res_fielddata[5].strftime('%Y-%m-%dT%H:%M')
+
+                delvectors_val = tuple(res_fielddata[3].split(','))
+                if delvectors_val == '' or delvectors_val == 'None':
+                    print("delivery vectors field is empty so adding nothing")
+                else:
+                    deliveryvectors_list= []
+                    for i in delvectors_val:
+                        deliveryvectors_list.append(str(i))
+                    # adding delivery vectors to fielddata_dict
+                    fielddata_dict["delivery_vectors"] = deliveryvectors_list
+
+
+
+                # adding field data to malware-family
+                malware_family["field_data"] =fielddata_dict
+
+                # common strings
+                commstrings_val = tuple(main[5].split(';'))
+                commstrings_list = []
+                if commstrings_val == '' or commstrings_val == 'None':
+                    print("Common strings field is empty , so adding nothing")
+                else:
+                    if len(commstrings_val) > 0:
+                        for i in commstrings_val:
+                            commstrings_list.append(str(i))
+                        # adding comm strings to malware-family dict
+                        malware_family["common_strings"] = commstrings_list
+
+                # common_capabilities
+                common_cap = []
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    "select * from `capability` where  obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                    (objid, objtype, g.user))
+                res_commoncap = cur.fetchall()
+                for row in res_commoncap:
+                    common_cap_dict = {
+                    "name": row[3]
+                    }
+                    # adding refined capability if present
+                    refcap_ref = row[4]
+                    if refcap_ref == '' or refcap_ref == 'None':
+                        print("no refined capability, so adding nothing")
+                    else:
+
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `refined_capability` where  sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                            (refcap_ref, objid, objtype, g.user))
+                        res_refinedcap = cur.fetchone()
+
+                        refinedcap_dict = {
+                            "name": res_refinedcap[3]
+                        }
+                        refcap_description = res_refinedcap[4]
+                        if refcap_description == '' or refcap_description == 'None':
+                            print("No description , so adding nothing")
+                        else:
+                            refinedcap_dict["description"] = refcap_description
+                        refcap_attr = res_refinedcap[5]
+                        if refcap_attr == '' or refcap_attr == 'None':
+                            print("No attributes, so adding nothing")
+                        else:
+                            attr = tuple(refcap_attr.split(':'))
+                            if len(attr) > 0 :
+                                refinedcap_dict["attributes"] = {str(attr[0]):str(attr[1])}
+
+                        behaviorref_val = res_refinedcap[6]
+                        if behaviorref_val == '' or behaviorref_val == 'None':
+                            print("No behavior ref so not adding anything")
+                        else:
+                            refinedcap_dict["behavior_refs"] = behaviorref_val
+
+                        refcap_extref = res_refinedcap[7]
+                        if refcap_extref == '' or refcap_extref == 'None':
+                            print("No external ref, so not adding anything")
+                        else:
+                            cur.execute(
+                                "select * from `external_references` where  sno=%s   AND created_by=%s ",
+                                (refcap_extref, g.user))
+                            refinedcap_extref = cur.fetchone()
+                            refcap_extref_dict = {
+                                "source_name": refinedcap_extref[3]
+
+                            }
+                            refcap_extref_description = refinedcap_extref[4]
+                            if refcap_extref_description == '' or refcap_extref_description == 'None':
+                                print("no description, so adding nothing")
+                            else:
+                                refcap_extref_dict["description"] = refcap_extref_description
+
+                            refcap_extref_url = refinedcap_extref[5]
+                            if refcap_extref_url == '' or refcap_extref_url == 'None':
+                                print("no url, so adding nothing")
+                            else:
+                                refcap_extref_dict["url"] = refcap_extref_url
+
+                            refcap_extref_externid = refinedcap_extref[8]
+                            if refcap_extref_externid == '' or refcap_extref_externid == 'None':
+                                print("no external id, so adding nothing")
+                            else:
+                                refcap_extref_dict["external_id"] = refcap_extref_externid
+
+                            # adding extref to refined cap
+                            refinedcap_dict["refined_capabilities"] = refcap_extref_dict
+
+                    # description for capability
+                    cap_description = row[5]
+                    if cap_description == '' or cap_description == 'None':
+                        print("No description, so adding nothing")
+                    else:
+                        common_cap_dict["description"] = cap_description
+
+                    # attributes for capability
+                    cap_attr = row[6]
+                    if cap_attr == '' or cap_attr == 'None':
+                        print("No attributes, so adding nothing")
+                    else:
+                        attr = tuple(cap_attr.split(':'))
+                        if len(attr) > 0:
+                            common_cap_dict["attributes"] = {str(attr[0]): str(attr[1])}
+
+                    # behavior refs for capability
+                    behaviorref_val = row[7]
+                    if behaviorref_val == '' or behaviorref_val == 'None':
+                        print("No behavior ref so not adding anything")
+                    else:
+                        common_cap_dict["behavior_refs"] = behaviorref_val
+
+                    # external -refs for capability
+                    cap_extref = row[8]
+                    cap_extref_list = []
+                    if cap_extref == '' or cap_extref == 'None':
+                        print("No external ref, so not adding anything")
+                    else:
+                        cur.execute(
+                            "select * from `external_references` where  sno=%s   AND created_by=%s ",
+                            (refcap_extref, g.user))
+                        cap_extref = cur.fetchone()
+                        cap_extref_dict = {
+                            "source_name": cap_extref[3]
+
+                        }
+                        cap_extref_description = cap_extref[4]
+                        if cap_extref_description == '' or cap_extref_description == 'None':
+                            print("no description, so adding nothing")
+                        else:
+                            cap_extref_dict["description"] = cap_extref_description
+
+                        cap_extref_url = cap_extref[5]
+                        if cap_extref_url == '' or cap_extref_url == 'None':
+                            print("no url, so adding nothing")
+                        else:
+                            cap_extref_dict["url"] = cap_extref_url
+
+                        cap_extref_externid = cap_extref[8]
+                        if cap_extref_externid == '' or cap_extref_externid == 'None':
+                            print("no external id, so adding nothing")
+                        else:
+                            cap_extref_dict["external_id"] = cap_extref_externid
+                            # adding extref to  cap
+                            cap_extref_list.append(cap_extref_dict)
+
+                    common_cap_dict["references"] =cap_extref_list
+                    common_cap.append(common_cap_dict)
+                # adding capability to malware-family
+                malware_family["common_capabilities"] = common_cap
+
+                # common code refs
+                common_code = []
+                commcoderefs_val = main[7]
+                if commcoderefs_val == '' or commcoderefs_val == 'None':
+                    print("no code refs so not adding anything")
+                else:
+                    coderefs = tuple(commcoderefs_val.split(','))
+                    if len(coderefs) > 0:
+                        for i in coderefs:
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `artifact` where sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                                (i, objid, objtype, g.user))
+                            result_art = cur.fetchall()
+                            for row in result_art:
+                                artifact_dict ={
+                                    "mime_type": row[5]
+                                }
+                                payloadbin_val = row[6]
+                                if payloadbin_val == '' or payloadbin_val == 'None':
+                                    print("field empty so not adding anything")
+                                else:
+                                    artifact_dict["payload_bin"] = payloadbin_val
+
+                                url_val = row[7]
+                                if url_val == '' or url_val == 'None':
+                                    print("url field is empty, so not adding anything")
+                                else:
+                                    artifact_dict["url"] = url_val
+
+                                hashtype_val = row[8]
+                                hashvalue_val = row[9]
+                                if hashtype_val == '' or hashtype_val== 'None' and hashvalue_val == '' or hashvalue_val == 'None':
+                                    print(" hashes field is empty, so not adding anything")
+                                else:
+                                    artifact_dict["hashes"] = {str(hashtype_val):str(hashvalue_val)}
+
+                                #adding artifact dict to code refs list
+                                common_code.append(artifact_dict)
+
+                # adding to malware family dict
+                malware_family["common_code_refs"] = common_code
+
+
+                # common_behavior_refs
+                commbehavrefs_val = main[8]
+                comm_behave_refs_list = []
+                if commbehavrefs_val == '' or commbehavrefs_val == 'None':
+                    print("No common behavior refs, so adding nothing")
+                else:
+                    commbehavrefs = tuple(commbehavrefs_val.split(','))
+                    if len(commbehavrefs) > 0:
+                        for i in commbehavrefs:
+                            comm_behave_refs_list.append(i)
+                # adding comm behavior refs to malware family dict
+                malware_family["common_behavior_refs"] = comm_behave_refs_list
+
+                # references
+                refs = main[9]
+                refs_list = []
+                if refs == '' or refs == 'None':
+                    print("no references set, so nothing to add")
+                else:
+                    result = tuple(refs.split(','))
+                    if len(result) > 0:
+                        for i in result:
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `external_references` where sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                                (i, objid, objtype, g.user))
+                            extrefs_result = cur.fetchall()
+                            for row in extrefs_result:
+                                extrefdict = {
+                                    "source_name": row[3]
+                                }
+                                extref_description = row[4]
+                                if extref_description == '' or extref_description == 'None':
+                                    print("no description, so nothing to add")
+                                else:
+                                    extrefdict["description"] = extref_description
+
+                                extref_url = row[5]
+                                if extref_url == '' or extref_url == 'None':
+                                    print("no url, so nothing to add")
+                                else:
+                                    extrefdict["url"]= extref_url
+
+                                extref_externid = row[8]
+                                if extref_externid == '' or extref_externid == 'None':
+                                    print("no external id, so nothing to add")
+                                else:
+                                    extrefdict["external_id"] = extref_externid
+
+                                # adding to refs list
+                                refs_list.append(extrefdict)
+
+                # adding to malware family dict
+                malware_family["references"] = refs_list
+
+                # adding the malware family dict to final list
+                finallist.append(malware_family)
+                output = json.dumps(finallist, sort_keys=False, indent=4)
+
+                # file creation
+                filename = main[2] + ".json"
+                location = os.path.join(malwarefamily_path, filename)
+                file = open(location, "w")
+                # file_contents = json.dumps(result, sort_keys=True, indent=4)
+                file.write(output)
+                file.close()
+                # save a record in database
+                timestmp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `maec_content` (type, maec_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, main[2], objid, g.user, timestmp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # set flag
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''UPDATE `malware-family` SET published_flag=%s WHERE sno=%s and maec_id=%s and created_by=%s''',
+                    (flag, objid, main[2], g.user))
+                mysql.connection.commit()
+                # final return point
+                return redirect(url_for('home'))
+
+    return redirect(url_for('index'))
 
 
 
