@@ -513,6 +513,41 @@ relationship_type.change(function(){
         });
 
     }));
+
+    /* view MAEC content */
+    $(document).on('click','#view_maec_content',(function() {
+        var tbl_row = $(this).closest('tr');
+		var row_id = tbl_row.attr('row_id');
+        type = tbl_row.find('#maec_type').text();
+        maecid = tbl_row.find('#maec_id').text();
+        arr = {};
+        arr['type']=type;
+        arr['maecid']=maecid;
+        var sendData = JSON.stringify(arr, null, 2)
+        $.ajax({
+            url: '/view_maeccontent',
+            data: sendData,
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: 'json',
+            success: function(response) {
+               // $.getJSON("view_stixcontent", function (data) {
+                 //   $('#display_publishedcontent').html(data);
+                  //  console.log(data);
+                //})
+                var result = JSON.stringify(response, null,"\t")
+                $('#display_publishedmaeccontent').addClass('alert-success').removeClass('alert-danger').text(result);
+                console.log(response);
+            },
+            error: function(error) {
+                var result = JSON.stringify(error.responseText, null,"\t")
+                $('#display_publishedmaeccontent').addClass('alert-danger').removeClass('alert-success').text(result);
+                console.log(error);
+
+            }
+        });
+
+    }));
     /* bundle drop down */
 $('#bundle').change(function(){
     finalresult = [];
