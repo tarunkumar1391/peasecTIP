@@ -56,6 +56,18 @@
             </form>
             </div>
         </div>
+        {% if (('behavior' in srctype) or ('collection' in srctype) or ('malware-family' in srctype) or ('malware-action' in srctype) or ('malware-instance' in srctype)) %}
+        <div class="col-lg-6">
+            <div class="alert alert-success">
+            <form method="POST" action="{{ url_for('generate_maec5') }}">
+                <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
+                <input type="hidden" name="obj_type" value="{{ main.type }}">
+                <strong>To publish as MAEC content then</strong>
+              <button type="submit" class="btn btn-primary">Click here</button>
+            </form>
+            </div>
+        </div>
+        {% else %}
         <div class="col-lg-6">
             <div class="alert alert-success">
             <form method="POST" action="{{ url_for('generate_stix2') }}">
@@ -66,6 +78,7 @@
             </form>
             </div>
         </div>
+    {% endif %}
     </div>
     <div class="row">
         <div class="col-lg-6">

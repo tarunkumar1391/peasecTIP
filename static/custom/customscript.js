@@ -466,7 +466,7 @@ relationship_type.change(function(){
              //  $("#success-alert1").slideUp(500);
             //    });
                 $( "#success-alert1" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400, function () {
-                     $('#relationshipform').reset();
+                     window.location.reload();
                  } );
                 console.log(response);
             },
@@ -579,7 +579,31 @@ $('#bundle').change(function(){
              //  $("#success-alert1").slideUp(500);
             //    });
                 $( "#success-alert1" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400, function () {
-                     $('#relationshipform').reset();
+                     $('#bundleform').reset();
+                 } );
+                console.log(response);
+            },
+            error: function(error) {
+                $( "#error-alert1" ).fadeIn( 300 ).delay( 1500 ).fadeOut( 400 );
+                console.log(error);
+
+            }
+        });
+
+    });
+    /* create package object*/
+    $('#create_package').click(function() {
+        $.ajax({
+            url: '/create_package',
+            data: $('#packageform').serialize(),
+            type: 'POST',
+            success: function(response) {
+
+             //   $("#success-alert1").fadeTo(2000, 500).slideUp(500, function(){
+             //  $("#success-alert1").slideUp(500);
+            //    });
+                $( "#success-alert1" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 400, function () {
+                     $('#packageform').reset();
                  } );
                 console.log(response);
             },
