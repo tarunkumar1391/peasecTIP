@@ -237,7 +237,7 @@ def home():
             rowdict = {
                 'id': row[0],
                 'type': row[1],
-                'name': row[3],
+                'name': row[2],
                 'description': row[4],
                 'created_by': row[9]
             }
@@ -765,7 +765,8 @@ def view_additionalinfo(objtype, id):
             }
             output = json.dumps(main_SDO, sort_keys=True, indent=4)
             resp_main = json.loads(output)
-            return render_template(url, main=resp_main)
+
+            return render_template(url, main=resp_main, srctype = main_SDO["src_type"], targettype = main_SDO["target_type"])
         elif objtype == "behavior":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -4081,7 +4082,7 @@ def update_entry(objtype, id):
             process_response = json.loads(process_output)
             # for certificates in static features
             cur = mysql.connection.cursor()
-            row_process_count = cur.execute(
+            cur.execute(
                 "select * from `x509-certificate` where obj_id=%s AND obj_type=%s AND created_by=%s",
                 (obj_id, objtype, createdBy))
             rows_cert = cur.fetchall()
@@ -4104,7 +4105,7 @@ def update_entry(objtype, id):
                     certlist.append(mainrowdict)
 
             cert_output = json.dumps(certlist, sort_keys=True, indent=4)
-            cert_response = json.loads(process_output)
+            cert_response = json.loads(cert_output)
             # for tool refs in malware dev env - static features
             cur = mysql.connection.cursor()
             row_software_count = cur.execute(
@@ -4236,11 +4237,78 @@ def update_entry(objtype, id):
             binaryobfuscation_output = json.dumps(binobflist, sort_keys=True, indent=4)
             binaryobfuscation_response = json.loads(binaryobfuscation_output)
 
+            # for showing already saved dynamic features
+            cur = mysql.connection.cursor()
+            row_binobf_count = cur.execute(
+                "select * from `dynamic-features` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_dynfeatures = cur.fetchone()
+
+            if row_dynfeatures == None:
+                dynamicfeatures_dict = {
+                    'sno': 'None',
+                    'behavior_refs': 'None',
+                    'action_refs': 'None',
+                    'networktraffic_refs': 'None',
+                    'processtree': "None"
+                }
+
+                dynamicfeatures_output = json.dumps(dynamicfeatures_dict, sort_keys=True, indent=4)
+                dynamicfeatures_resp = json.loads(dynamicfeatures_output)
+            else:
+                dynamicfeatures_dict = {
+                    "sno" : row_dynfeatures[0]
+                }
+                behaverefs = str(row_dynfeatures[3])
+                if behaverefs == '' or behaverefs == 'None':
+                    dynamicfeatures_dict["behavior_refs"] = "None"
+                else:
+                    dynamicfeatures_dict["behavior_refs"] = row_dynfeatures[3]
+
+                actionrefs = str(row_dynfeatures[4])
+                if actionrefs == '' or actionrefs == 'None':
+                    dynamicfeatures_dict["action_refs"] = "None"
+                else:
+                    dynamicfeatures_dict["action_refs"] = row_dynfeatures[4]
+
+                networktrafficrefs = str(row_dynfeatures[5])
+                if networktrafficrefs == '' or networktrafficrefs == 'None':
+                    dynamicfeatures_dict["networktraffic_refs"] = "None"
+                else:
+                    dynamicfeatures_dict["networktraffic_refs"] = row_dynfeatures[5]
+
+                processtreerefs = str(row_dynfeatures[6])
+                if processtreerefs == '' or processtreerefs == 'None':
+                    dynamicfeatures_dict["processtree"] = "None"
+                else:
+                    dynamicfeatures_dict["processtree"] = row_dynfeatures[6]
+
+                dynamicfeatures_output = json.dumps(dynamicfeatures_dict, sort_keys=True, indent=4)
+                dynamicfeatures_resp = json.loads(dynamicfeatures_output)
+
+            # for drop down in capability
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "select * from `refined_capability` where obj_id=%s AND obj_type=%s AND created_by=%s",
+                (obj_id, objtype, createdBy))
+            row_refcapability = cur.fetchall()
+            refcapability = []
+            for row in row_refcapability:
+                refcapdict = {
+                    "sno": row[0],
+                    "name": row[3]
+                }
+                refcapability.append(refcapdict)
+
+            refcapability_output = json.dumps(refcapability, sort_keys=True, indent=4)
+            refcapability_resp = json.loads(refcapability_output)
+
             return render_template(url, data=resp, namedata=name_response, aliasesdata=aliases_response,
                                    filedata=file_response, behaviordata=behavior_response, malactiondata=malaction_response,
                                    networkartifactdata=networkartifact_response, processdata=process_response,
                                    certificatedata=cert_response, softwaredata=software_response, extrefdata=extref_response,
-                                   maldevenvdata=maldevenv_response, proctreenodedata=proctreenode_response, binaryobfdata=binaryobfuscation_response)
+                                   maldevenvdata=maldevenv_response, proctreenodedata=proctreenode_response,
+                                   binaryobfdata=binaryobfuscation_response, dynamicfeatures=dynamicfeatures_resp, refcapabilitydata=refcapability_resp)
     else:
         return redirect(url_for('index'))
 
@@ -4594,6 +4662,77 @@ def delete_all_entry():
 
                 print "Entries deleted successfully"
                 return redirect(url_for('home'))
+            elif obj_type == 'malware-instance':
+                # deleting main SDO
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `" + obj_type + "` where sno=%s and created_by=%s", (id, createdBy))
+                mysql.connection.commit()
+
+                # deleting name
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `name` where obj_id=%s and obj_type=%s and created_by=%s", (id,obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting aliases
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `aliases` where obj_id=%s and obj_type=%s and created_by=%s", (id,obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting field-data
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `field-data` where obj_id=%s and obj_type=%s and created_by=%s", (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting refined_capability
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `refined_capability` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting capability
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `capability` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting dynamic features
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `dynamic-features` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting dynamic features - process tree node
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `process-tree-node` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting static features
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `static-features` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting static features - binary obfuscation methods
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `binary-obfuscation` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting static features - malware development env
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `malware-development-environment` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting external-references
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `external_references` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting analysis metadata
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `analysis-metadata` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+                # deleting signature metadata
+                cur = mysql.connection.cursor()
+                cur.execute("Delete from `signature-metadata` where obj_id=%s and obj_type=%s and created_by=%s",
+                            (id, obj_type, createdBy))
+                mysql.connection.commit()
+
+                print "Entries deleted successfully"
+                return redirect(url_for('home'))
 
     return redirect(url_for('index'))
 
@@ -4912,16 +5051,17 @@ def delete_processtreenode():
 def insert_dynamicfeatures():
     if g.user:
         if request.method == 'POST':
+            sno = request.form['sno']
             ref_id = request.form['obj_id']
             ref_type = request.form['obj_type']
             behavior_refs = request.form['behavior_refs']
             action_refs = request.form['action_refs']
-            networktraffic_refs = request.form['networktraffic_refs']
+            # networktraffic_refs = request.form['networktraffic_refs']
             process_tree = request.form['process_tree']
             created_by = g.user
             cur = mysql.connection.cursor()
-            cur.execute('''INSERT INTO `dynamic-features` (obj_id, obj_type, behavior_refs, action_refs, networktraffic_refs, process_tree, created_by)
-                        values (%s , %s, %s, %s, %s, %s, %s)''',(ref_id, ref_type, behavior_refs, action_refs, networktraffic_refs, process_tree, created_by))
+            cur.execute('''REPLACE INTO `dynamic-features` (sno,obj_id, obj_type, behavior_refs, action_refs, process_tree, created_by)
+                        values (%s , %s , %s, %s, %s, %s, %s)''',(sno,ref_id, ref_type, behavior_refs, action_refs, process_tree, created_by))
             mysql.connection.commit()
             print('Successfully entered!!')
             return jsonify({'result': 'success'})
@@ -8713,58 +8853,64 @@ def generate_maec5():
                 # aliases
                 aliases_list = []
                 cur = mysql.connection.cursor()
-                cur.execute("select * from `name` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                cur.execute("select * from `aliases` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
                             (objid, objtype, g.user))
                 res_aliases = cur.fetchall()
+                print res_aliases
                 for row in res_aliases:
                     aliases_dict = {
                         "value": row[3]
                     }
                     source_val = row[4]
-                    cur = mysql.connection.cursor()
-                    cur.execute(
-                        "select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s AND created_by=%s ",
-                        (source_val, objid, objtype, g.user))
-                    res_extref = cur.fetchone()
-                    dict_extref = {
-                        "source_name": res_extref[3]
-                    }
-
-                    extref_description = res_extref[4]
-                    if extref_description == '' or extref_description == 'None':
-                        print("Description field is empty, so adding nothing")
+                    if source_val == '' or source_val == 'None':
+                        print("No source name , do nothing")
                     else:
-                        dict_extref["description"] = extref_description
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s AND created_by=%s ",
+                            (source_val, objid, objtype, g.user))
+                        res_extref = cur.fetchone()
+                        dict_extref = {
+                            "source_name": res_extref[3]
+                        }
 
-                    extref_url = res_extref[5]
-                    if extref_url == '' or extref_url == 'None':
-                        print("Description field is empty, so adding nothing")
-                    else:
-                        dict_extref["url"] = extref_url
+                        extref_description = res_extref[4]
+                        if extref_description == '' or extref_description == 'None':
+                            print("Description field is empty, so adding nothing")
+                        else:
+                            dict_extref["description"] = extref_description
 
-                    extref_hashtype = res_extref[6]
-                    extref_hashvalue= res_extref[7]
-                    if extref_hashtype == '' or extref_hashtype == 'None' and extref_hashvalue == '' or extref_hashvalue == 'None':
-                        print("hashes field is empty, so adding nothing")
-                    else:
-                        dict_extref["hashes"] = {extref_hashtype:extref_hashvalue}
+                        extref_url = res_extref[5]
+                        if extref_url == '' or extref_url == 'None':
+                            print("Description field is empty, so adding nothing")
+                        else:
+                            dict_extref["url"] = extref_url
 
-                    extref_externid = res_extref[8]
-                    if extref_externid == '' or extref_externid == 'None':
-                        print("external id field is empty, so adding nothing")
-                    else:
-                        dict_extref["external_id"] = extref_externid
+                        extref_hashtype = res_extref[6]
+                        extref_hashvalue= res_extref[7]
+                        if extref_hashtype == '' or extref_hashtype == 'None' and extref_hashvalue == '' or extref_hashvalue == 'None':
+                            print("hashes field is empty, so adding nothing")
+                        else:
+                            dict_extref["hashes"] = {extref_hashtype:extref_hashvalue}
 
-                    # adding extref dict to main dict - aliases_dict
-                    aliases_dict["source"] = dict_extref
+                        extref_externid = res_extref[8]
+                        if extref_externid == '' or extref_externid == 'None':
+                            print("external id field is empty, so adding nothing")
+                        else:
+                            dict_extref["external_id"] = extref_externid
+
+                        # adding extref dict to main dict - aliases_dict
+                        aliases_dict["source"] = dict_extref
                     # adding confidence
                     confidence_val = row[5]
                     if confidence_val == '' or confidence_val == 'None':
                         print("Confidence field is empty, so not adding anything")
                     else:
                         aliases_dict["confidence"] = confidence_val
-                aliases_list.append(aliases_dict)
-                # adding name dict to malware_family dict
+
+                    # adding aliases dict to main aliases list
+                    aliases_list.append(aliases_dict)
+                # adding aliases dict to malware_family dict
                 malware_family["aliases"] = aliases_list
 
                 # labels
@@ -8815,8 +8961,6 @@ def generate_maec5():
                         deliveryvectors_list.append(str(i))
                     # adding delivery vectors to fielddata_dict
                     fielddata_dict["delivery_vectors"] = deliveryvectors_list
-
-
 
                 # adding field data to malware-family
                 malware_family["field_data"] =fielddata_dict
@@ -8965,8 +9109,8 @@ def generate_maec5():
                             print("no external id, so adding nothing")
                         else:
                             cap_extref_dict["external_id"] = cap_extref_externid
-                            # adding extref to  cap
-                            cap_extref_list.append(cap_extref_dict)
+                        # adding extref to  cap
+                        cap_extref_list.append(cap_extref_dict)
 
                     common_cap_dict["references"] =cap_extref_list
                     common_cap.append(common_cap_dict)
@@ -9100,6 +9244,890 @@ def generate_maec5():
                 mysql.connection.commit()
                 # final return point
                 return redirect(url_for('home'))
+
+            if objtype == 'malware-instance':
+                instance_path = "/home/tarun/Documents/maec5_store/malware-instance"
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `malware-instance` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                finallist = []
+                malware_instance = {
+
+                    "type": main[1],
+                    "id": main[2]
+
+                }
+
+                labels_val = main[4]
+                labelslist = []
+                if labels_val == '' or labels_val == 'None':
+                    print("No labels so do nothing")
+                else:
+                    labels =  tuple(main[4].split(','))
+                    if len(labels) > 0:
+                        for i in labels:
+                            labelslist.append(str(i))
+                    # adding labels to malware instance dict
+                    malware_instance["labels"] = labelslist
+
+                description_val = main[5]
+                if description_val == '' or description_val == 'None':
+                    print("No description so do nothing")
+                else:
+                    malware_instance["description"] = description_val
+
+                osexecutionenvs_val = main[6]
+                osexecenvlist = []
+                if osexecutionenvs_val == '' or osexecutionenvs_val == 'None':
+                    print("No os exec env, so do nothing")
+                else:
+                    osexec = tuple(main[6].split(','))
+                    if len(osexec) > 0:
+                        for i in osexec:
+                            osexecenvlist.append(str(i))
+                    malware_instance["os_execution_envs"] = osexecenvlist
+
+                arch_exec_envs_val = main[7]
+                archexecenvslist = []
+                if arch_exec_envs_val == '' or arch_exec_envs_val == 'None':
+                    print("No arch exec env, so do nothing")
+                else:
+                    archexec = tuple(main[7].split(','))
+                    if len(archexec) > 0:
+                        for i in archexec:
+                            archexecenvslist.append(str(i))
+                    malware_instance["architecture_execution_envs"] = archexecenvslist
+
+                os_features_val = main[8]
+                osfeatureslist = []
+                if os_features_val == '' or os_features_val == 'None':
+                    print("No os features, so do nothing")
+                else:
+                    osfeatures = tuple(main[8].split(','))
+                    if len(osfeatures) > 0:
+                        for i in osfeatures:
+                            osfeatureslist.append(str(i))
+                    malware_instance["os_features"] = osfeatureslist
+
+                # name
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `name` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                               (objid, objtype, g.user))
+                res_main = cur.fetchone()
+                dict_name = {
+                      "value": res_main[3]
+                   }
+                source_val = res_main[4]
+                if source_val == '' or source_val == 'None':
+                      print("Source field is empty, so not adding anything")
+                else:
+                    cur = mysql.connection.cursor()
+                    cur.execute(
+                        "select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s AND created_by=%s ",
+                        (source_val, objid, objtype, g.user))
+                    res_extref = cur.fetchone()
+                    dict_extref = {
+                        "source_name": res_extref[3]
+                    }
+
+                    extref_description = res_extref[4]
+                    if extref_description == '' or extref_description == 'None':
+                        print("Description field is empty, so adding nothing")
+                    else:
+                        dict_extref["description"] = extref_description
+
+                    extref_url = res_extref[5]
+                    if extref_url == '' or extref_url == 'None':
+                        print("Description field is empty, so adding nothing")
+                    else:
+                        dict_extref["url"] = extref_url
+
+                    extref_hashtype = res_extref[6]
+                    extref_hashvalue = res_extref[7]
+                    if extref_hashtype == '' or extref_hashtype == 'None' and extref_hashvalue == '' or extref_hashvalue == 'None':
+                        print("hashes field is empty, so adding nothing")
+                    else:
+                        dict_extref["hashes"] = {extref_hashtype: extref_hashvalue}
+
+                    extref_externid = res_extref[8]
+                    if extref_externid == '' or extref_externid == 'None':
+                        print("external id field is empty, so adding nothing")
+                    else:
+                        dict_extref["external_id"] = extref_externid
+
+                    # adding extref dict to main dict - dict_name
+                    dict_name["source"] = dict_extref
+
+                confidence_val = res_main[5]
+                if confidence_val == '' or confidence_val == 'None':
+                      print("Confidence field is empty, so not adding anything")
+                else:
+                    dict_name["confidence"] = confidence_val
+                    # adding name dict to malware_instance dict
+                    malware_instance["name"] = dict_name
+
+                # aliases
+                aliases_list = []
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `aliases` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                             (objid, objtype, g.user))
+                res_aliases = cur.fetchall()
+
+                for row in res_aliases:
+                        aliases_dict = {
+                            "value": row[3]
+                        }
+                        source_val = row[4]
+                        if source_val == '' or source_val == 'None':
+                            print("No source name , do nothing")
+                        else:
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                (source_val, objid, objtype, g.user))
+                            res_extreference = cur.fetchone()
+                            dict_extref = {
+
+                            }
+                            print res_extreference[3]
+                            if res_extref[3] == '' or res_extref[3] == None:
+                                print("do nothing")
+                            else:
+                                dict_extref["source_name"] = res_extref[3]
+                            extref_description = res_extref[4]
+                            if extref_description == '' or extref_description == 'None':
+                                print("Description field is empty, so adding nothing")
+                            else:
+                                dict_extref["description"] = extref_description
+
+                            extref_url = res_extref[5]
+                            if extref_url == '' or extref_url == 'None':
+                                print("Description field is empty, so adding nothing")
+                            else:
+                                dict_extref["url"] = extref_url
+
+                            extref_hashtype = res_extref[6]
+                            extref_hashvalue = res_extref[7]
+                            if extref_hashtype == '' or extref_hashtype == 'None' and extref_hashvalue == '' or extref_hashvalue == 'None':
+                                print("hashes field is empty, so adding nothing")
+                            else:
+                                dict_extref["hashes"] = {extref_hashtype: extref_hashvalue}
+
+                            extref_externid = res_extref[8]
+                            if extref_externid == '' or extref_externid == 'None':
+                                print("external id field is empty, so adding nothing")
+                            else:
+                                dict_extref["external_id"] = extref_externid
+
+                            # adding extref dict to main dict - aliases_dict
+                            aliases_dict["source"] = dict_extref
+                        # adding confidence
+                        confidence_val = row[5]
+                        if confidence_val == '' or confidence_val == 'None':
+                            print("Confidence field is empty, so not adding anything")
+                        else:
+                            aliases_dict["confidence"] = confidence_val
+
+                        # adding aliases dict to main aliases list
+                        aliases_list.append(aliases_dict)
+                    # adding aliases dict to malware_instance dict
+                malware_instance["aliases"] = aliases_list
+
+                # field- data
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `field-data` where  obj_id=%s AND obj_type=%s AND set_flag=%s AND created_by=%s ",
+                            (objid, objtype, flag, g.user))
+                res_fielddata = cur.fetchone()
+                fielddata_dict = {
+
+                }
+
+                firstseen_datetime = str(res_fielddata[4])
+                if firstseen_datetime == '' or firstseen_datetime == 'None':
+                    print("first seen field is empty, so adding nothing")
+                else:
+                    fielddata_dict["first_seen"] = res_fielddata[4].strftime('%Y-%m-%dT%H:%M')
+
+                lastseen_datetime = str(res_fielddata[5])
+                if lastseen_datetime == '' or lastseen_datetime == 'None':
+                    print("Last seen field is empty, so adding nothing")
+                else:
+                    fielddata_dict["last_seen"] = res_fielddata[5].strftime('%Y-%m-%dT%H:%M')
+
+                delvectors_val = tuple(res_fielddata[3].split(','))
+                if delvectors_val == '' or delvectors_val == 'None':
+                    print("delivery vectors field is empty so adding nothing")
+                else:
+                    deliveryvectors_list= []
+                    for i in delvectors_val:
+                        deliveryvectors_list.append(str(i))
+                    # adding delivery vectors to fielddata_dict
+                    fielddata_dict["delivery_vectors"] = deliveryvectors_list
+
+                # adding field data to malware-instance
+                malware_instance["field_data"] =fielddata_dict
+
+                # capabilities
+                common_cap = []
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    "select * from `capability` where  obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                    (objid, objtype, g.user))
+                res_commoncap = cur.fetchall()
+                for row in res_commoncap:
+                    common_cap_dict = {
+                        "name": row[3]
+                    }
+                    # adding refined capability if present
+                    refcap_ref = row[4]
+                    if refcap_ref == '' or refcap_ref == 'None':
+                        print("no refined capability, so adding nothing")
+                    else:
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `refined_capability` where  sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                            (refcap_ref, objid, objtype, g.user))
+                        res_refinedcap = cur.fetchone()
+
+                        refinedcap_dict = {
+                            "name": res_refinedcap[3]
+                        }
+                        refcap_description = res_refinedcap[4]
+                        if refcap_description == '' or refcap_description == 'None':
+                            print("No description , so adding nothing")
+                        else:
+                            refinedcap_dict["description"] = refcap_description
+                        refcap_attr = res_refinedcap[5]
+                        if refcap_attr == '' or refcap_attr == 'None':
+                            print("No attributes, so adding nothing")
+                        else:
+                            attr = tuple(refcap_attr.split(':'))
+                            if len(attr) > 0:
+                                refinedcap_dict["attributes"] = {str(attr[0]): str(attr[1])}
+
+                        behaviorref_val = res_refinedcap[6]
+                        if behaviorref_val == '' or behaviorref_val == 'None':
+                            print("No behavior ref so not adding anything")
+                        else:
+                            refinedcap_dict["behavior_refs"] = behaviorref_val
+
+                        refcap_extref = res_refinedcap[7]
+                        if refcap_extref == '' or refcap_extref == 'None':
+                            print("No external ref, so not adding anything")
+                        else:
+                            cur.execute(
+                                "select * from `external_references` where  sno=%s   AND created_by=%s ",
+                                (refcap_extref, g.user))
+                            refinedcap_extref = cur.fetchone()
+                            refcap_extref_dict = {
+                                "source_name": refinedcap_extref[3]
+
+                            }
+                            refcap_extref_description = refinedcap_extref[4]
+                            if refcap_extref_description == '' or refcap_extref_description == 'None':
+                                print("no description, so adding nothing")
+                            else:
+                                refcap_extref_dict["description"] = refcap_extref_description
+
+                            refcap_extref_url = refinedcap_extref[5]
+                            if refcap_extref_url == '' or refcap_extref_url == 'None':
+                                print("no url, so adding nothing")
+                            else:
+                                refcap_extref_dict["url"] = refcap_extref_url
+
+                            refcap_extref_externid = refinedcap_extref[8]
+                            if refcap_extref_externid == '' or refcap_extref_externid == 'None':
+                                print("no external id, so adding nothing")
+                            else:
+                                refcap_extref_dict["external_id"] = refcap_extref_externid
+
+                            # adding extref to refined cap
+                            refinedcap_dict["refined_capabilities"] = refcap_extref_dict
+
+                    # description for capability
+                    cap_description = row[5]
+                    if cap_description == '' or cap_description == 'None':
+                        print("No description, so adding nothing")
+                    else:
+                        common_cap_dict["description"] = cap_description
+
+                    # attributes for capability
+                    cap_attr = row[6]
+                    if cap_attr == '' or cap_attr == 'None':
+                        print("No attributes, so adding nothing")
+                    else:
+                        attr = tuple(cap_attr.split(':'))
+                        if len(attr) > 0:
+                            common_cap_dict["attributes"] = {str(attr[0]): str(attr[1])}
+
+                    # behavior refs for capability
+                    behaviorref_val = row[7]
+                    if behaviorref_val == '' or behaviorref_val == 'None':
+                        print("No behavior ref so not adding anything")
+                    else:
+                        common_cap_dict["behavior_refs"] = behaviorref_val
+
+                    # external -refs for capability
+                    cap_extref = row[8]
+                    cap_extref_list = []
+                    if cap_extref == '' or cap_extref == 'None':
+                        print("No external ref, so not adding anything")
+                    else:
+                        cur.execute(
+                            "select * from `external_references` where  sno=%s   AND created_by=%s ",
+                            (refcap_extref, g.user))
+                        cap_extref = cur.fetchone()
+                        cap_extref_dict = {
+                            "source_name": cap_extref[3]
+
+                        }
+                        cap_extref_description = cap_extref[4]
+                        if cap_extref_description == '' or cap_extref_description == 'None':
+                            print("no description, so adding nothing")
+                        else:
+                            cap_extref_dict["description"] = cap_extref_description
+
+                        cap_extref_url = cap_extref[5]
+                        if cap_extref_url == '' or cap_extref_url == 'None':
+                            print("no url, so adding nothing")
+                        else:
+                            cap_extref_dict["url"] = cap_extref_url
+
+                        cap_extref_externid = cap_extref[8]
+                        if cap_extref_externid == '' or cap_extref_externid == 'None':
+                            print("no external id, so adding nothing")
+                        else:
+                            cap_extref_dict["external_id"] = cap_extref_externid
+                        # adding extref to  cap
+                        cap_extref_list.append(cap_extref_dict)
+
+                    common_cap_dict["references"] = cap_extref_list
+                    common_cap.append(common_cap_dict)
+                # adding capability to malware-instance
+                malware_instance["capabilities"] = common_cap
+
+                # dynamic features
+                # -------------------
+                dynamicfeatures_dict = {}
+
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    "select * from `dynamic-features` where  obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                    (objid, objtype, g.user))
+                res_dynamicfeat = cur.fetchone()
+
+                # behavior refs
+                behaviorrefs_val = res_dynamicfeat[3]
+                if behaviorrefs_val == '' or behaviorrefs_val == 'None':
+                    print("No ref's so adding nothing")
+                else:
+                    behaviorrefslist = []
+                    behaviorrefs = tuple(res_dynamicfeat[3].split(','))
+                    if len(behaviorrefs) > 0:
+                        for i in behaviorrefs:
+                            behaviorrefslist.append(str(i))
+
+                    # adding behavior refs to main dynamic features list
+                    dynamicfeatures_dict["behavior_refs"] = behaviorrefslist
+
+                # action refs
+                actionrefs_val = res_dynamicfeat[4]
+                if actionrefs_val == '' or actionrefs_val == 'None':
+                    print("no actionrefs, so do nothing")
+                else:
+                    actionrefslist = []
+                    actionrefs = tuple(res_dynamicfeat[4].split(','))
+                    if len(actionrefs) > 0:
+                        for i in actionrefs:
+                            actionrefslist.append(str(i))
+
+                # adding action refs to dynamic features list
+                dynamicfeatures_dict["action_refs"] = actionrefslist
+
+                # process tree
+                processtree_val = res_dynamicfeat[6]
+                proctree_list = []
+                if processtree_val == '' or processtree_val == 'None':
+                    print("no process tree, so do nothing")
+                else:
+                    processtree = tuple(res_dynamicfeat[6].split(','))
+                    if len(processtree) > 0:
+                        for i in processtree:
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `process-tree-node` where sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                                (i, objid, objtype, g.user))
+                            proctree_res = cur.fetchone()
+                            proctree_res_dict = {
+                                "process_ref": proctree_res[3]
+                            }
+
+                            parentaction_val = proctree_res[4]
+                            if parentaction_val == '' or parentaction_val == 'None':
+                                print("No parent action , so not adding anything")
+                            else:
+                                proctree_res_dict["parent_action_ref"] = parentaction_val
+
+                            ordinalpos_val = proctree_res[5]
+                            if ordinalpos_val == '' or ordinalpos_val == 'None':
+                                print("No ordinal position, so not adding anything")
+                            else:
+                                proctree_res_dict["ordinal_position"] = ordinalpos_val
+
+                            initiatedactionrefs_val = proctree_res[6]
+                            if initiatedactionrefs_val == '' or initiatedactionrefs_val == 'None':
+                                print("no initiated action refs, so not adding anything")
+                            else:
+                                initiatedactionrefs = tuple(proctree_res[6].split(','))
+                                initiatedactionrefs_list = []
+                                if len(initiatedactionrefs) > 0:
+                                    for i in initiatedactionrefs:
+                                        initiatedactionrefs_list.append(str(i))
+                                proctree_res_dict["initiated_action_refs"] = initiatedactionrefs_list
+                             # adding proctree_res_dict to procetree_list
+                            proctree_list.append(proctree_res_dict)
+
+                # adding proctree_list to dynamicfeatures dict
+                dynamicfeatures_dict["process_tree"] = proctree_list
+
+                # adding dynamic features dict to main dict
+                malware_instance["dynamic_features"] = dynamicfeatures_dict
+
+                #  --------------------------------
+                # Static features
+
+                cur.execute(
+                    "select * from `static-features` where  obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                    (objid, objtype, g.user))
+                res_staticfeat = cur.fetchone()
+                staticfeat_dict = {
+
+                }
+                # strings
+                strings_val = res_staticfeat[3]
+                if strings_val == '' or strings_val == 'None':
+                    print("No strings, so not adding anything")
+                else:
+                     strings = tuple(res_staticfeat[3].split(','))
+                     stringslist = []
+                     if len(strings) > 0:
+                         for i in strings:
+                             stringslist.append(str(i))
+
+                     staticfeat_dict["strings"] = stringslist
+
+                # obfuscation methods
+                obfuscationmethod_val = res_staticfeat[4]
+
+                if obfuscationmethod_val == '' or obfuscationmethod_val == 'None':
+                    print("Do nothing")
+                else:
+                    obfuscationmethod = tuple(res_staticfeat[4].split(','))
+                    obfuscationmethod_list = []
+                    if len(obfuscationmethod) > 0:
+                        for i in obfuscationmethod:
+                            cur.execute(
+                                "select * from `binary-obfuscation` where sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                                (i, objid, objtype, g.user))
+                            res_obfmethod = cur.fetchone()
+                            obfmethod_dict = {
+                                "method": res_obfmethod[3]
+                            }
+
+                            layerorder_val = res_obfmethod[4]
+                            if layerorder_val == '' or layerorder_val == 'None':
+                                print("do nothing")
+                            else:
+                                obfmethod_dict["layer_order"] = layerorder_val
+
+                            encrypalgo_val = res_obfmethod[5]
+                            if encrypalgo_val == '' or encrypalgo_val == 'None':
+                                print(" do nothing")
+                            else:
+                                obfmethod_dict["encryption_algorithm"] = encrypalgo_val
+
+                            packername_val = res_obfmethod[6]
+                            if packername_val == '' or packername_val == 'None':
+                                print("do nothing")
+                            else:
+                                obfmethod_dict["packer_name"] = packername_val
+
+                            packerversion_val = res_obfmethod[7]
+                            if packerversion_val == '' or packerversion_val == 'None':
+                                print("do nothing")
+                            else:
+                                obfmethod_dict["packer_version"] = packerversion_val
+
+                            packerentrypoint_val = res_obfmethod[8]
+                            if packerentrypoint_val == '' or packerentrypoint_val == 'None':
+                                print("do nothing")
+                            else:
+                                obfmethod_dict["packer_entry_point"] = packerentrypoint_val
+
+                            packersignature_val = res_obfmethod[9]
+                            if packersignature_val == '' or packersignature_val == 'None':
+                                print("do nothing")
+                            else:
+                                obfmethod_dict["packer_signature"] = packersignature_val
+
+                            # adding binary obf to binary obf list
+                            obfuscationmethod_list.append(obfmethod_dict)
+                    staticfeat_dict["obfuscation_methods"] = obfuscationmethod_list
+
+                # configuration parameters
+                configparams_val = res_staticfeat[7]
+                if configparams_val == '' or configparams_val == 'None':
+                    print("Do nothing")
+                else:
+                     configparams = tuple(res_staticfeat[7].split(':'))
+                     if len(configparams) > 0:
+                         staticfeat_dict["configuration_parameters"] = {str(configparams[0]):str(configparams[1])}
+
+                # development environment
+                devenv_val = res_staticfeat[8]
+                devenv_list = []
+                if devenv_val == '' or devenv_val == 'None':
+                    print("do nothing")
+                else:
+                    cur.execute(
+                        "select * from `malware-development-environment` where  sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                        (devenv_val, objid, objtype, g.user))
+                    res_maldevenv = cur.fetchone()
+                    maldevenv_dict = {
+
+                    }
+                    toolrefs_val = res_maldevenv[3]
+                    if toolrefs_val == '' or toolrefs_val == 'None':
+                        print("do nothing")
+                    else:
+                        maldevenv_dict["tool_refs"] = toolrefs_val
+                    debugginfilerefs_val = res_maldevenv[4]
+                    if debugginfilerefs_val == '' or debugginfilerefs_val == 'None':
+                        print("do nothing")
+                    else:
+                        maldevenv_dict["debuggin_file_refs"] = debugginfilerefs_val
+
+                    # adding maldevenv dict to devenvlist
+                    devenv_list.append(maldevenv_dict)
+                # adding dev env list to main static feat dict
+                staticfeat_dict["development_environment"] = devenv_list
+
+                # adding static features dict to main dict
+                malware_instance["static_features"] = staticfeat_dict
+
+                #  --------------------------------
+                # Analysis metadata
+                analysis_metadata = []
+                cur.execute(
+                    "select * from `analysis-metadata` where  obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                    (objid, objtype, g.user))
+                res_analymetadata = cur.fetchall()
+                for row in res_analymetadata:
+                    analysis_metadata_dict = {
+                        "is_automated": row[3]
+                    }
+                    starttime_val = str(row[4])
+                    if starttime_val == '' or starttime_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["start_time"] = row[4].strftime('%Y-%m-%dT%H:%M')
+
+                    endtime_val = str(row[5])
+                    if endtime_val == '' or endtime_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["end_time"] = row[5].strftime('%Y-%m-%dT%H:%M')
+
+                    lastupdatetime_val = str(row[6])
+                    if lastupdatetime_val == '' or lastupdatetime_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["last_update_time"] = row[6].strftime('%Y-%m-%dT%H:%M')
+
+                    confidence_val = row[7]
+                    if confidence_val == '' or confidence_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["confidence"] = row[7]
+
+                    analysts_val = row[8]
+                    if analysts_val == '' or analysts_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["analysts"] = row[8]
+
+                    analysistype_val = row[9]
+                    if analysistype_val == '' or analysistype_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["analysis_type"] = row[9]
+
+                    comments_val = row[10]
+                    if comments_val == '' or comments_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["comments"] = row[10]
+
+                    analysisenv_val = row[12]
+                    if analysisenv_val == '' or analysisenv_val == 'None':
+                        print("do nothing")
+                    else:
+                        values = tuple(row[12].split(':'))
+                        analysis_metadata_dict["analysis_environment"] = {str(values[0]):str(values[1])}
+
+                    description_val = row[13]
+                    if description_val == '' or description_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["description"] = row[13]
+
+                    conclusion_val = row[14]
+                    if conclusion_val == '' or conclusion_val == 'None':
+                        print("do nothing")
+                    else:
+                        analysis_metadata_dict["conclusion"] = row[14]
+
+                    references_val = row[15]
+                    if references_val == '' or references_val == 'None':
+                        print("do nothing")
+                    else:
+                        results = tuple(row[15].split(','))
+                        extref_list = []
+                        if len(results) > 0:
+                            for i in results:
+                                cur.execute(
+                                    "select * from `external_references` where sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                                    (i, objid, objtype, g.user))
+                                res_extref= cur.fetchone()
+                                print res_extref
+                                extref_dict = {
+                                    "source_name": res_extref[3]
+                                }
+                                desc_val = res_extref[4]
+                                if desc_val == '' or desc_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["description"] = desc_val
+                                url_val = res_extref[5]
+                                if url_val == '' or url_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["url"] = url_val
+
+                                hashtype_val = res_extref[6]
+                                hashvalue_val = res_extref[7]
+                                if hashtype_val == '' or hashtype_val == 'None' and hashvalue_val == '' or hashvalue_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["hashes"] = {str(hashtype_val):str(hashvalue_val)}
+
+                                externid_val = res_extref[8]
+                                if externid_val == '' or externid_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["external_id"] = externid_val
+
+                                # added ext ref to main list
+                                extref_list.append(extref_dict)
+                        analysis_metadata_dict["references"] = extref_list
+
+                # adding static features dict to main dict
+                malware_instance["analysis_metadata"] = staticfeat_dict
+
+                #  --------------------------------
+                # Signature metadata
+                signature_metadata = []
+                cur.execute(
+                    "select * from `signature-metadata` where  obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                    (objid, objtype, g.user))
+                res_sigmetadata = cur.fetchall()
+                for row in res_sigmetadata:
+                    signature_metadata_dict = {
+
+                    }
+                    sigtype_val = row[3]
+                    if sigtype_val == '' or sigtype_val == 'None':
+                        print("do nothing")
+                    else:
+                        signature_metadata_dict["signature_type"] = sigtype_val
+
+                    name_val = row[4]
+                    if name_val == '' or name_val == 'None':
+                        print("do nothing")
+                    else:
+                        signature_metadata_dict["name"] = name_val
+
+                    description_val = row[5]
+                    if description_val == '' or description_val == 'None':
+                        print("do nothing")
+                    else:
+                        signature_metadata_dict["description"] = description_val
+
+                    author_val = row[6]
+                    if author_val == '' or author_val == 'None':
+                        print("do nothing")
+                    else:
+                        signature_metadata_dict["author"] = author_val
+
+                    references_val = row[7]
+                    if references_val == '' or references_val == 'None':
+                        print("do nothing")
+                    else:
+                        results = tuple(row[7].split(','))
+                        print results
+                        extref_list = []
+                        if len(results) > 0:
+                            for i in results:
+                                cur.execute(
+                                    "select * from `external_references` where  sno=%s AND obj_id=%s AND obj_type=%s  AND created_by=%s ",
+                                    (i, objid, objtype, g.user))
+                                res_extref = cur.fetchone()
+                                extref_dict = {
+                                    "source_name": res_extref[3]
+                                }
+                                desc_val = res_extref[4]
+                                if desc_val == '' or desc_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["description"] = desc_val
+                                url_val = res_extref[5]
+                                if url_val == '' or url_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["url"] = url_val
+
+                                hashtype_val = res_extref[6]
+                                hashvalue_val = res_extref[7]
+                                if hashtype_val == '' or hashtype_val == 'None' and hashvalue_val == '' or hashvalue_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["hashes"] = {str(hashtype_val): str(hashvalue_val)}
+
+                                externid_val = res_extref[8]
+                                if externid_val == '' or externid_val == 'None':
+                                    print("do nothing")
+                                else:
+                                    extref_dict["external_id"] = externid_val
+
+                                # added ext ref to main list
+                                extref_list.append(extref_dict)
+                        signature_metadata_dict["references"] = extref_list
+
+                    severity_val = row[8]
+                    if severity_val == '' or severity_val == 'None':
+                        print("do nothing")
+                    else:
+                        signature_metadata_dict["severity"] = severity_val
+
+                    externalid_val = row[9]
+                    if externalid_val == '' or externalid_val == 'None':
+                        print("do nothing")
+                    else:
+                        signature_metadata_dict["external_id"] = externalid_val
+
+                    # adding metadata dict to metadata list
+                    signature_metadata.append(signature_metadata_dict)
+
+                # adding static features dict to main dict
+                malware_instance["triggered_signatures"] = signature_metadata
+                # adding malware instance dict to final list
+                finallist.append(malware_instance)
+
+                output = json.dumps(finallist, sort_keys=False, indent=4)
+                # file creation
+
+                filename = main[2] + ".json"
+                location = os.path.join(instance_path, filename)
+                file = open(location, "w")
+                # file_contents = json.dumps(result, sort_keys=True, indent=4)
+                file.write(output)
+                file.close()
+                # save a record in database
+                timestmp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `maec_content` (type, maec_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, main[2], objid, g.user, timestmp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # set flag
+                flag = 1
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''UPDATE `malware-instance` SET published_flag=%s WHERE sno=%s and maec_id=%s and created_by=%s''',
+                    (flag, objid, main[2], g.user))
+                mysql.connection.commit()
+                # final return point
+                return redirect(url_for('home'))
+
+            if objtype == 'relationship':
+                # Main obj
+                cur = mysql.connection.cursor()
+                cur.execute("select * from `relationship` where  sno=%s AND created_by=%s ", (objid, g.user))
+                main = cur.fetchone()
+                src_id = main[2]
+                src_type = main[3]
+                tar_id = main[5]
+                tar_type = main[6]
+
+                # capture maec id of source
+                cur = mysql.connection.cursor()
+                cur.execute("select maec_id from `maec_content` where  reference_id=%s AND type=%s  AND created_by=%s ",
+                            (src_id, src_type, g.user))
+                src_main = cur.fetchone()
+                maec_srcid = src_main[0]
+                # capture maec id of target
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    "select maec_id from `maec_content` where  reference_id=%s AND type=%s AND created_by=%s ",
+                    (tar_id, tar_type, g.user))
+                tar_main = cur.fetchone()
+                maec_tarid = tar_main[0]
+
+                # generate MAEC -  Relationship
+
+                id_gen = uuid.uuid4()
+                MAEC_ID = "relationship--" + str(id_gen)
+                relation_dict = {
+                    "id" : MAEC_ID,
+                    "type": "relationship",
+                    "source_ref": maec_srcid,
+                    "target_ref": maec_tarid,
+                    "relationship_type": main[4]
+                }
+                if main[7] == '' or main[7] == 'None':
+                    print("do nothing")
+                else:
+                    relation_dict["description"] = main[7]
+
+                rel_output = json.dumps(relation_dict, sort_keys=True, indent=4)
+
+
+                # saving to local file system
+                relationship_path = "/home/tarun/Documents/maec5_store/relationship"
+
+                filename = MAEC_ID + ".json"
+                location = os.path.join(relationship_path, filename)
+                file = open(location, "w")
+                # file_contents = json.dumps(result, sort_keys=True, indent=4)
+                file.write(rel_output)
+                file.close()
+
+                print ('Added MAEC - relationship to file system !!')
+                # save a record in database
+                timestamp = datetime.now()
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    '''INSERT INTO `maec_content` (type, maec_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
+                    (objtype, MAEC_ID, objid, g.user, timestamp))
+                mysql.connection.commit()
+                print ('A record has been saved to database')
+                # final return point
+                return redirect(url_for('home'))
+
+
 
     return redirect(url_for('index'))
 
