@@ -57,6 +57,7 @@
             </div>
         </div>
         <div class="col-lg-6">
+            {% if publishedflag != 1 %}
             <div class="alert alert-success">
             <form method="POST" action="{{ url_for('generate_maec5') }}">
                 <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
@@ -65,6 +66,7 @@
               <button type="submit" class="btn btn-primary">Click here</button>
             </form>
             </div>
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -162,77 +164,7 @@
         <!-- Modal body -->
         <div class="modal-body">
             <div class="container">
-               <!-- <form method="POST" id="input_artifact" role="form" >
 
-                        <div class="form-group row">
-                          <label class="col-lg-4 col-form-label" >Mime type:</label>
-                          <div class="col-lg-8">
-                            <input type="text" class="form-control form-control-sm" name="mime_type">
-                              <input type="hidden" name="ref_type" value="None">
-                              <input type="hidden" name="type" value="artifact">
-                              <input type="hidden" class="form-control form-control-sm" name="obj_id" value="{{ main.id  }}">
-                              <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ main.type }}">
-                              <input type="hidden" name="created_by" value="{{ session['user'] }}">
-                          </div>
-                         </div>
-                        <div class="form-group row">
-                      <label class="col-lg-4 col-form-label" >Payload bin:</label>
-                      <div class="col-lg-8">
-                          <input type="text" class="form-control form-control-sm" id="payload" name="payload_bin">
-                          <small id="urlHelpBlock" class="form-text text-muted">
-                               If you want to provide information for this field, then do not add URL information
-                          </small>
-                      </div>
-                  </div>
-                            <div class="form-group row">
-                      <label class="col-lg-4 col-form-label" >URL:</label>
-                      <div class="col-lg-8">
-                          <input type="text" class="form-control form-control-sm" id="extUrl" readonly value="none" name="url" >
-                          <small id="urlHelpBlock" class="form-text text-muted">
-                                If you want to add URL information, enable the check box below to also add the hash type and value information, else, leave the box unchecked.
-                          </small>
-                          <div class="form-check">
-                              <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input"  id="enableURL">Submit URL along with Hash type and value
-                              </label>
-                          </div>
-                      </div>
-                  </div>
-                    <div class="form-group row">
-                        <label class="col-lg-3 col-form-label" >Hash type:</label>
-                        <div class="col-lg-9">
-                            <select class="form-control form-control-sm" id="hashType"  readonly name="hash_type">
-                                          <option>--Choose a hash type--</option>
-                                          <option value="MD5">MD5</option>
-                                          <option value="MD6">MD6</option>
-                                          <option value="RIPEMD-160">RIPEMD-160</option>
-                                          <option value="SHA-1">SHA-1</option>
-                                          <option value="SHA-224">SHA-224</option>
-                                          <option value="SHA-256">SHA-256</option>
-                                          <option value="SHA-384">SHA-384</option>
-                                          <option value="SHA-512">SHA-512</option>
-                                          <option value="SHA3-224">SHA3-224</option>
-                                          <option value="SHA3-256">SHA3-256</option>
-                                          <option value="SHA3-384">SHA3-384</option>
-                                          <option value="SHA3-512">SHA3-512</option>
-                                          <option value="ssdeep">ssdeep</option>
-                                          <option value="WHIRLPOOL">WHIRLPOOL</option>
-                                      </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-3 col-form-label" >Hash value:</label>
-                        <div class="col-lg-9">
-                            <input type="text" class="form-control form-control-sm" id="hashVal" readonly value="none"  name="hash_value">
-                        </div>
-                    </div>
-                  <div class="form-group row">
-                      <div class="offset-lg-4 col-lg-8">
-                          <button type="button" class="btn btn-sm btn-secondary" id="submit_input_artifact" >Add</button>
-                          <button type="reset" class="btn btn-sm btn-light">Reset</button>
-                      </div>
-                    </div>
-                    </form> -->
                 <table class="table table-hover">
                 <thead>
                   <tr>
@@ -243,27 +175,27 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_artifact"></td>
                   </tr>
                   <tr>
                     <td>Mime Type</td>
-                    <td id="mime_type"></td>
+                    <td id="mime_type_artifact"></td>
                   </tr>
                   <tr>
                     <td>Payload bin</td>
-                    <td id="payload_bin"></td>
+                    <td id="payload_bin_artifact"></td>
                   </tr>
                   <tr>
                     <td>URL</td>
-                    <td id="url"></td>
+                    <td id="url_artifact"></td>
                   </tr>
                     <tr>
                     <td>Hash Type</td>
-                    <td id="hash_type"></td>
+                    <td id="hash_type_artifact"></td>
                   </tr>
                     <tr>
                     <td>Hash Value</td>
-                    <td id="hash_val"></td>
+                    <td id="hash_val_artifact"></td>
                   </tr>
                 </tbody>
               </table>
@@ -297,19 +229,19 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_as"></td>
                   </tr>
                   <tr>
                     <td>Number</td>
-                    <td id="number"></td>
+                    <td id="number_as"></td>
                   </tr>
                   <tr>
                     <td>Name</td>
-                    <td id="name"></td>
+                    <td id="name_as"></td>
                   </tr>
                   <tr>
                     <td>RIR</td>
-                    <td id="rir"></td>
+                    <td id="rir_as"></td>
                   </tr>
                 </tbody>
               </table>
@@ -343,31 +275,31 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_dir"></td>
                   </tr>
                   <tr>
                     <td>Path</td>
-                    <td id="path"></td>
+                    <td id="path_dir"></td>
                   </tr>
                   <tr>
                     <td>Path encoding</td>
-                    <td id="path_enc"></td>
+                    <td id="path_enc_dir"></td>
                   </tr>
                   <tr>
                     <td>Created</td>
-                    <td id="created"></td>
+                    <td id="created_dir"></td>
                   </tr>
                 <tr>
                     <td>Modified</td>
-                    <td id="modified"></td>
+                    <td id="modified_dir"></td>
                   </tr>
                 <tr>
                     <td>Accessed</td>
-                    <td id="accessed"></td>
+                    <td id="accessed_dir"></td>
                   </tr>
                 <tr>
                     <td>Contains References</td>
-                    <td id="contains_refs"></td>
+                    <td id="contains_refs_dir"></td>
                   </tr>
                 </tbody>
               </table>
@@ -401,15 +333,15 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_dn"></td>
                   </tr>
                   <tr>
                     <td>Value</td>
-                    <td id="value"></td>
+                    <td id="value_dn"></td>
                   </tr>
                   <tr>
                     <td>Resolves to References</td>
-                    <td id="resolves_to_refs"></td>
+                    <td id="resolves_to_refs_dn"></td>
                   </tr>
 
                 </tbody>
@@ -444,19 +376,19 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_emaddr"></td>
                   </tr>
                   <tr>
                     <td>Value</td>
-                    <td id="value"></td>
+                    <td id="value_emaddr"></td>
                   </tr>
                   <tr>
                     <td>Display name</td>
-                    <td id="display_name"></td>
+                    <td id="display_name_emaddr"></td>
                   </tr>
                     <tr>
                     <td>Belongs to reference</td>
-                    <td id="belongs_to_ref"></td>
+                    <td id="belongs_to_ref_emaddr"></td>
                   </tr>
 
                 </tbody>
@@ -491,59 +423,59 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_emmsg"></td>
                   </tr>
                   <tr>
                     <td>Is Multipart</td>
-                    <td id="is_multipart"></td>
+                    <td id="is_multipart_emmsg"></td>
                   </tr>
                   <tr>
                     <td>Date</td>
-                    <td id="date"></td>
+                    <td id="date_emmsg"></td>
                   </tr>
                   <tr>
                     <td>Content Type</td>
-                    <td id="content_type"></td>
+                    <td id="content_type_emmsg"></td>
                   </tr>
                   <tr>
                     <td>From reference</td>
-                    <td id="from_ref"></td>
+                    <td id="from_ref_emmsg"></td>
                   </tr>
                 <tr>
                     <td>Sender reference</td>
-                    <td id="sender_ref"></td>
+                    <td id="sender_ref_emmsg"></td>
                   </tr>
                 <tr>
                     <td>To reference</td>
-                    <td id="to_refs"></td>
+                    <td id="to_refs_emmsg"></td>
                   </tr>
                 <tr>
                     <td>CC reference</td>
-                    <td id="cc_refs"></td>
+                    <td id="cc_refs_emmsg"></td>
                   </tr>
                 <tr>
                     <td>BCC reference</td>
-                    <td id="bcc_refs"></td>
+                    <td id="bcc_refs_emmsg"></td>
                   </tr>
                 <tr>
                     <td>Subject</td>
-                    <td id="subject"></td>
+                    <td id="subject_emmsg"></td>
                   </tr>
                 <tr>
                     <td>Received lines</td>
-                    <td id="received_lines"></td>
+                    <td id="received_lines_emmsg"></td>
                   </tr>
                 <tr>
                     <td>Additional header fields</td>
-                    <td id="additional_header_fields"></td>
+                    <td id="additional_header_fields_emmsg"></td>
                   </tr>
                 <tr>
                     <td>body</td>
-                    <td id="body"></td>
+                    <td id="body_emmsg"></td>
                   </tr>
                 <tr>
                     <td>Raw email reference</td>
-                    <td id="raw_email_ref"></td>
+                    <td id="raw_email_ref_emmsg"></td>
                   </tr>
 
                 </tbody>
@@ -578,67 +510,67 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_file"></td>
                   </tr>
                   <tr>
                     <td>Extensions</td>
-                    <td id="extensions"></td>
+                    <td id="extensions_file"></td>
                   </tr>
                   <tr>
                     <td>Hashes</td>
-                    <td id="hashes"></td>
+                    <td id="hashes_file"></td>
                   </tr>
                   <tr>
                     <td>Size</td>
-                    <td id="size"></td>
+                    <td id="size_file"></td>
                   </tr>
                   <tr>
                     <td>Name</td>
-                    <td id="name"></td>
+                    <td id="name_file"></td>
                   </tr>
                 <tr>
                     <td>Name encoding</td>
-                    <td id="name_enc"></td>
+                    <td id="name_enc_file"></td>
                   </tr>
                 <tr>
                     <td>Magic number hex</td>
-                    <td id="magic_number_hex"></td>
+                    <td id="magic_number_hex_file"></td>
                   </tr>
                 <tr>
                     <td>Mime type</td>
-                    <td id="mime_type"></td>
+                    <td id="mime_type_file"></td>
                   </tr>
                 <tr>
                     <td>Created</td>
-                    <td id="created"></td>
+                    <td id="created_file"></td>
                   </tr>
                 <tr>
                     <td>Modified</td>
-                    <td id="modified"></td>
+                    <td id="modified_file"></td>
                   </tr>
                 <tr>
                     <td>Accessed</td>
-                    <td id="accessed"></td>
+                    <td id="accessed_file"></td>
                   </tr>
                 <tr>
                     <td>Parent directory reference</td>
-                    <td id="parent_directory_ref"></td>
+                    <td id="parent_directory_ref_file"></td>
                   </tr>
                 <tr>
                     <td>Is encrypted</td>
-                    <td id="is_encrypted"></td>
+                    <td id="is_encrypted_file"></td>
                   </tr>
                 <tr>
                     <td>Encryption algorithm</td>
-                    <td id="encryption_algorithm"></td>
+                    <td id="encryption_algorithm_file"></td>
                   </tr>
                 <tr>
                     <td>Decryption key</td>
-                    <td id="decryption_key"></td>
+                    <td id="decryption_key_file"></td>
                   </tr>
                 <tr>
                     <td>Content reference</td>
-                    <td id="content_ref"></td>
+                    <td id="content_ref_file"></td>
                   </tr>
 
                 </tbody>
@@ -673,19 +605,19 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_ipv4"></td>
                   </tr>
                   <tr>
                     <td>Value</td>
-                    <td id="value"></td>
+                    <td id="value_ipv4"></td>
                   </tr>
                   <tr>
                     <td>Resolves to references</td>
-                    <td id="resolves_to_refs"></td>
+                    <td id="resolves_to_refs_ipv4"></td>
                   </tr>
                   <tr>
                     <td>Belongs to references</td>
-                    <td id="belongs_to_refs"></td>
+                    <td id="belongs_to_refs_ipv4"></td>
                   </tr>
                 </tbody>
               </table>
@@ -719,19 +651,19 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_ipv6"></td>
                   </tr>
                   <tr>
                     <td>Value</td>
-                    <td id="value"></td>
+                    <td id="value_ipv6"></td>
                   </tr>
                   <tr>
                     <td>Resolves to references</td>
-                    <td id="resolves_to_refs"></td>
+                    <td id="resolves_to_refs_ipv6"></td>
                   </tr>
                   <tr>
                     <td>Belongs to references</td>
-                    <td id="belongs_to_refs"></td>
+                    <td id="belongs_to_refs_ipv6"></td>
                   </tr>
                 </tbody>
               </table>
@@ -765,11 +697,11 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_mac"></td>
                   </tr>
                   <tr>
                     <td>Value</td>
-                    <td id="value"></td>
+                    <td id="value_mac"></td>
                   </tr>
 
                 </tbody>
@@ -804,79 +736,79 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_nettraffic"></td>
                   </tr>
                   <tr>
                     <td>Extensions</td>
-                    <td id="extensions"></td>
+                    <td id="extensions_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Start</td>
-                    <td id="start"></td>
+                    <td id="start_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>End</td>
-                    <td id="end"></td>
+                    <td id="end_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Is active</td>
-                    <td id="is_active"></td>
+                    <td id="is_active_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Source reference</td>
-                    <td id="src_ref"></td>
+                    <td id="src_ref_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Destination reference</td>
-                    <td id="dst_ref"></td>
+                    <td id="dst_ref_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Source port</td>
-                    <td id="src_port"></td>
+                    <td id="src_port_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Destination port</td>
-                    <td id="dst_port"></td>
+                    <td id="dst_port_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Protocols</td>
-                    <td id="protocols"></td>
+                    <td id="protocols_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Source byte count</td>
-                    <td id="src_byte_count"></td>
+                    <td id="src_byte_count_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Destination byte count</td>
-                    <td id="dst_byte_count"></td>
+                    <td id="dst_byte_count_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Source packets</td>
-                    <td id="src_packets"></td>
+                    <td id="src_packets_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Destination packets</td>
-                    <td id="dst_packets"></td>
+                    <td id="dst_packets_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Ipfix</td>
-                    <td id="ipfix"></td>
+                    <td id="ipfix_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Source payload reference</td>
-                    <td id="src_payload_ref"></td>
+                    <td id="src_payload_ref_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Destination payload reference</td>
-                    <td id="dst_payload_ref"></td>
+                    <td id="dst_payload_ref_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Encapsulated references</td>
-                    <td id="encapsulated_refs"></td>
+                    <td id="encapsulated_refs_nettraffic"></td>
                   </tr>
                 <tr>
                     <td>Encapsulated by reference</td>
-                    <td id="encapsulated_by_ref"></td>
+                    <td id="encapsulated_by_ref_nettraffic"></td>
                   </tr>
                 </tbody>
               </table>
@@ -910,63 +842,63 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_process"></td>
                   </tr>
                   <tr>
                     <td>Extensions</td>
-                    <td id="extensions"></td>
+                    <td id="extensions_process"></td>
                   </tr>
                 <tr>
                     <td>Is hidden</td>
-                    <td id="is_hidden"></td>
+                    <td id="is_hidden_process"></td>
                   </tr>
                 <tr>
                     <td>PID</td>
-                    <td id="pid"></td>
+                    <td id="pid_process"></td>
                   </tr>
                 <tr>
                     <td>Name</td>
-                    <td id="name"></td>
+                    <td id="name_process"></td>
                   </tr>
                 <tr>
                     <td>Created</td>
-                    <td id="created"></td>
+                    <td id="created_process"></td>
                   </tr>
                 <tr>
                     <td>CWD</td>
-                    <td id="cwd"></td>
+                    <td id="cwd_process"></td>
                   </tr>
                 <tr>
                     <td>Arguments</td>
-                    <td id="arguments"></td>
+                    <td id="arguments_process"></td>
                   </tr>
                 <tr>
                     <td>Command line</td>
-                    <td id="command_line"></td>
+                    <td id="command_line_process"></td>
                   </tr>
                 <tr>
                     <td>Environment variables</td>
-                    <td id="environment_variables"></td>
+                    <td id="environment_variables_process"></td>
                   </tr>
                 <tr>
                     <td>Opened connection references</td>
-                    <td id="opened_connection_refs"></td>
+                    <td id="opened_connection_refs_process"></td>
                   </tr>
                 <tr>
                     <td>Creator user reference</td>
-                    <td id="creator_user_ref"></td>
+                    <td id="creator_user_ref_process"></td>
                   </tr>
                 <tr>
                     <td>Binary reference</td>
-                    <td id="binary_ref"></td>
+                    <td id="binary_ref_process"></td>
                   </tr>
                 <tr>
                     <td>Parent reference</td>
-                    <td id="parent_ref"></td>
+                    <td id="parent_ref_process"></td>
                   </tr>
                 <tr>
                     <td>Child references</td>
-                    <td id="child_refs"></td>
+                    <td id="child_refs_process"></td>
                   </tr>
                 </tbody>
               </table>
@@ -1000,27 +932,27 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_software"></td>
                   </tr>
                   <tr>
                     <td>Name</td>
-                    <td id="name"></td>
+                    <td id="name_software"></td>
                   </tr>
                 <tr>
                     <td>CPE</td>
-                    <td id="cpe"></td>
+                    <td id="cpe_software"></td>
                   </tr>
                 <tr>
                     <td>Languages</td>
-                    <td id="languages"></td>
+                    <td id="languages_software"></td>
                   </tr>
                 <tr>
                     <td>Vendor</td>
-                    <td id="vendor"></td>
+                    <td id="vendor_software"></td>
                   </tr>
                 <tr>
                     <td>Version</td>
-                    <td id="version"></td>
+                    <td id="version_software"></td>
                   </tr>
 
                 </tbody>
@@ -1055,11 +987,11 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_url"></td>
                   </tr>
                   <tr>
                     <td>Value</td>
-                    <td id="value"></td>
+                    <td id="value_url"></td>
                   </tr>
                 </tbody>
               </table>
@@ -1093,63 +1025,63 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_useracc"></td>
                   </tr>
                   <tr>
                     <td>Extensions</td>
-                    <td id="extensions"></td>
+                    <td id="extensions_useracc"></td>
                   </tr>
                 <tr>
                     <td>User Id</td>
-                    <td id="user_id"></td>
+                    <td id="user_id_useracc"></td>
                   </tr>
                 <tr>
                     <td>Account login</td>
-                    <td id="account_login"></td>
+                    <td id="account_login_useracc"></td>
                   </tr>
                 <tr>
                     <td>Account type</td>
-                    <td id="account_type"></td>
+                    <td id="account_type_useracc"></td>
                   </tr>
                 <tr>
                     <td>Display name</td>
-                    <td id="display_name"></td>
+                    <td id="display_name_useracc"></td>
                   </tr>
                   <tr>
                     <td>Is service account</td>
-                    <td id="is_service_account"></td>
+                    <td id="is_service_account_useracc"></td>
                   </tr>
                 <tr>
                     <td>Is privileged</td>
-                    <td id="is_privileged"></td>
+                    <td id="is_privileged_useracc"></td>
                   </tr>
                 <tr>
                     <td>Can escalate privileges</td>
-                    <td id="can_escalate_privs"></td>
+                    <td id="can_escalate_privs_useracc"></td>
                   </tr>
                   <tr>
                     <td>Is disabled</td>
-                    <td id="is_disabled"></td>
+                    <td id="is_disabled_useracc"></td>
                   </tr>
                 <tr>
                     <td>Account created</td>
-                    <td id="account_created"></td>
+                    <td id="account_created_useracc"></td>
                   </tr>
                 <tr>
                     <td>Account expires</td>
-                    <td id="account_expires"></td>
+                    <td id="account_expires_useracc"></td>
                   </tr>
                 <tr>
                     <td>Password last changed</td>
-                    <td id="password_last_changed"></td>
+                    <td id="password_last_changed_useracc"></td>
                   </tr>
                 <tr>
                     <td>Account first login</td>
-                    <td id="account_first_login"></td>
+                    <td id="account_first_login_useracc"></td>
                   </tr>
                 <tr>
                     <td>Account last login</td>
-                    <td id="account_last_login"></td>
+                    <td id="account_last_login_useracc"></td>
                   </tr>
 
 
@@ -1185,23 +1117,23 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_winreg"></td>
                   </tr>
                   <tr>
                     <td>Key</td>
-                    <td id="key"></td>
+                    <td id="key_winreg"></td>
                   </tr>
                 <tr>
                     <td>Modified</td>
-                    <td id="modified"></td>
+                    <td id="modified_winreg"></td>
                   </tr>
                 <tr>
                     <td>Creator user reference</td>
-                    <td id="creator_user_ref"></td>
+                    <td id="creator_user_ref_winreg"></td>
                   </tr>
                 <tr>
                     <td>Number of subkeys</td>
-                    <td id="number_of_subkeys"></td>
+                    <td id="number_of_subkeys_winreg"></td>
                   </tr>
 
                 </tbody>
@@ -1236,59 +1168,59 @@
                 <tbody>
                   <tr>
                     <td>Sno</td>
-                    <td id="sno"></td>
+                    <td id="sno_x509"></td>
                   </tr>
                   <tr>
                     <td>Is self signed</td>
-                    <td id="is_self_signed"></td>
+                    <td id="is_self_signed_x509"></td>
                   </tr>
                 <tr>
                     <td>Hash type</td>
-                    <td id="hash_type"></td>
+                    <td id="hash_type_x509"></td>
                   </tr>
                 <tr>
                     <td>Hash value</td>
-                    <td id="hash_value"></td>
+                    <td id="hash_value_x509"></td>
                   </tr>
                 <tr>
                     <td>Version</td>
-                    <td id="version"></td>
+                    <td id="version_x509"></td>
                   </tr>
                 <tr>
                     <td>Serial number</td>
-                    <td id="serial_number"></td>
+                    <td id="serial_number_x509"></td>
                   </tr>
                 <tr>
                     <td>Signature algorithm</td>
-                    <td id="signature_algorithm"></td>
+                    <td id="signature_algorithm_x509"></td>
                   </tr>
                 <tr>
                     <td>Issuer</td>
-                    <td id="issuer"></td>
+                    <td id="issuer_x509"></td>
                   </tr>
                 <tr>
                     <td>Validity not before</td>
-                    <td id="validity_not_before"></td>
+                    <td id="validity_not_before_x509"></td>
                   </tr>
                 <tr>
                     <td>Validity not after</td>
-                    <td id="validity_not_after"></td>
+                    <td id="validity_not_after_x509"></td>
                   </tr>
                 <tr>
                     <td>Subject</td>
-                    <td id="subject"></td>
+                    <td id="subject_x509"></td>
                   </tr>
                 <tr>
                     <td>Subject public key algorithm</td>
-                    <td id="subject_public_key_algorithm"></td>
+                    <td id="subject_public_key_algorithm_x509"></td>
                   </tr>
                 <tr>
                     <td>Subject public key modulus</td>
-                    <td id="subject_public_key_modulus"></td>
+                    <td id="subject_public_key_modulus_x509"></td>
                   </tr>
                 <tr>
                     <td>Subject public key exponent</td>
-                    <td id="subject_public_key_exponent"></td>
+                    <td id="subject_public_key_exponent_x509"></td>
                   </tr>
 
 

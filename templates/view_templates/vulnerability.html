@@ -58,6 +58,7 @@
             </div>
         </div>
         <div class="col-lg-6">
+            {% if publishedflag != 1 %}
             <div class="alert alert-success">
             <form method="POST" action="{{ url_for('generate_stix2') }}">
                 <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
@@ -66,6 +67,7 @@
               <button type="submit" class="btn btn-primary">Click here</button>
             </form>
             </div>
+            {% endif %}
         </div>
         <div class="col-lg-6">
             <div class="card">
