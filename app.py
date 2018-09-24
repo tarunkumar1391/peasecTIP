@@ -8557,11 +8557,52 @@ def create_package():
         if request.method== 'POST':
             idlist = request.form['package']
             finallist = []
+            main={
+                "type": "package",
+                "schema_version": "5.0"
+            }
             packageobjs = json.loads(idlist)
+            maecobjlist = []
             for dat in packageobjs:
-                type = dat[reftype]
-                maecid = dat[refmaec]
-# to be contd
+                type = dat['reftype']
+                maecid = dat['refmaec']
+
+                if type == 'behavior':
+                    behavior_path = "/home/tarun/Documents/maec5_store/behavior/"
+                    filename = maecid+'.json'
+                    file = behavior_path + filename
+                    with open(file, 'r') as f:
+                        file_content = f.read()
+                    maecobjlist.append(json.loads(file_content))
+
+            id_gen = uuid.uuid4()
+            package_id = "package--" + str(id_gen)
+            main["id"] = package_id
+
+            # adding maec objects to main dict
+            main["maec_objects"] = maecobjlist
+
+            #adding everything to final list
+            finallist.append(main)
+            output = json.dumps(finallist, sort_keys = True, indent = 4)
+            response = json.loads(output)
+            # save a record in database
+            timestamp = datetime.now()
+            type = "package"
+
+            cur = mysql.connection.cursor()
+            cur.execute(
+                '''INSERT INTO `package` (package_id, package_data, created_by) values (%s, %s, %s)''',
+                (package_id, output, g.user))
+            mysql.connection.commit()
+            print ('A package data has been saved to database')
+            # final return point
+            return redirect(url_for('home'))
+
+
+
+
+
 
     else:
         return redirect(url_for('index'))
