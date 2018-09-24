@@ -8547,6 +8547,39 @@ def create_bundle():
     else:
         return redirect(url_for('index'))
 
+# view package content
+
+
+# create package content
+@app.route('/create_package', methods=['POST'])
+def create_package():
+    if g.user:
+        if request.method== 'POST':
+            idlist = request.form['package']
+            finallist = []
+            packageobjs = json.loads(idlist)
+            for dat in packageobjs:
+                type = dat[reftype]
+                maecid = dat[refmaec]
+# to be contd
+
+    else:
+        return redirect(url_for('index'))
+
+# view package content
+@app.route('/view_package', methods=['POST'])
+def view_package():
+    if g.user:
+        if request.method == 'POST':
+            type = request.json['type']
+            packageid = request.json['packageid']
+            cur = mysql.connection.cursor()
+            cur.execute("select package_data from package where package_id=%s AND created_by=%s", (packageid, g.user))
+            result = cur.fetchone()
+            output = json.dumps(result[0], sort_keys=True, indent=4)
+            return output
+    else:
+        return redirect(url_for('index'))
 
 # for DASHBOARD - STIX
 @app.route('/publishedfeeds', methods=['POST'])

@@ -591,6 +591,25 @@ $('#bundle').change(function(){
         });
 
     });
+     /* package drop down */
+$('#package').change(function(){
+    finalresult = [];
+    //var id = JSON.stringify($(this).find(":selected").attr('objid'));
+    //var type = JSON.stringify($(this).find(":selected").attr('objtype'));
+    var option = $(this).find('option:selected');
+    option.each(function () {
+
+        var type = $(this).attr('reftype');
+        var maecid = $(this).attr('refmaec');
+        item = {};
+        item["reftype"] = type;
+        item["refmaec"] = maecid;
+        finalresult.push(item);
+
+    });
+    $('#final_package').val(JSON.stringify(finalresult));
+ });
+
     /* create package object*/
     $('#create_package').click(function() {
         $.ajax({
@@ -650,6 +669,39 @@ $('#bundle').change(function(){
 
     }));
 
+     /* view package content */
+    $(document).on('click','#view_packagedata',(function() {
+        var tbl_row = $(this).closest('tr');
+		var row_id = tbl_row.attr('row_id');
+        packageid = tbl_row.find('#package_id').text();
+        arr = {};
+        arr['type']="package";
+        arr['packageid']=packageid;
+        var sendData = JSON.stringify(arr, null, 2)
+        $.ajax({
+            url: '/view_package',
+            data: sendData,
+            type: 'POST',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: 'json',
+            success: function(response) {
+               // $.getJSON("view_stixcontent", function (data) {
+                 //   $('#display_publishedcontent').html(data);
+                  //  console.log(data);
+                //})
+                var result = JSON.stringify(response, null,"\t")
+                $('#display_packagecontent').addClass('alert-success').removeClass('alert-danger').text(response);
+                console.log(result);
+            },
+            error: function(error) {
+                var result = JSON.stringify(error.responseText, null,"\t")
+                $('#display_packagecontent').addClass('alert-danger').removeClass('alert-success').text(result);
+                console.log(error);
+
+            }
+        });
+
+    }));
 
     /* fetch bundle data */
     $(document).on('change','#bundle_dropdown',(function() {
