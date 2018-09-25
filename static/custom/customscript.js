@@ -602,12 +602,13 @@ $('#package').change(function(){
     //var type = JSON.stringify($(this).find(":selected").attr('objtype'));
     var option = $(this).find('option:selected');
     option.each(function () {
-
+        var id = $(this).attr('refid');
         var type = $(this).attr('reftype');
         var maecid = $(this).attr('refmaec');
         item = {};
+        item["refid"] = id;
         item["reftype"] = type;
-        item["refmaec"] = maecid;
+        item["refmaecid"] = maecid;
         finalresult.push(item);
 
     });

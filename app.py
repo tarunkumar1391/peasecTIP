@@ -1121,7 +1121,7 @@ def view_additionalinfo(objtype, id):
             obsdata_resp = json.loads(output2)
             return render_template(url, main=resp_main, obsdata=obsdata_resp,
                                    entityref_flag=resp_main['entityrefs_flag'],
-                                   observableref_flag=resp_main['observablerefs_flag'])
+                                   observableref_flag=resp_main['observablerefs_flag'],publishedflag=row_main[10])
         elif objtype == "malware-action":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -1751,7 +1751,7 @@ def view_additionalinfo(objtype, id):
             output_resp = json.loads(output3)
 
             return render_template(url, main=resp_main, apidata=resp_apicall, inputrefs_resp=input_resp,
-                                   outputrefs_resp=output_resp)
+                                   outputrefs_resp=output_resp, publishedflag=row_main[10])
         elif objtype == "malware-family":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -1845,7 +1845,7 @@ def view_additionalinfo(objtype, id):
             resp_extref = json.loads(output5)
 
             return render_template(url, main=resp_main, fielddata=resp_fielddata, capabilitydata=resp_capability,
-                                   commoncodedata=resp_artifact, extrefdata=resp_extref)
+                                   commoncodedata=resp_artifact, extrefdata=resp_extref,publishedflag=row_main[11])
         elif objtype == "malware-instance":
             url = 'view_templates/' + objtype + '.html'
             obj_id = id
@@ -2093,7 +2093,7 @@ def view_additionalinfo(objtype, id):
                                    processtreenodedata=resp_processtreenode,
                                    staticfeaturesdata=resp_staticfeatures, binaryobfsdata=resp_binobfs,
                                    malwaredevenvdata=resp_maldevenv,
-                                   analysismetadata=resp_analysismetadata, signaturemetadata=resp_sigmetadata)
+                                   analysismetadata=resp_analysismetadata, signaturemetadata=resp_sigmetadata,publishedflag=row_main[10])
 
     return redirect(url_for('index'))
 
@@ -8563,9 +8563,12 @@ def create_package():
             }
             packageobjs = json.loads(idlist)
             maecobjlist = []
+            obsrefsfinal = []
+            observableobjslist = {}
             for dat in packageobjs:
+                id = dat['refid']
                 type = dat['reftype']
-                maecid = dat['refmaec']
+                maecid = dat['refmaecid']
 
                 if type == 'behavior':
                     behavior_path = "/home/tarun/Documents/maec5_store/behavior/"
@@ -8574,18 +8577,990 @@ def create_package():
                     with open(file, 'r') as f:
                         file_content = f.read()
                     maecobjlist.append(json.loads(file_content))
+                if type == 'collection':
+                    collection_path = "/home/tarun/Documents/maec5_store/collection/"
+                    filename = maecid+'.json'
+                    file = collection_path + filename
+                    with open(file, 'r') as f:
+                        file_content = f.read()
+                    maecobjlist.append(json.loads(file_content))
+
+                    # check for entity refs
+                    cur= mysql.connection.cursor()
+                    cur.execute("select * from collection where sno=%s and maec_id=%s and created_by=%s",(id, maecid,g.user))
+                    result = cur.fetchone()
+                    if result[8] == 1:
+                        entityrefs_val = tuple(result[5].split(','))
+                        for dat in entityrefs_val:
+                            val = dat.split('--')
+                            dattype = val[0]
+                            if dattype == 'behavior':
+                                cur= mysql.connection.cursor()
+                                cur.execute("select * from behavior where maec_id=%s and created_by=%s",(dat, g.user))
+                                res = cur.fetchone()
+                                if res[10] == '1':
+                                    behavior_path = "/home/tarun/Documents/maec5_store/behavior/"
+                                    filename = maecid + '.json'
+                                    file = behavior_path + filename
+                                    with open(file, 'r') as f:
+                                        file_content = f.read()
+                                    maecobjlist.append(json.loads(file_content))
+                            if dattype == 'malware-action':
+                                cur= mysql.connection.cursor()
+                                cur.execute("select * from `malware-action` where maec_id=%s and created_by=%s",(dat, g.user))
+                                res = cur.fetchone()
+                                if res[10] == '1':
+                                    malaction_path = "/home/tarun/Documents/maec5_store/malware-action/"
+                                    filename = maecid + '.json'
+                                    file = malaction_path + filename
+                                    with open(file, 'r') as f:
+                                        file_content = f.read()
+                                    maecobjlist.append(json.loads(file_content))
+                            if dattype == 'malware-family':
+                                cur= mysql.connection.cursor()
+                                cur.execute("select * from `malware-family` where maec_id=%s and created_by=%s",(dat, g.user))
+                                res = cur.fetchone()
+                                if res[11] == '1':
+                                    malfamily_path = "/home/tarun/Documents/maec5_store/malware-family/"
+                                    filename = maecid + '.json'
+                                    file = malfamily_path + filename
+                                    with open(file, 'r') as f:
+                                        file_content = f.read()
+                                    maecobjlist.append(json.loads(file_content))
+                            if dattype == 'malware-instance':
+                                cur= mysql.connection.cursor()
+                                cur.execute("select * from `malware-instance` where maec_id=%s and created_by=%s",(dat, g.user))
+                                res = cur.fetchone()
+                                if res[10] == '1':
+                                    malinstance_path = "/home/tarun/Documents/maec5_store/malware-instance/"
+                                    filename = maecid + '.json'
+                                    file = malinstance_path + filename
+                                    with open(file, 'r') as f:
+                                        file_content = f.read()
+                                    maecobjlist.append(json.loads(file_content))
+                    # check for obserable refs
+                    observablerefs= result[9]
+                    if observablerefs == 1:
+                        print ("entered into obs refs")
+                        # artifact
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_artifact = cur.fetchone()
+
+                        if obs_artifact is not None:
+                            main_artifact ={
+                                "type":"artifact"
+                            }
+                            if obs_artifact[5] is not None:
+                                main_artifact["mime_type"] = obs_artifact[5]
+                            if obs_artifact[6] is not None:
+                                main_artifact["payload_bin"] = obs_artifact[6]
+                            if obs_artifact[7] is not None:
+                                main_artifact["url"] = obs_artifact[7]
+                            print main_artifact
+                            obsrefsfinal.append({str(obs_artifact[0]):main_artifact})
+                        # autonomous system
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_as = cur.fetchone()
+                        if obs_as is not None:
+                            main_as ={
+                                "type":"autonomous-system"
+                            }
+                            if obs_as[5] is not None:
+                                main_as["number"] = obs_as[5]
+                            if obs_as[6] is not None:
+                                main_as["name"] = obs_as[6]
+                            if obs_as[7] is not None:
+                                main_as["rir"] = obs_as[7]
+
+                            obsrefsfinal.append({str(obs_as[0]): main_as})
+                        # directory
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `directory` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_dir = cur.fetchone()
+                        if obs_dir is not None:
+                            main_dir ={
+                                "type":"directory"
+                            }
+                            if obs_dir[5] is not None:
+                                main_dir["path"] = obs_dir[5]
+                            if obs_dir[6] is not None:
+                                main_dir["path_enc"] = obs_dir[6]
+
+                            obsrefsfinal.append({str(obs_dir[0]): main_dir})
+                        # domain name
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `domain-name` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_dn = cur.fetchone()
+                        if obs_dn is not None:
+                            main_dn ={
+                                "type":"domain-name"
+                            }
+                            if obs_dn[5] is not None:
+                                main_dn["value"] = obs_dn[5]
+
+                            obsrefsfinal.append({str(obs_dn[0]): main_dn})
+                        # email addr
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `email-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_emaddr = cur.fetchone()
+                        if obs_emaddr is not None:
+                            main_emaddr ={
+                                "type":"email-addr"
+                            }
+                            if obs_emaddr[5] is not None:
+                                main_emaddr["value"] = obs_emaddr[5]
+                            if obs_emaddr[6] is not None:
+                                main_emaddr["display_name"] = obs_emaddr[6]
+
+                            obsrefsfinal.append({str(obs_emaddr[0]): main_emaddr})
+                        # email message
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `email-message` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_emmsg = cur.fetchone()
+                        if obs_emmsg is not None:
+                            main_emmsg ={
+                                "type":"email-message"
+                            }
+                            if obs_emmsg[5] is not None:
+                                main_emmsg["is_multipart"] = obs_emmsg[5]
+                            if obs_emmsg[6] is not None:
+                                main_emmsg["date"] = obs_emmsg[6].strftime('%Y-%m-%dT%H:%M')
+
+                            obsrefsfinal.append({str(obs_emmsg[0]): main_emmsg})
+                        # file
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `file` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_file = cur.fetchone()
+                        if obs_file is not None:
+                            main_file ={
+                                "type":"file"
+                            }
+                            if obs_file[5] is not None:
+                                main_file["extensions"] = obs_file[5]
+                            if obs_file[7] is not None:
+                                main_file["size"] = obs_file[7]
+                            if obs_file[8] is not None:
+                                main_file["name"] = obs_file[8]
+                            obsrefsfinal.append({str(obs_file[0]): main_file})
+                        # ipv4 addr
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_ipv4 = cur.fetchone()
+                        if obs_ipv4 is not None:
+                            main_ipv4 ={
+                                "type":"ipv4-addr"
+                            }
+                            if obs_ipv4[5] is not None:
+                                main_ipv4["value"] = obs_ipv4[5]
+
+
+                            obsrefsfinal.append({str(obs_ipv4[0]): main_ipv4})
+
+                        # ipv6 addr
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_ipv6 = cur.fetchone()
+                        if obs_ipv6 is not None:
+                            main_ipv6 ={
+                                "type":"ipv6-addr"
+                            }
+                            if obs_ipv6[5] is not None:
+                                main_ipv6["value"] = obs_ipv6[5]
+
+                            obsrefsfinal.append({str(obs_ipv6[0]): main_ipv6})
+
+                        # mac addr
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_mac = cur.fetchone()
+                        if obs_mac is not None:
+                            main_mac ={
+                                "type":"mac-addr"
+                            }
+                            if obs_mac[5] is not None:
+                                main_mac["value"] = obs_mac[5]
+
+                            obsrefsfinal.append({str(obs_mac[0]): main_mac})
+                        # network traffic
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_nettraffic = cur.fetchone()
+                        if obs_nettraffic is not None:
+                            main_nettraffic ={
+                                "type":"network-traffic"
+                            }
+                            if obs_nettraffic[5] is not None:
+                                main_nettraffic["extensions"] = obs_nettraffic[5]
+                            if obs_nettraffic[11] is not None:
+                                main_nettraffic["src_port"] = obs_nettraffic[11]
+                            if obs_nettraffic[12] is not None:
+                                main_nettraffic["src_port"] = obs_nettraffic[12]
+
+                            obsrefsfinal.append({str(obs_nettraffic[0]): main_nettraffic})
+                        # process
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `process` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_process = cur.fetchone()
+                        if obs_process is not None:
+                            main_process ={
+                                "type":"process"
+                            }
+                            if obs_process[5] is not None:
+                                main_process["extensions"] = obs_process[5]
+                            if obs_process[7] is not None:
+                                main_process["pid"] = obs_process[7]
+                            if obs_process[8] is not None:
+                                main_process["name"] = obs_process[8]
+
+                            obsrefsfinal.append({str(obs_process[0]): main_process})
+                        # software
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `software` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_software = cur.fetchone()
+                        if obs_software is not None:
+                            main_soft ={
+                                "type":"software"
+                            }
+                            if obs_software[5] is not None:
+                                main_soft["name"] = obs_software[5]
+                            if obs_software[6] is not None:
+                                main_soft["cpe"] = obs_software[6]
+                            if obs_software[7] is not None:
+                                main_soft["languages"] = obs_software[7]
+                            if obs_software[8] is not None:
+                                main_soft["vendor"] = obs_software[8]
+
+                            obsrefsfinal.append({str(obs_software[0]): main_soft})
+                        # url
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `url` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_url = cur.fetchone()
+                        if obs_url is not None:
+                            main_url ={
+                                "type":"url"
+                            }
+                            if obs_url[5] is not None:
+                                main_url["value"] = obs_url[5]
+                            obsrefsfinal.append({str(obs_url[0]): main_url})
+                        # user-account
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `user-account` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_useracc = cur.fetchone()
+                        if obs_useracc is not None:
+                            main_useracc ={
+                                "type":"user-account"
+                            }
+                            if obs_useracc[5] is not None:
+                                main_useracc["extensions"] = obs_useracc[5]
+                            if obs_useracc[6] is not None:
+                                main_useracc["user_id"] = obs_useracc[6]
+                            if obs_useracc[7] is not None:
+                                main_useracc["account_login"] = obs_useracc[7]
+                            if obs_useracc[9] is not None:
+                                main_useracc["display_name"] = obs_useracc[9]
+                            obsrefsfinal.append({str(obs_useracc[0]): main_useracc})
+                        # windows registry key
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_winregkey = cur.fetchone()
+                        if obs_winregkey is not None:
+                            main_winreg ={
+                                "type":"windows-registry-key"
+                            }
+                            if obs_winregkey[5] is not None:
+                                main_winreg["key"] = obs_winregkey[5]
+                            if obs_winregkey[8] is not None:
+                                main_winreg["number_of_subkeys"] = obs_winregkey[8]
+
+                            obsrefsfinal.append({str(obs_winregkey[0]): main_winreg})
+                        # x509 certificate
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND created_by=%s ",
+                                    (id, type, g.user))
+                        obs_x509 = cur.fetchone()
+                        if obs_x509 is not None:
+                            main_x509 ={
+                                "type":"x509-certificate"
+                            }
+                            if obs_x509[5] is not None:
+                                main_x509["is_self_signed"] = obs_x509[5]
+                            if obs_x509[8] is not None:
+                                main_x509["version"] = obs_x509[8]
+                            if obs_x509[9] is not None:
+                                main_x509["serial_number"] = obs_x509[9]
+                            if obs_x509[10] is not None:
+                                main_x509["signature_algorithm"] = obs_x509[10]
+                            if obs_x509[11] is not None:
+                                main_x509["issuer"] = obs_x509[11]
+                            if obs_x509[14] is not None:
+                                main_x509["subject"] = obs_x509[14]
+
+                            obsrefsfinal.append({str(obs_x509[0]): main_x509})
+                if type == 'malware-action':
+                    malaction_path = "/home/tarun/Documents/maec5_store/malware-action/"
+                    filename = maecid + '.json'
+                    file = malaction_path + filename
+                    with open(file, 'r') as f:
+                        file_content = f.read()
+                    maecobjlist.append(json.loads(file_content))
+
+                    # check for observable refs
+                    cur = mysql.connection.cursor()
+                    cur.execute("select * from `malware-action` where  sno=%s and maec_id=%s and created_by=%s", (id, maecid, g.user))
+                    result = cur.fetchone()
+                    # check for input refs
+                    inputrefscheck = result[7]
+                    if inputrefscheck is not None:
+                        ref_type = 'input'
+                        # artifact
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                    (id, type,ref_type, g.user))
+                        obs_artifact = cur.fetchone()
+                        if obs_artifact is not None:
+                            main_artifact = {
+                                "type": "artifact"
+                            }
+                            if obs_artifact[5] is not None:
+                                main_artifact["mime_type"] = obs_artifact[5]
+                            if obs_artifact[6] is not None:
+                                main_artifact["payload_bin"] = obs_artifact[6]
+                            if obs_artifact[7] is not None:
+                                main_artifact["url"] = obs_artifact[7]
+                            print main_artifact
+                            obsrefsfinal.append({str(obs_artifact[0]): main_artifact})
+
+                        # autonomous system
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_as = cur.fetchone()
+                        if obs_as is not None:
+                            main_as = {
+                                "type": "autonomous-system"
+                            }
+                            if obs_as[5] is not None:
+                                main_as["number"] = obs_as[5]
+                            if obs_as[6] is not None:
+                                main_as["name"] = obs_as[6]
+                            if obs_as[7] is not None:
+                                main_as["rir"] = obs_as[7]
+
+                            obsrefsfinal.append({str(obs_as[0]): main_as})
+                        # directory
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `directory` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND  created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_dir = cur.fetchone()
+                        if obs_dir is not None:
+                            main_dir = {
+                                "type": "directory"
+                            }
+                            if obs_dir[5] is not None:
+                                main_dir["path"] = obs_dir[5]
+                            if obs_dir[6] is not None:
+                                main_dir["path_enc"] = obs_dir[6]
+
+                            obsrefsfinal.append({str(obs_dir[0]): main_dir})
+                        # domain name
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `domain-name` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_dn = cur.fetchone()
+                        if obs_dn is not None:
+                            main_dn = {
+                                "type": "domain-name"
+                            }
+                            if obs_dn[5] is not None:
+                                main_dn["value"] = obs_dn[5]
+
+                            obsrefsfinal.append({str(obs_dn[0]): main_dn})
+
+                        # email addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `email-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_emaddr = cur.fetchone()
+                        if obs_emaddr is not None:
+                            main_emaddr = {
+                                "type": "email-addr"
+                            }
+                            if obs_emaddr[5] is not None:
+                                main_emaddr["value"] = obs_emaddr[5]
+                            if obs_emaddr[6] is not None:
+                                main_emaddr["display_name"] = obs_emaddr[6]
+
+                            obsrefsfinal.append({str(obs_emaddr[0]): main_emaddr})
+
+                        # email message
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `email-message` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_emmsg = cur.fetchone()
+                        if obs_emmsg is not None:
+                            main_emmsg = {
+                                "type": "email-message"
+                            }
+                            if obs_emmsg[5] is not None:
+                                main_emmsg["is_multipart"] = obs_emmsg[5]
+                            if obs_emmsg[6] is not None:
+                                main_emmsg["date"] = obs_emmsg[6].strftime('%Y-%m-%dT%H:%M')
+
+                            obsrefsfinal.append({str(obs_emmsg[0]): main_emmsg})
+
+                        # file
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `file` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_file = cur.fetchone()
+                        if obs_file is not None:
+                            main_file = {
+                                "type": "file"
+                            }
+                            if obs_file[5] is not None:
+                                main_file["extensions"] = obs_file[5]
+                            if obs_file[7] is not None:
+                                main_file["size"] = obs_file[7]
+                            if obs_file[8] is not None:
+                                main_file["name"] = obs_file[8]
+                            obsrefsfinal.append({str(obs_file[0]): main_file})
+
+                        # ipv4 addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_ipv4 = cur.fetchone()
+                        if obs_ipv4 is not None:
+                            main_ipv4 = {
+                                "type": "ipv4-addr"
+                            }
+                            if obs_ipv4[5] is not None:
+                                main_ipv4["value"] = obs_ipv4[5]
+
+                            obsrefsfinal.append({str(obs_ipv4[0]): main_ipv4})
+
+                        # ipv6 addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_ipv6 = cur.fetchone()
+                        if obs_ipv6 is not None:
+                            main_ipv6 = {
+                                "type": "ipv6-addr"
+                            }
+                            if obs_ipv6[5] is not None:
+                                main_ipv6["value"] = obs_ipv6[5]
+
+                            obsrefsfinal.append({str(obs_ipv6[0]): main_ipv6})
+
+                        # mac addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_mac = cur.fetchone()
+                        if obs_mac is not None:
+                            main_mac = {
+                                "type": "mac-addr"
+                            }
+                            if obs_mac[5] is not None:
+                                main_mac["value"] = obs_mac[5]
+
+                            obsrefsfinal.append({str(obs_mac[0]): main_mac})
+                        # network traffic
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_nettraffic = cur.fetchone()
+                        if obs_nettraffic is not None:
+                            main_nettraffic = {
+                                "type": "network-traffic"
+                            }
+                            if obs_nettraffic[5] is not None:
+                                main_nettraffic["extensions"] = obs_nettraffic[5]
+                            if obs_nettraffic[11] is not None:
+                                main_nettraffic["src_port"] = obs_nettraffic[11]
+                            if obs_nettraffic[12] is not None:
+                                main_nettraffic["src_port"] = obs_nettraffic[12]
+
+                            obsrefsfinal.append({str(obs_nettraffic[0]): main_nettraffic})
+                        # process
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `process` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_process = cur.fetchone()
+                        if obs_process is not None:
+                            main_process = {
+                                "type": "process"
+                            }
+                            if obs_process[5] is not None:
+                                main_process["extensions"] = obs_process[5]
+                            if obs_process[7] is not None:
+                                main_process["pid"] = obs_process[7]
+                            if obs_process[8] is not None:
+                                main_process["name"] = obs_process[8]
+
+                            obsrefsfinal.append({str(obs_process[0]): main_process})
+                        # software
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `software` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_software = cur.fetchone()
+                        if obs_software is not None:
+                            main_soft = {
+                                "type": "software"
+                            }
+                            if obs_software[5] is not None:
+                                main_soft["name"] = obs_software[5]
+                            if obs_software[6] is not None:
+                                main_soft["cpe"] = obs_software[6]
+                            if obs_software[7] is not None:
+                                main_soft["languages"] = obs_software[7]
+                            if obs_software[8] is not None:
+                                main_soft["vendor"] = obs_software[8]
+
+                            obsrefsfinal.append({str(obs_software[0]): main_soft})
+                        # url
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `url` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_url = cur.fetchone()
+                        if obs_url is not None:
+                            main_url = {
+                                "type": "url"
+                            }
+                            if obs_url[5] is not None:
+                                main_url["value"] = obs_url[5]
+                            obsrefsfinal.append({str(obs_url[0]): main_url})
+                        # user-account
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `user-account` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_useracc = cur.fetchone()
+                        if obs_useracc is not None:
+                            main_useracc = {
+                                "type": "user-account"
+                            }
+                            if obs_useracc[5] is not None:
+                                main_useracc["extensions"] = obs_useracc[5]
+                            if obs_useracc[6] is not None:
+                                main_useracc["user_id"] = obs_useracc[6]
+                            if obs_useracc[7] is not None:
+                                main_useracc["account_login"] = obs_useracc[7]
+                            if obs_useracc[9] is not None:
+                                main_useracc["display_name"] = obs_useracc[9]
+                            obsrefsfinal.append({str(obs_useracc[0]): main_useracc})
+                        # windows registry key
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_winregkey = cur.fetchone()
+                        if obs_winregkey is not None:
+                            main_winreg = {
+                                "type": "windows-registry-key"
+                            }
+                            if obs_winregkey[5] is not None:
+                                main_winreg["key"] = obs_winregkey[5]
+                            if obs_winregkey[8] is not None:
+                                main_winreg["number_of_subkeys"] = obs_winregkey[8]
+
+                            obsrefsfinal.append({str(obs_winregkey[0]): main_winreg})
+                        # x509 certificate
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_x509 = cur.fetchone()
+                        if obs_x509 is not None:
+                            main_x509 = {
+                                "type": "x509-certificate"
+                            }
+                            if obs_x509[5] is not None:
+                                main_x509["is_self_signed"] = obs_x509[5]
+                            if obs_x509[8] is not None:
+                                main_x509["version"] = obs_x509[8]
+                            if obs_x509[9] is not None:
+                                main_x509["serial_number"] = obs_x509[9]
+                            if obs_x509[10] is not None:
+                                main_x509["signature_algorithm"] = obs_x509[10]
+                            if obs_x509[11] is not None:
+                                main_x509["issuer"] = obs_x509[11]
+                            if obs_x509[14] is not None:
+                                main_x509["subject"] = obs_x509[14]
+
+                            obsrefsfinal.append({str(obs_x509[0]): main_x509})
+
+
+                    #check for output refs
+                    outputrefscheck = result[8]
+                    if outputrefscheck is not None:
+                        ref_type = 'output'
+                        # artifact
+                        cur = mysql.connection.cursor()
+                        cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                    (id, type,ref_type, g.user))
+                        obs_artifact = cur.fetchone()
+                        if obs_artifact is not None:
+                            main_artifact = {
+                                "type": "artifact"
+                            }
+                            if obs_artifact[5] is not None:
+                                main_artifact["mime_type"] = obs_artifact[5]
+                            if obs_artifact[6] is not None:
+                                main_artifact["payload_bin"] = obs_artifact[6]
+                            if obs_artifact[7] is not None:
+                                main_artifact["url"] = obs_artifact[7]
+                            print main_artifact
+                            obsrefsfinal.append({str(obs_artifact[0]): main_artifact})
+
+                        # autonomous system
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_as = cur.fetchone()
+                        if obs_as is not None:
+                            main_as = {
+                                "type": "autonomous-system"
+                            }
+                            if obs_as[5] is not None:
+                                main_as["number"] = obs_as[5]
+                            if obs_as[6] is not None:
+                                main_as["name"] = obs_as[6]
+                            if obs_as[7] is not None:
+                                main_as["rir"] = obs_as[7]
+
+                            obsrefsfinal.append({str(obs_as[0]): main_as})
+                        # directory
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `directory` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND  created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_dir = cur.fetchone()
+                        if obs_dir is not None:
+                            main_dir = {
+                                "type": "directory"
+                            }
+                            if obs_dir[5] is not None:
+                                main_dir["path"] = obs_dir[5]
+                            if obs_dir[6] is not None:
+                                main_dir["path_enc"] = obs_dir[6]
+
+                            obsrefsfinal.append({str(obs_dir[0]): main_dir})
+                        # domain name
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `domain-name` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_dn = cur.fetchone()
+                        if obs_dn is not None:
+                            main_dn = {
+                                "type": "domain-name"
+                            }
+                            if obs_dn[5] is not None:
+                                main_dn["value"] = obs_dn[5]
+
+                            obsrefsfinal.append({str(obs_dn[0]): main_dn})
+
+                        # email addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `email-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_emaddr = cur.fetchone()
+                        if obs_emaddr is not None:
+                            main_emaddr = {
+                                "type": "email-addr"
+                            }
+                            if obs_emaddr[5] is not None:
+                                main_emaddr["value"] = obs_emaddr[5]
+                            if obs_emaddr[6] is not None:
+                                main_emaddr["display_name"] = obs_emaddr[6]
+
+                            obsrefsfinal.append({str(obs_emaddr[0]): main_emaddr})
+
+                        # email message
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `email-message` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_emmsg = cur.fetchone()
+                        if obs_emmsg is not None:
+                            main_emmsg = {
+                                "type": "email-message"
+                            }
+                            if obs_emmsg[5] is not None:
+                                main_emmsg["is_multipart"] = obs_emmsg[5]
+                            if obs_emmsg[6] is not None:
+                                main_emmsg["date"] = obs_emmsg[6].strftime('%Y-%m-%dT%H:%M')
+
+                            obsrefsfinal.append({str(obs_emmsg[0]): main_emmsg})
+
+                        # file
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `file` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_file = cur.fetchone()
+                        if obs_file is not None:
+                            main_file = {
+                                "type": "file"
+                            }
+                            if obs_file[5] is not None:
+                                main_file["extensions"] = obs_file[5]
+                            if obs_file[7] is not None:
+                                main_file["size"] = obs_file[7]
+                            if obs_file[8] is not None:
+                                main_file["name"] = obs_file[8]
+                            obsrefsfinal.append({str(obs_file[0]): main_file})
+
+                        # ipv4 addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_ipv4 = cur.fetchone()
+                        if obs_ipv4 is not None:
+                            main_ipv4 = {
+                                "type": "ipv4-addr"
+                            }
+                            if obs_ipv4[5] is not None:
+                                main_ipv4["value"] = obs_ipv4[5]
+
+                            obsrefsfinal.append({str(obs_ipv4[0]): main_ipv4})
+
+                        # ipv6 addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_ipv6 = cur.fetchone()
+                        if obs_ipv6 is not None:
+                            main_ipv6 = {
+                                "type": "ipv6-addr"
+                            }
+                            if obs_ipv6[5] is not None:
+                                main_ipv6["value"] = obs_ipv6[5]
+
+                            obsrefsfinal.append({str(obs_ipv6[0]): main_ipv6})
+
+                        # mac addr
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_mac = cur.fetchone()
+                        if obs_mac is not None:
+                            main_mac = {
+                                "type": "mac-addr"
+                            }
+                            if obs_mac[5] is not None:
+                                main_mac["value"] = obs_mac[5]
+
+                            obsrefsfinal.append({str(obs_mac[0]): main_mac})
+                        # network traffic
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_nettraffic = cur.fetchone()
+                        if obs_nettraffic is not None:
+                            main_nettraffic = {
+                                "type": "network-traffic"
+                            }
+                            if obs_nettraffic[5] is not None:
+                                main_nettraffic["extensions"] = obs_nettraffic[5]
+                            if obs_nettraffic[11] is not None:
+                                main_nettraffic["src_port"] = obs_nettraffic[11]
+                            if obs_nettraffic[12] is not None:
+                                main_nettraffic["src_port"] = obs_nettraffic[12]
+
+                            obsrefsfinal.append({str(obs_nettraffic[0]): main_nettraffic})
+                        # process
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `process` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_process = cur.fetchone()
+                        if obs_process is not None:
+                            main_process = {
+                                "type": "process"
+                            }
+                            if obs_process[5] is not None:
+                                main_process["extensions"] = obs_process[5]
+                            if obs_process[7] is not None:
+                                main_process["pid"] = obs_process[7]
+                            if obs_process[8] is not None:
+                                main_process["name"] = obs_process[8]
+
+                            obsrefsfinal.append({str(obs_process[0]): main_process})
+                        # software
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `software` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_software = cur.fetchone()
+                        if obs_software is not None:
+                            main_soft = {
+                                "type": "software"
+                            }
+                            if obs_software[5] is not None:
+                                main_soft["name"] = obs_software[5]
+                            if obs_software[6] is not None:
+                                main_soft["cpe"] = obs_software[6]
+                            if obs_software[7] is not None:
+                                main_soft["languages"] = obs_software[7]
+                            if obs_software[8] is not None:
+                                main_soft["vendor"] = obs_software[8]
+
+                            obsrefsfinal.append({str(obs_software[0]): main_soft})
+                        # url
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `url` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_url = cur.fetchone()
+                        if obs_url is not None:
+                            main_url = {
+                                "type": "url"
+                            }
+                            if obs_url[5] is not None:
+                                main_url["value"] = obs_url[5]
+                            obsrefsfinal.append({str(obs_url[0]): main_url})
+                        # user-account
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `user-account` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_useracc = cur.fetchone()
+                        if obs_useracc is not None:
+                            main_useracc = {
+                                "type": "user-account"
+                            }
+                            if obs_useracc[5] is not None:
+                                main_useracc["extensions"] = obs_useracc[5]
+                            if obs_useracc[6] is not None:
+                                main_useracc["user_id"] = obs_useracc[6]
+                            if obs_useracc[7] is not None:
+                                main_useracc["account_login"] = obs_useracc[7]
+                            if obs_useracc[9] is not None:
+                                main_useracc["display_name"] = obs_useracc[9]
+                            obsrefsfinal.append({str(obs_useracc[0]): main_useracc})
+                        # windows registry key
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_winregkey = cur.fetchone()
+                        if obs_winregkey is not None:
+                            main_winreg = {
+                                "type": "windows-registry-key"
+                            }
+                            if obs_winregkey[5] is not None:
+                                main_winreg["key"] = obs_winregkey[5]
+                            if obs_winregkey[8] is not None:
+                                main_winreg["number_of_subkeys"] = obs_winregkey[8]
+
+                            obsrefsfinal.append({str(obs_winregkey[0]): main_winreg})
+                        # x509 certificate
+                        cur = mysql.connection.cursor()
+                        cur.execute(
+                            "select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                            (id, type, ref_type, g.user))
+                        obs_x509 = cur.fetchone()
+                        if obs_x509 is not None:
+                            main_x509 = {
+                                "type": "x509-certificate"
+                            }
+                            if obs_x509[5] is not None:
+                                main_x509["is_self_signed"] = obs_x509[5]
+                            if obs_x509[8] is not None:
+                                main_x509["version"] = obs_x509[8]
+                            if obs_x509[9] is not None:
+                                main_x509["serial_number"] = obs_x509[9]
+                            if obs_x509[10] is not None:
+                                main_x509["signature_algorithm"] = obs_x509[10]
+                            if obs_x509[11] is not None:
+                                main_x509["issuer"] = obs_x509[11]
+                            if obs_x509[14] is not None:
+                                main_x509["subject"] = obs_x509[14]
+
+                            obsrefsfinal.append({str(obs_x509[0]): main_x509})
+
+
+                if type == 'malware-family':
+                    malfamily_path = "/home/tarun/Documents/maec5_store/malware-family/"
+                    filename = maecid + '.json'
+                    file = malfamily_path + filename
+                    with open(file, 'r') as f:
+                        file_content = f.read()
+                    maecobjlist.append(json.loads(file_content))
+                if type == 'malware-instance':
+                    malinstance_path = "/home/tarun/Documents/maec5_store/malware-instance/"
+                    filename = maecid + '.json'
+                    file = malinstance_path + filename
+                    with open(file, 'r') as f:
+                        file_content = f.read()
+                    maecobjlist.append(json.loads(file_content))
+
+
+
 
             id_gen = uuid.uuid4()
             package_id = "package--" + str(id_gen)
             main["id"] = package_id
 
             # adding maec objects to main dict
-            main["maec_objects"] = maecobjlist
+            if not maecobjlist:
+                print("do nothing")
+            else:
+                main["maec_objects"] = maecobjlist
+
+
+            # adding observables rfs to main dict
+            if not obsrefsfinal:
+                 print("do nothing")
+            else:
+                 main["observable_objects"] = obsrefsfinal
+
 
             #adding everything to final list
             finallist.append(main)
-            output = json.dumps(finallist, sort_keys = True, indent = 4)
-            response = json.loads(output)
+            output = json.dumps(finallist, sort_keys = False, indent = 4)
+
+            # response = json.loads(output)
             # save a record in database
             timestamp = datetime.now()
             type = "package"
@@ -9039,35 +10014,332 @@ def generate_maec5():
                     api_call["return_value"] = returnvalue_val
 
                 parameters_val = res_apicall[5]
-                if parameters_val == '' or parameters_val == 'None':
+                if parameters_val == '' or parameters_val == None:
                     print("Return value field is null/None, so not adding anything to the response!!")
                 else:
-                    value = tuple(res_apicall[5].split(','))
+                    value = filter(None,tuple(res_apicall[5].split(',')))
 
+                    dict = {
+
+                    }
                     tuple_len = len(value)
-                    if tuple_len == 1:
-                        result = value[0].split(':')
-                        api_call["parameters"] = {str(result[0]): str(result[1])}
 
-                    if tuple_len > 1:
-                        paramslist = []
-                        dict = {
+                    for dat in value:
+                        result = tuple(dat.split(':'))
+                        dict[str(result[0])] = str(result[1])
 
-                        }
-                        for i, a in enumerate(value):
-                            result = value[i].split(':')
-                            print result
-                            dict[str(result[0])] = str(result[1])
-                        paramslist.append(dict)
-                        api_call["parameters"] = paramslist
+
 
                 # finally adding api-call to malware_action
                 malware_action["api-call"] = api_call
 
+                inputrefs_list = []
                 # input_refs
+                input_val = main[7]
+                if input_val is not None:
+                    value = filter(None,tuple(main[7].split(',')))
+                    for dat in value:
+                        obj = tuple(dat.split(':'))
+                        inputref_id = obj[0]
+                        inputref_type = obj[1]
+                        refinputtype = 'input'
+
+                        # artifact
+                        if inputref_type == 'artifact':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `artifact` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_artifact = cur.fetchone()
+                            inputrefs_list.append(obs_artifact[0])
+
+                        # Autonomous system
+                        if inputref_type == 'autonomous-system':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype,refinputtype, g.user))
+                            obs_as = cur.fetchone()
+                            inputrefs_list.append(obs_as[0])
+
+                        # directory
+                        if inputref_type == 'directory':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `directory` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype, refinputtype, g.user))
+                            obs_dir = cur.fetchone()
+                            inputrefs_list.append(obs_dir[0])
+                        # domain-name
+                        if inputref_type == 'domain-name':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `domain-name` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype, refinputtype, g.user))
+                            obs_domainname = cur.fetchone()
+                            inputrefs_list.append(obs_domainname[0])
+                        # email-addr
+                        if inputref_type == 'email-addr':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `email-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype, refinputtype, g.user))
+                            obs_emailaddr = cur.fetchone()
+                            inputrefs_list.append(obs_emailaddr[0])
+                        # email-message
+                        if inputref_type == 'email-message':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `email-message` where  obj_id=%s AND obj_type=%s AND ref_type=%s  AND created_by=%s ",
+                                        (objid, objtype, refinputtype, g.user))
+                            obs_emailmessage = cur.fetchone()
+                            inputrefs_list.append(obs_emailmessage[0])
+                        # file
+                        if inputref_type == 'file':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `file` where  obj_id=%s AND obj_type=%s AND ref_type=%s  AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_file = cur.fetchone()
+                            inputrefs_list.append(obs_file[0])
+                        # ipv4-addr
+                        if inputref_type == 'ipv4-addr':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_ipv4 = cur.fetchone()
+                            inputrefs_list.append(obs_ipv4[0])
+                        # ipv6-addr
+                        if inputref_type == 'ipv6-addr':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_ipv6 = cur.fetchone()
+                            inputrefs_list.append(obs_ipv6[0])
+                        # mac-addr
+                        if inputref_type == 'mac-addr':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_mac = cur.fetchone()
+                            inputrefs_list.append(obs_mac[0])
+                        # network-traffic
+                        if inputref_type == 'network-traffic':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype,refinputtype, g.user))
+                            obs_nettraffic = cur.fetchone()
+                            inputrefs_list.append(obs_nettraffic[0])
+                        # process
+                        if inputref_type == 'process':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `process` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype, refinputtype, g.user))
+                            obs_process = cur.fetchone()
+                            inputrefs_list.append(obs_process[0])
+                        # software
+                        if inputref_type == 'software':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `software` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_software = cur.fetchone()
+                            inputrefs_list.append(obs_software[0])
+                        # url
+                        if inputref_type == 'url':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `url` where  obj_id=%s AND obj_type=%s AND  ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_url = cur.fetchone()
+                            inputrefs_list.append(obs_url[0])
+                        # user-account
+                        if inputref_type == 'user-account':
+                            cur = mysql.connection.cursor()
+                            cur.execute("select * from `user-account` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                        (objid, objtype,refinputtype, g.user))
+                            obs_useracc = cur.fetchone()
+                            inputrefs_list.append(obs_useracc[0])
+                        # win-reg-key
+                        if inputref_type == 'windows-registry-key':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype,refinputtype, g.user))
+                            obs_winregkey = cur.fetchone()
+                            inputrefs_list.append(obs_winregkey[0])
+                        # x509 - certificate
+                        if inputref_type == 'x509-certificate':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype,refinputtype, g.user))
+                            obs_x509 = cur.fetchone()
+                            inputrefs_list.append(obs_x509[0])
+
+                if not inputrefs_list:
+                    print("adding nothing")
+                else:
+                    malware_action["input_object_refs"] = inputrefs_list
 
                 # output_refs
+                outputrefs_list = []
 
+                output_val = main[8]
+                if output_val is not None:
+                    value = filter(None, tuple(main[8].split(',')))
+                    for dat in value:
+                        obj = tuple(dat.split(':'))
+                        outputref_id = obj[0]
+                        outputref_type = obj[1]
+                        refoutputtype = 'output'
+
+                        # artifact
+                        if outputref_type == 'artifact':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `artifact` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_artifact = cur.fetchone()
+                            outputrefs_list.append(obs_artifact[0])
+
+                        # Autonomous system
+                        if outputref_type == 'autonomous-system':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `autonomous-system` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_as = cur.fetchone()
+                            outputrefs_list.append(obs_as[0])
+
+                        # directory
+                        if outputref_type == 'directory':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `directory` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_dir = cur.fetchone()
+                            outputrefs_list.append(obs_dir[0])
+                        # domain-name
+                        if outputref_type == 'domain-name':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `domain-name` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_domainname = cur.fetchone()
+                            outputrefs_list.append(obs_domainname[0])
+                        # email-addr
+                        if outputref_type == 'email-addr':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `email-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_emailaddr = cur.fetchone()
+                            outputrefs_list.append(obs_emailaddr[0])
+                        # email-message
+                        if outputref_type == 'email-message':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `email-message` where  obj_id=%s AND obj_type=%s AND ref_type=%s  AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_emailmessage = cur.fetchone()
+                            outputrefs_list.append(obs_emailmessage[0])
+                        # file
+                        if outputref_type == 'file':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `file` where  obj_id=%s AND obj_type=%s AND ref_type=%s  AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_file = cur.fetchone()
+                            outputrefs_list.append(obs_file[0])
+                        # ipv4-addr
+                        if outputref_type == 'ipv4-addr':
+
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `ipv4-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_ipv4 = cur.fetchone()
+                            outputrefs_list.append(obs_ipv4[0])
+                        # ipv6-addr
+                        if outputref_type == 'ipv6-addr':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `ipv6-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_ipv6 = cur.fetchone()
+                            outputrefs_list.append(obs_ipv6[0])
+                        # mac-addr
+                        if outputref_type == 'mac-addr':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `mac-addr` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_mac = cur.fetchone()
+                            outputrefs_list.append(obs_mac[0])
+                        # network-traffic
+                        if outputref_type == 'network-traffic':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `network-traffic` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_nettraffic = cur.fetchone()
+                            outputrefs_list.append(obs_nettraffic[0])
+                        # process
+                        if outputref_type == 'process':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `process` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_process = cur.fetchone()
+                            outputrefs_list.append(obs_process[0])
+                        # software
+                        if outputref_type == 'software':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `software` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_software = cur.fetchone()
+                            outputrefs_list.append(obs_software[0])
+                        # url
+                        if outputref_type == 'url':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `url` where  obj_id=%s AND obj_type=%s AND  ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_url = cur.fetchone()
+                            outputrefs_list.append(obs_url[0])
+                        # user-account
+                        if outputref_type == 'user-account':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `user-account` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_useracc = cur.fetchone()
+                            outputrefs_list.append(obs_useracc[0])
+                        # win-reg-key
+                        if outputref_type == 'windows-registry-key':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `windows-registry-key` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_winregkey = cur.fetchone()
+                            outputrefs_list.append(obs_winregkey[0])
+                        # x509 - certificate
+                        if outputref_type == 'x509-certificate':
+                            cur = mysql.connection.cursor()
+                            cur.execute(
+                                "select * from `x509-certificate` where  obj_id=%s AND obj_type=%s AND ref_type=%s AND created_by=%s ",
+                                (objid, objtype, refoutputtype, g.user))
+                            obs_x509 = cur.fetchone()
+                            outputrefs_list.append(obs_x509[0])
+                if not outputrefs_list:
+                    print("adding nothing")
+                else:
+                    malware_action["output_object_refs"] = outputrefs_list
                 # finalising
                 finallist.append(malware_action)
                 output = json.dumps(finallist, sort_keys=False, indent=4)

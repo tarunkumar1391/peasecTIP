@@ -757,7 +757,7 @@ may have components such as strings that are common across all members of the fa
                                                                 <select multiple class="form-control form-control-sm" size="8" id="package" required>
                                                                     <option>Choose an option</option>
                                                                     {% for data in maeccontentdata %}
-                                                                    <option value="" reftype="{{ data.type }}" refmaec="{{ data.maec_id }}">{{ data.id }}--{{ data.maec_id }}</option>
+                                                                    <option value="" refid = {{ data.reference_id }} reftype="{{ data.type }}" refmaec="{{ data.maec_id }}">{{ data.id }}--{{ data.maec_id }}</option>
                                                                     {% endfor %}
                                                                 </select>
                                                             <input type="hidden" id="final_package" name="package">
