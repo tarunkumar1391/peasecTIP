@@ -1,7 +1,104 @@
 
 $(function() {
 
+/* validation section */
 
+/* behavior */
+$("#behavior_form").validate({
+         ignore: ":hidden",
+         rules: {
+             nm: {
+                 required: true
+             },
+             desc: {
+                 required: true
+             }
+         }
+
+
+     });
+   var behavior_form = $("#behavior_form");
+    if (behavior_form === false) {
+        event.preventDefault();
+    }
+
+ /* collection */
+$("#collection_form").validate({
+         ignore: ":hidden",
+         rules: {
+             assoc_type: {
+                 required: true
+             },
+             desc: {
+                 required: true
+             }
+         }
+
+
+     });
+   var collection_form = $("#collection_form");
+    if (collection_form === false) {
+        event.preventDefault();
+    }
+
+    /* malware action */
+    $("#malaction_form").validate({
+         ignore: ":hidden",
+         rules: {
+             nm: {
+                 required: true
+             },
+             desc: {
+                 required: true
+             }
+         }
+
+
+     });
+   var malaction_form = $("#malaction_form");
+    if (malaction_form === false) {
+        event.preventDefault();
+    }
+
+     /* malware family */
+    $("#malfamily_form").validate({
+         ignore: ":hidden",
+         rules: {
+             lab: {
+                 required: true
+             },
+             desc: {
+                 required: true
+             }
+         }
+
+
+     });
+   var malfamily_form = $("#malfamily_form");
+    if (malfamily_form === false) {
+        event.preventDefault();
+    }
+
+     /* malware Instance */
+    $("#malinstance_form").validate({
+         ignore: ":hidden",
+         rules: {
+             lab: {
+                 required: true
+             },
+             desc: {
+                 required: true
+             }
+         }
+
+
+     });
+   var malinstance_form = $("#malinstance_form");
+    if (malinstance_form === false) {
+        event.preventDefault();
+    }
+
+ /*   ************************************* */
 
 
 
@@ -460,7 +557,15 @@ relationship_type.change(function(){
 
 /* create relationship object*/
     $('#create_relationship').click(function() {
-        $.ajax({
+
+        var rel_form = $("#relationshipform");
+         if (rel_form[0].checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+              rel_form.addClass('was-validated');
+            } else {
+
+             $.ajax({
             url: '/create_relationship',
             data: $('#relationshipform').serialize(),
             type: 'POST',
@@ -480,6 +585,7 @@ relationship_type.change(function(){
 
             }
         });
+         }
 
     });
 

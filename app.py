@@ -15,6 +15,15 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'peasecTIP'
 mysql = MySQL(app)
 
+# error handlers
+@app.errorhandler(400)
+def error400(error):
+    return render_template('error.html', msg=error)
+
+@app.errorhandler(500)
+def error500(error):
+    return render_template('error.html', msg=error)
+
 
 @app.route('/')
 def index():
@@ -2177,8 +2186,8 @@ def update_entry(objtype, id):
                 'labels': row[3],
                 'description': row[4],
                 'pattern': row[5],
-                'valid_from': row[6].strftime('%Y-%m-%dT%H:%M'),
-                'valid_untill': row[7].strftime('%Y-%m-%dT%H:%M')
+                'valid_from': row[6],
+                'valid_untill': row[7]
             }
 
             output = json.dumps(rowdict, sort_keys=True, indent=4)
@@ -3931,7 +3940,7 @@ def update_entry(objtype, id):
             return render_template(url, data=resp, extrefdata=extref_response, aliasesdata=aliases_response,
                                    namedata=name_response,
                                    behavrefsdata=behavrefs_response, refcapabilitydata=refcapability_response,
-                                   refartifactdata=refartifact_response)
+                                   refartifactdata=refartifact_response,nameflag=row_name[7])
         elif objtype == "malware-instance":
             url = 'update_templates/' + objtype + '.html'
             obj_id = id
@@ -7678,6 +7687,9 @@ def update_relationship():
         return redirect(url_for('index'))
 
 
+
+
+
 # ********* MAEC objects  ********************
 
 # ********* MAEC Behavior  ********************
@@ -7877,12 +7889,12 @@ def create_malwarefamily():
             created_by = g.user
             id_gen = uuid.uuid4()
             MAEC_ID = "malware-family--" + str(id_gen)
-            flag = 1
+
             cur = mysql.connection.cursor()
             cur.execute(
-                '''INSERT INTO `malware-family` (type, maec_id, labels,  description, common_strings, created_by, published_flag) 
-                 values (%s, %s, %s, %s, %s, %s, %s)''',
-                (type, MAEC_ID, labels, description, comm_strings, created_by, flag))
+                '''INSERT INTO `malware-family` (type, maec_id, labels,  description, common_strings, created_by) 
+                 values (%s, %s, %s, %s, %s, %s)''',
+                (type, MAEC_ID, labels, description, comm_strings, created_by))
             mysql.connection.commit()
             print('success input data')
         return redirect(url_for('home'))
@@ -7980,6 +7992,7 @@ def generate_stix2():
             objid = request.form['id']
             objtype = request.form['obj_type']
 
+
             # STIX objects
             if objtype == 'attack-pattern':
                 # Main obj
@@ -7993,29 +8006,32 @@ def generate_stix2():
                             (objtype, objid, g.user))
                 row_kc = cur.fetchall()
                 kclist = []
-                for row in row_kc:
-                    rowdict = {
-                        'kill_chain_name': row[3],
-                        'phase_name': row[4]
-                    }
-                    kclist.append(rowdict)
+                if row_kc is not None:
+                    for row in row_kc:
+                        rowdict = {
+                            'kill_chain_name': row[3],
+                            'phase_name': row[4]
+                        }
+                        kclist.append(rowdict)
                 # external references
                 cur = mysql.connection.cursor()
                 cur.execute("select * from `external_references` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
                             (objtype, objid, g.user))
                 row_extref = cur.fetchall()
                 extreflist = []
-                for row in row_extref:
-                    rowdict = {
-                        'source_name': row[3],
-                        'description': row[4],
-                        'url': row[5],
-                        'hashes': {row[6]: row[7]},
-                        'external_id': row[8]
-                    }
-                    extreflist.append(rowdict)
+                if row_extref is not None:
+                    for row in row_extref:
+                        rowdict = {
+                            'source_name': row[3],
+                            'description': row[4],
+                            'url': row[5],
+                            'hashes': {row[6]: row[7]},
+                            'external_id': row[8]
+                        }
+                        extreflist.append(rowdict)
 
                 # generate stix - Attack pattern
+
                 attack_pattern = AttackPattern(name=main[2], description=main[3], kill_chain_phases=kclist,
                                                external_references=extreflist)
                 print ('Generated STIX - Attack Pattern successfully!!')
@@ -8023,6 +8039,7 @@ def generate_stix2():
                 fs.add(attack_pattern)
                 print ('Added STIX - Attack Pattern to file system store!!')
                 # save a record in database
+                timestamp = datetime.now()
                 cur = mysql.connection.cursor()
                 cur.execute(
                     '''INSERT INTO `stix_content` (type, stix_id, reference_id, created_by, `timestamp`) values (%s, %s, %s, %s, %s)''',
@@ -9518,8 +9535,6 @@ def create_package():
                                 main_x509["subject"] = obs_x509[14]
 
                             obsrefsfinal.append({str(obs_x509[0]): main_x509})
-
-
                 if type == 'malware-family':
                     malfamily_path = "/home/tarun/Documents/maec5_store/malware-family/"
                     filename = maecid + '.json'
@@ -10663,7 +10678,7 @@ def generate_maec5():
 
                     # behavior refs for capability
                     behaviorref_val = row[7]
-                    if behaviorref_val == '' or behaviorref_val == 'None':
+                    if behaviorref_val == '' or behaviorref_val == None:
                         print("No behavior ref so not adding anything")
                     else:
                         common_cap_dict["behavior_refs"] = behaviorref_val
@@ -10671,7 +10686,7 @@ def generate_maec5():
                     # external -refs for capability
                     cap_extref = row[8]
                     cap_extref_list = []
-                    if cap_extref == '' or cap_extref == 'None':
+                    if cap_extref == '' or cap_extref == None:
                         print("No external ref, so not adding anything")
                     else:
                         cur.execute(
@@ -10710,7 +10725,7 @@ def generate_maec5():
                 # common code refs
                 common_code = []
                 commcoderefs_val = main[7]
-                if commcoderefs_val == '' or commcoderefs_val == 'None':
+                if commcoderefs_val == '' or commcoderefs_val == None:
                     print("no code refs so not adding anything")
                 else:
                     coderefs = tuple(commcoderefs_val.split(','))
@@ -10753,7 +10768,7 @@ def generate_maec5():
                 # common_behavior_refs
                 commbehavrefs_val = main[8]
                 comm_behave_refs_list = []
-                if commbehavrefs_val == '' or commbehavrefs_val == 'None':
+                if commbehavrefs_val == '' or commbehavrefs_val == None:
                     print("No common behavior refs, so adding nothing")
                 else:
                     commbehavrefs = tuple(commbehavrefs_val.split(','))
@@ -10766,7 +10781,7 @@ def generate_maec5():
                 # references
                 refs = main[9]
                 refs_list = []
-                if refs == '' or refs == 'None':
+                if refs == '' or refs == None:
                     print("no references set, so nothing to add")
                 else:
                     result = tuple(refs.split(','))

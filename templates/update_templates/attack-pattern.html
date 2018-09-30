@@ -45,6 +45,12 @@
        </div>
 {#    body content section#}
     <div class="row attkpat_bodycontent ">
+        <div class="col-lg-12">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <strong>Note:</strong> Atleast one entry for kill chain phases and External references must be entered successfully!!
+            </div>
+        </div>
         <div class="col-lg-4">
             <div class="card">
                 <div class="card-header">{{ data.type }}</div>
@@ -143,7 +149,7 @@
                       <div class="col-lg-9">
                           <input type="text" class="form-control form-control-sm" name="extref_srcname" required>
                           <input type="hidden" name="ref_id" value="{{ data.id }}">
-                          <input type="hidden" class="form-control form-control-sm" name="obj_type" value="{{ data.type }}">
+                          <input type="hidden"  name="ref_type" value="{{ data.type }}">
                            <input type="hidden" name="created_by" value="{{ session['user'] }}">
                       </div>
                   </div>
@@ -156,7 +162,7 @@
                   <div class="form-group row">
                       <label class="col-lg-3 col-form-label" >URL:</label>
                       <div class="col-lg-9">
-                          <input type="text" class="form-control form-control-sm" id="extUrl" name="extref_url" disabled>
+                          <input type="text" class="form-control form-control-sm" id="extUrl"  disabled>
                           <small id="passwordHelpBlock" class="form-text text-muted">
                                 In order to add URL information, enable the check box below to also add the hash type and value information, else, leave the box unchecked.
                           </small>
@@ -165,12 +171,13 @@
                                 <input type="checkbox" class="form-check-input"  id="enableURL">Submit URL along with Hash type and value
                               </label>
                           </div>
+                          <input type="hidden" value="None" name="extref_url" id="extref_url_final">
                       </div>
                   </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label" >Hash type:</label>
                         <div class="col-lg-9">
-                            <select class="form-control form-control-sm" id="hashType" disabled name="hash_type">
+                            <select class="form-control form-control-sm" id="hashType" disabled >
                                           <option>--Choose a hash type--</option>
                                           <option value="MD5">MD5</option>
                                           <option value="MD6">MD6</option>
@@ -187,12 +194,14 @@
                                           <option value="ssdeep">ssdeep</option>
                                           <option value="WHIRLPOOL">WHIRLPOOL</option>
                                       </select>
+                            <input type="hidden" value="None" name="hash_type" id="hash_type_final">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label" >Hash value:</label>
                         <div class="col-lg-9">
-                            <input type="text" class="form-control form-control-sm" id="hashVal" disabled name="hash_value">
+                            <input type="text" class="form-control form-control-sm" id="hashVal" disabled >
+                            <input type="hidden" value="None" id="hash_value_final" name="hash_value">
                         </div>
                     </div>
                     <div class="form-group row">

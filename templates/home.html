@@ -10,19 +10,26 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename = 'nbextensions/application.css')}}" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
     <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ url_for('static', filename= 'nbextensions/require.js') }}" data-main="static/nbextensions/application"></script>
-    <script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script src="{{ url_for('static',filename = 'custom/graph.js') }}"></script>
 
+    <script src="{{ url_for('static',filename = 'custom/customscript.js') }}"></script>
+    <script>
+
+
+    </script>
+
+
 
 </head>
 <body>
-{% include 'object_modaltemplate.html' %}
-
 <div class="container-fluid">
 {#header section#}
     <div class="row">
@@ -352,15 +359,15 @@ may have components such as strings that are common across all members of the fa
                                             <div class="card-header">Define Relationships</div>
                                                 <div class="card-body">
                                                     <div class="container">
-                                                        <form method="post" id="relationshipform">
+                                                        <form method="post" novalidate="" id="relationshipform">
                                                             <div class="form-group row">
                                                                   <label class="col-lg-3  col-form-label" >Source Reference:</label>
                                                                   <div class="col-lg-9">
                                                                       <div class="form-row">
                                                                             <div class="form-group col-md-6">
                                                                               <label >Source Type:</label>
-                                                                              <select class="form-control form-control-sm" name ="src_type" id="source_type" required>
-                                                                                  <option value="None" selected>Choose an option</option>
+                                                                              <select class="form-control form-control-sm" name ="src_type" id="source_type" required="required">
+                                                                                  <option value="">Choose an option</option>
                                                                                   <option value="attack-pattern">attack-pattern</option>
                                                                                   <option value="campaign">campaign</option>
                                                                                   <option value="indicator">indicator</option>
@@ -373,11 +380,15 @@ may have components such as strings that are common across all members of the fa
                                                                                   <option value="malware-family">malware-family</option>
                                                                                   <option value="malware-instance">malware-instance</option>
                                                                               </select>
+
+                                                                                <div class="invalid-feedback">Please select an option.</div>
                                                                                 <input type="hidden" name="type" value="relationship">
                                                                             </div>
                                                                           <div class="form-group col-lg-3">
                                                                               <label>Source Id:</label>
-                                                                              <input type="number" min="1" class="form-control form-control-sm"  name="src_id" placeholder="Source ID" required>
+                                                                              <input type="number" min="1" class="form-control form-control-sm"  name="src_id" id="source_id" placeholder="Source ID" required="required">
+                                                                              <div class="valid-feedback">Success! You've done it.</div>
+                                                                                <div class="invalid-feedback">No, you missed this one.</div>
                                                                             </div>
 
                                                                       </div>
@@ -386,8 +397,10 @@ may have components such as strings that are common across all members of the fa
                                                             <div class="form-group row">
                                                               <label class="col-lg-3  col-form-label" >Relationship type:</label>
                                                                 <div class="col-lg-9">
-                                                                    <select class="form-control form-control-sm" name="rel_type" id="relationshipType" required>
-                                                                          <option value="None" selected> Choose an option</option>
+                                                                    <select class="form-control form-control-sm" name="rel_type" id="relationshipType" required="required">
+                                                                          <option value="" > Choose an option</option>
+
+                                                                        <div class="invalid-feedback">Please select an option.</div>
                                                                       </select>
                                                                 </div>
                                                             </div>
@@ -397,13 +410,17 @@ may have components such as strings that are common across all members of the fa
                                                                       <div class="form-row">
                                                                            <div class="form-group col-md-6">
                                                                               <label for="inputPassword4">Target Type:</label>
-                                                                               <select class="form-control form-control-sm" name="tar_type" id="target_type" required>
-                                                                                   <option value="None" selected>Choose an option</option>
+                                                                               <select class="form-control form-control-sm" name="tar_type" id="target_type" required="required">
+                                                                                   <option value="" >Choose an option</option>
                                                                                </select>
+                                                                               <div class="valid-feedback">Success! You've done it.</div>
+                                                                                <div class="invalid-feedback">Please select an option.</div>
                                                                             </div>
                                                                             <div class="form-group col-lg-3">
                                                                               <label for="inputEmail4">Target Id:</label>
-                                                                              <input type="number" min="1" class="form-control form-control-sm" name="tar_id" placeholder="Target ID" required>
+                                                                              <input type="number" min="1" class="form-control form-control-sm" name="tar_id" id="target_id" placeholder="Target ID" required="required">
+                                                                                <div class="valid-feedback">Success! You've done it.</div>
+                                                                                <div class="invalid-feedback">No, you missed this one.</div>
                                                                             </div>
 
                                                                       </div>
@@ -417,8 +434,8 @@ may have components such as strings that are common across all members of the fa
                                                             </div>
                                                             <div class="form-group row">
                                                                 <div class="offset-lg-3 col-lg-4">
-                                                                    <button type="button" class="btn btn-sm btn-secondary" id="create_relationship" >Create</button>
-                                                                    <button type="reset" class="btn btn-sm btn-light">Reset</button>
+                                                                    <input type="submit" class="btn btn-sm btn-secondary" id="create_relationship" value="Create">
+                                                                    <input type="reset" class="btn btn-sm btn-light" value="Reset">
                                                                 </div>
                                                             </div>
                                                         </form>
@@ -832,5 +849,9 @@ may have components such as strings that are common across all members of the fa
             </nav>
        </div>
 </div>
+{% include 'object_modaltemplate.html' %}
+{% include 'maec_modaltemp.html' %}
+{% include 'stix_modaltemp.html' %}
 </body>
+
 </html>

@@ -16,9 +16,9 @@ $(function() {
             type: 'POST',
             success: function(response) {
 
-                $("#success-alert1").fadeTo(2000, 500).slideUp(500, function(){
-               $("#success-alert1").slideUp(500);
-                });
+                $( "#success-alert1" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 600, function () {
+
+                 } );
                 console.log(response);
             },
             error: function(error) {
@@ -38,9 +38,9 @@ $(function() {
             data: $('#killchain').serialize(),
             type: 'POST',
             success: function(response) {
-                 $("#success-alert2").fadeTo(2000, 500).slideUp(500, function(){
-               $("#success-alert2").slideUp(500);
-                });
+                 $( "#success-alert2" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 600, function () {
+
+                 } );
                 console.log(response);
             },
             error: function(error) {
@@ -60,9 +60,9 @@ $(function() {
             data: $('#ext_refform').serialize(),
             type: 'POST',
             success: function(response) {
-                 $("#success-alert3").fadeTo(2000, 500).slideUp(500, function(){
-               $("#success-alert3").slideUp(500);
-                });
+                 $( "#success-alert3" ).fadeIn( 300 ).delay( 2000 ).fadeOut( 600, function () {
+
+                 } );
                 console.log(response);
             },
             error: function(error) {
@@ -88,8 +88,21 @@ $(function() {
     });
 
 
-
-
+/* Updating url*/
+    $('#extUrl').change(function(){
+    var values = $(this).val();
+    $('#extref_url_final').val(values);
+});
+/* Updating hash type*/
+    $('#hashType').change(function(){
+    var values = $(this).val();
+    $('#hash_type_final').val(values);
+});
+/* Updating hash val*/
+    $('#hashVal').change(function(){
+    var values = $(this).val();
+    $('#hash_value_final').val(values);
+});
 
 });
 
