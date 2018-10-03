@@ -1,0 +1,885 @@
+
+
+
+  <!-- Maec Modals-->
+    <!-- The Modal -->
+  <div class="modal fade" id="behavior">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Behavior</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form action="{{ url_for('create_behavior') }}" method="post" id="behavior_form">
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                    <div class="col-lg-9">
+                        <select name="nm" class="form-control form-control-sm" required>
+                            <option value="">Choose an option</option>
+                            <option value="access-premium-service">access-premium-service</option>
+                            <option value="autonomous-remote-infection">autonomous-remote-infection</option>
+                            <option value="block-security-websites">block-security-websites</option>
+                            <option value="capture-camera-input">capture-camera-input</option>
+                            <option value="capture-file-system-data">capture-file-system-data</option>
+                            <option value="capture-gps-data">capture-gps-data</option>
+                            <option value="capture-keyboard-input">capture-keyboard-input</option>
+                            <option value="capture-microphone-input">capture-microphone-input</option>
+                            <option value="capture-mouse-input">capture-mouse-input</option>
+                            <option value="capture-printer-output">capture-printer-output</option>
+                            <option value="capture-system-memory">capture-system-memory</option>
+                            <option value="capture-system-network-traffic">capture-system-network-traffic</option>
+                            <option value="capture-system-screenshot">capture-system-screenshot</option>
+                            <option value="capture-touchscreen-input">capture-touchscreen-input</option>
+                            <option value="check-for-payload">check-for-payload</option>
+                            <option value="check-language">check-language</option>
+                            <option value="click-fraud">click-fraud</option>
+                            <option value="compare-host-fingerprints">compare-host-fingerprints</option>
+                            <option value="compromise-remote-machine">compromise-remote-machine</option>
+                            <option value="control-local-machine-via-remote-command">control-local-machine-via-remote-command</option>
+                            <option value="control-malware-via-remote-command">control-malware-via-remote-command</option>
+                            <option value="crack-passwords">crack-passwords</option>
+                            <option value="defeat-call-graph-generation">defeat-call-graph-generation</option>
+                            <option value="defeat-emulator">defeat-emulator</option>
+                            <option value="defeat-flow-oriented-disassembler">defeat-flow-oriented-disassembler</option>
+                            <option value="defeat-linear-disassembler">defeat-linear-disassembler</option>
+                            <option value="degrade-security-program">degrade-security-program</option>
+                            <option value="denial-of-service">denial-of-service</option>
+                            <option value="destroy-hardware">destroy-hardware</option>
+                            <option value="detect-debugging">detect-debugging</option>
+                            <option value="detect-emulator">detect-emulator</option>
+                            <option value="detect-installed-analysis-tools">detect-installed-analysis-tools</option>
+                            <option value="detect-installed-av-tools">detect-installed-av-tools</option>
+                            <option value="detect-sandbox-environment">detect-sandbox-environment</option>
+                            <option value="detect-vm-environment">detect-vm-environment</option>
+                            <option value="determine-host-ip-address">determine-host-ip-address</option>
+                            <option value="disable-access-rights-checking">disable-access-rights-checking</option>
+                            <option value="disable-firewall">disable-firewall</option>
+                            <option value="disable-kernel-patch-protection">disable-kernel-patch-protection</option>
+                            <option value="disable-os-security-alerts">disable-os-security-alerts</option>
+                            <option value="disable-privilege-limiting">disable-privilege-limiting</option>
+                            <option value="disable-service-pack-patch-installation">disable-service-pack-patch-installation</option>
+                            <option value="disable-system-file-overwrite-protection">disable-system-file-overwrite-protection</option>
+                            <option value="disable-update-services-daemons">disable-update-services-daemons</option>
+                            <option value="disable-user-account-control">disable-user-account-control</option>
+                            <option value="drop-retrieve-debug-log-file">drop-retrieve-debug-log-file</option>
+                            <option value="elevate-privilege">elevate-privilege</option>
+                            <option value="encrypt-data">encrypt-data</option>
+                            <option value="encrypt-files">encrypt-files</option>
+                            <option value="encrypt-self">encrypt-self</option>
+                            <option value="erase-data">erase-data</option>
+                            <option value="evade-static-heuristic">evade-static-heuristic</option>
+                            <option value="execute-before-external-to-kernel-hypervisor">execute-before-external-to-kernel-hypervisor</option>
+                            <option value="execute-non-main-cpu-code">execute-non-main-cpu-code</option>
+                            <option value="execute-stealthy-code">execute-stealthy-code</option>
+                            <option value="exfiltrate-data-via-covert channel">exfiltrate-data-via-covert channel</option>
+                            <option value="exfiltrate-data-via- -dumpster-dive">exfiltrate-data-via- -dumpster-dive</option>
+                            <option value="exfiltrate-data-via-fax">exfiltrate-data-via-fax</option>
+                            <option value="exfiltrate-data-via-network">exfiltrate-data-via-network</option>
+                            <option value="exfiltrate-data-via-physical-media">exfiltrate-data-via-physical-media</option>
+                            <option value="exfiltrate-data-via-voip-phone">exfiltrate-data-via-voip-phone</option>
+                            <option value="feed-misinformation-during-physical-memory-acquisition">feed-misinformation-during-physical-memory-acquisition</option>
+                            <option value="file-system-instantiation">file-system-instantiation</option>
+                            <option value="fingerprint-host">fingerprint-host</option>
+                            <option value="generate-c2-domain-names">generate-c2-domain-names</option>
+                            <option value="hide-arbitrary-virtual-memory">hide-arbitrary-virtual-memory</option>
+                            <option value="hide-data-in-other-formats">hide-data-in-other-formats</option>
+                            <option value="hide-file-system-artifacts">hide-file-system-artifacts</option>
+                            <option value="hide-kernel-modules">hide-kernel-modules</option>
+                            <option value="hide-network-traffic">hide-network-traffic</option>
+                            <option value="hide-open-network-ports">hide-open-network-ports</option>
+                            <option value="hide-processes">hide-processes</option>
+                            <option value="hide-registry-artifacts">hide-registry-artifacts</option>
+                            <option value="hide-services">hide-services</option>
+                            <option value="hide-threads">hide-threads</option>
+                            <option value="hide-userspace-libraries">hide-userspace-libraries</option>
+                            <option value="identify-file">identify-file</option>
+                            <option value="identify-os">identify-os</option>
+                            <option value="identify-target-machines">identify-target-machines</option>
+                            <option value="impersonate-user">impersonate-user</option>
+                            <option value="install-backdoor">install-backdoor</option>
+                            <option value="install-legitimate-software">install-legitimate-software</option>
+                            <option value="install-secondary-malware">install-secondary-malware</option>
+                            <option value="install-secondary-module">install-secondary-module</option>
+                            <option value="intercept-manipulate-network-traffic">intercept-manipulate-network-traffic</option>
+                            <option value="inventory-security-products">inventory-security-products</option>
+                            <option value="inventory-system-applications">inventory-system-applications</option>
+                            <option value="inventory-victims">inventory-victims</option>
+                            <option value="limit-application-type-version">limit-application-type-version</option>
+                            <option value="log-activity">log-activity</option>
+                            <option value="manipulate-file-system-data">manipulate-file-system-data</option>
+                            <option value="map-local-network">map-local-network</option>
+                            <option value="mine-for-cryptocurrency">mine-for-cryptocurrency</option>
+                            <option value="modify-file">modify-file</option>
+                            <option value="modify-security-software-configuration">modify-security-software-configuration</option>
+                            <option value="move-data-to-staging-server">move-data-to-staging-server</option>
+                            <option value="obfuscate-artifact-properties">obfuscate-artifact-properties</option>
+                            <option value="overload-sandbox">overload-sandbox</option>
+                            <option value="package-data">package-data</option>
+                            <option value="persist-after-hardware-changes">persist-after-hardware-changes</option>
+                            <option value="persist-after-os-changes">persist-after-os-changes</option>
+                            <option value="persist-after-system-reboot">persist-after-system-reboot</option>
+                            <option value="prevent-api-unhooking">prevent-api-unhooking</option>
+                            <option value="prevent-concurrent-execution">prevent-concurrent-execution</option>
+                            <option value="prevent-debugging">prevent-debugging</option>
+                            <option value="prevent-file-access">prevent-file-access</option>
+                            <option value="prevent-file-deletion">prevent-file-deletion</option>
+                            <option value="prevent-memory-access">prevent-memory-access</option>
+                            <option value="prevent-native-api-hooking">prevent-native-api-hooking</option>
+                            <option value="prevent-physical-memory-acquisition">prevent-physical-memory-acquisition</option>
+                            <option value="prevent-registry-access">prevent-registry-access</option>
+                            <option value="prevent-registry-deletion">prevent-registry-deletion</option>
+                            <option value="prevent-security-software- -from-executing">prevent-security-software- -from-executing</option>
+                            <option value="re-instantiate-self">re-instantiate-self</option>
+                            <option value="remove-self">remove-self</option>
+                            <option value="remove-sms-warning-messages">remove-sms-warning-messages</option>
+                            <option value="remove-system-artifacts">remove-system-artifacts</option>
+                            <option value="request-email-address-list">request-email-address-list</option>
+                            <option value="request-email-template">request-email-template</option>
+                            <option value="search-for-remote-machines">search-for-remote-machines</option>
+                            <option value="send-beacon">send-beacon</option>
+                            <option value="send-email-message">send-email-message</option>
+                            <option value="send-system-information">send-system-information</option>
+                            <option value="social-engineering-based-remote-infection">social-engineering-based-remote-infection</option>
+                            <option value="steal-browser-cache">steal-browser-cache</option>
+                            <option value="steal-browser-cookies">steal-browser-cookies</option>
+                            <option value="steal-browser-history">steal-browser-history</option>
+                            <option value="steal-contact-list-data">steal-contact-list-data</option>
+                            <option value="steal-cryptocurrency-data">steal-cryptocurrency-data</option>
+                            <option value="steal-database-content">steal-database-content</option>
+                            <option value="steal-dialed-phone-numbers">steal-dialed-phone-numbers</option>
+                            <option value="steal-digital-certificates">steal-digital-certificates</option>
+                            <option value="steal-documents">steal-documents</option>
+                            <option value="steal-email-data">steal-email-data</option>
+                            <option value="steal-images">steal-images</option>
+                            <option value="steal-password-hashes">steal-password-hashes</option>
+                            <option value="steal-pki-key">steal-pki-key</option>
+                            <option value="steal-referrer-urls">steal-referrer-urls</option>
+                            <option value="steal-serial-numbers">steal-serial-numbers</option>
+                            <option value="steal-sms-database">steal-sms-database</option>
+                            <option value="steal-web-network-credential">steal-web-network-credential</option>
+                            <option value="stop-execution-of-security-software">stop-execution-of-security-software</option>
+                            <option value="suicide-exit">suicide-exit</option>
+                            <option value="test-for-firewall">test-for-firewall</option>
+                            <option value="test-for-internet-connectivity">test-for-internet-connectivity</option>
+                            <option value="test-for-network-drives">test-for-network-drives</option>
+                            <option value="test-for-proxy">test-for-proxy</option>
+                            <option value="test-smtp-connection">test-smtp-connection</option>
+                            <option value="update-configuration">update-configuration</option>
+                            <option value="validate-data">validate-data</option>
+                            <option value="write-code-into-file">write-code-into-file</option>
+                        </select>
+                        <input type="hidden" name="type" value="behavior">
+                    </div>
+
+              </div>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                    <div class="col-lg-9">
+
+                        <textarea name="desc" class="form-control form-control-sm"></textarea>
+                    </div>
+
+              </div>
+                <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Timestamp:</label>
+                    <div class="col-lg-9">
+                        <input type="datetime-local" class="form-control form-control-sm" name="timestmp">
+                    </div>
+
+              </div>
+
+               <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+   <!-- The Modal -->
+  <div class="modal fade" id="collection">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Collection</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_collection') }}" method="post" id="collection_form">
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                      <div class="col-lg-9">
+                          <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                          <input type="hidden" name="type" value="collection">
+                      </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Association type:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="assoc_type" required="required">
+                        <option value="None">Choose an option</option>
+                        <option value="file-system-entities">File system entities</option>
+                        <option value="network-entities">Network entities</option>
+                      <option value="process-entities">Process entities</option>
+                      <option value="memory-entities">Memory entities</option>
+                      <option value="ipc-entities">Ipc entities</option>
+                        <option value="device-entities">Device entities</option>
+                      <option value="service-entities">Service entities</option>
+                      <option value="potential-indicators">Potential indicators</option>
+                      <option value="same-malware-family">Same malware family</option>
+                        <option value="clustered-together">Clustered together</option>
+                      <option value="observed-together">Observed together</option>
+                      <option value="same-malware-toolkit">Same malware toolkit</option>
+                  </select>
+                  </div>
+
+              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- The Modal -->
+  <div class="modal fade" id="Malwareaction">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Malware action</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_malaction') }}" method="post" id="malaction_form">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm"  required name="nm">
+                        <option value="">Choose an option</option>
+                        <option value="accept-socket-connection">accept-socket-connection</option>
+                        <option value="add-connection-to-network-share">add-connection-to-network-share</option>
+                      <option value="add-network-share">add-network-share</option>
+                      <option value="add-scheduled-task">add-scheduled-task</option>
+                      <option value="add-system-call-hook">add-system-call-hook</option>
+                        <option value="add-user-to-group">add-user-to-group</option>
+                      <option value="add-user">add-user</option>
+                      <option value="add-windows-hook">add-windows-hook</option>
+                      <option value="allocate-process-virtual-memory">allocate-process-virtual-memory</option>
+                        <option value="bind-address-to-socket">bind-address-to-socket</option>
+                      <option value="call-library-function">call-library-function</option>
+                      <option value="change-password">change-password</option>
+                      <option value="check-for-kernel-debugger">check-for-kernel-debugger</option>
+                      <option value="check-for-remote-debugger">check-for-remote-debugger</option>
+                      <option value="close-file">close-file</option>
+                      <option value="close-port">close-port</option>
+                      <option value="close-registry-key">close-registry-key</option>
+                      <option value="close-socket">close-socket</option>
+                      <option value="connect-to-ftp-server">connect-to-ftp-server</option>
+                      <option value="connect-to-ip-address">connect-to-ip-address</option>
+                      <option value="connect-to-irc-server">connect-to-irc-server</option>
+                      <option value="connect-to-named-pipe">connect-to-named-pipe</option>
+                      <option value="connect-to-network-share">connect-to-network-share</option>
+                      <option value="connect-to-socket-address">connect-to-socket-address</option>
+                      <option value="connect-to-socket">connect-to-socket</option>
+                      <option value="connect-to-url">connect-to-url</option>
+                      <option value="copy-file">copy-file</option>
+                      <option value="create-critical-section">create-critical-section</option>
+                      <option value="create-dialog-box">create-dialog-box</option>
+                      <option value="create-directory">create-directory</option>
+                      <option value="create-event">create-event</option>
+                      <option value="create-file-alternate-data-stream">create-file-alternate-data-stream</option>
+                      <option value="create-file-mapping">create-file-mapping</option>
+                      <option value="create-file-symbolic-link">create-file-symbolic-link</option>
+                      <option value="create-file">create-file</option>
+                      <option value="create-mailslotn">create-mailslot</option>
+                      <option value="create-mutex">create-mutex</option>
+                      <option value="create-named-pipe">create-named-pipe</option>
+                      <option value="create-process-as-user">create-process-as-usere</option>
+                      <option value="create-process">create-process</option>
+                      <option value="create-registry-key-value">create-registry-key-value</option>
+                      <option value="create-registry-key">create-registry-key</option>
+                      <option value="create-remote-thread-in-process">create-remote-thread-in-process</option>
+                      <option value="create-semaphore">create-semaphore</option>
+                      <option value="create-service">create-service</option>
+                      <option value="create-socket">create-socket</option>
+                      <option value="create-thread">create-thread</option>
+                      <option value="create-window">create-window</option>
+                      <option value="delete-critical-section">delete-critical-section</option>
+                      <option value="delete-directory">delete-directory</option>
+                      <option value="delete-event">delete-event</option>
+                      <option value="delete-file">delete-file</option>
+                      <option value="delete-mutex">delete-mutex</option>
+                      <option value="delete-named-pipe">delete-named-pipe</option>
+                      <option value="delete-network-share">delete-network-share</option>
+                      <option value="delete-registry-key-value">delete-registry-key-value</option>
+                      <option value="delete-registry-key">delete-registry-key</option>
+                      <option value="delete-semaphore">delete-semaphore</option>
+                      <option value="delete-service">delete-service</option>
+                      <option value="delete-user">delete-user</option>
+                      <option value="disconnect-from-ftp-server">disconnect-from-ftp-server</option>
+                      <option value="disconnect-from-ip">disconnect-from-ip</option>
+                      <option value="disconnect-from-irc-server">disconnect-from-irc-server</option>
+                      <option value="disconnect-from-named-pipe">disconnect-from-named-pipe</option>
+                      <option value="disconnect-from-network-share">disconnect-from-network-share</option>
+                      <option value="disconnect-from-socket">disconnect-from-socket</option>
+                      <option value="download-file">download-file</option>
+                      <option value="enumerate-libraries">enumerate-libraries</option>
+                      <option value="enumerate-network-shares">enumerate-network-shares</option>
+                      <option value="enumerate-processes">enumerate-processes</option>
+                      <option value="enumerate-registry-key-subkeys">enumerate-registry-key-subkeys</option>
+                      <option value="enumerate-registry-key-values">enumerate-registry-key-values</option>
+                      <option value="enumerate-services">enumerate-services</option>
+                      <option value="enumerate-system-handles">enumerate-system-handles</option>
+                      <option value="enumerate-threads">enumerate-threads</option>
+                      <option value="enumerate-users">enumerate-users</option>
+                      <option value="enumerate-windows">enumerate-windows</option>
+                      <option value="execute-file">execute-file</option>
+                      <option value="find-file">find-file</option>
+                      <option value="find-window">find-window</option>
+                      <option value="flush-process-instruction-cache">flush-process-instruction-cache</option>
+                      <option value="free-library">free-library</option>
+                      <option value="free-process-virtual-memory">free-process-virtual-memory</option>
+                      <option value="get-disk-attributes">get-disk-attributes</option>
+                      <option value="get-disk-type">get-disk-type</option>
+                      <option value="get-elapsed-system-up-time">get-elapsed-system-up-time</option>
+                      <option value="get-file-or-directory-attributes">get-file-or-directory-attributes</option>
+                      <option value="get-function-address">get-function-address</option>
+                      <option value="get-host-by-address">get-host-by-address</option>
+                      <option value="get-host-by-name">get-host-by-name</option>
+                      <option value="get-netbios-name">get-netbios-name</option>
+                      <option value="get-process-current-directory">get-process-current-directory</option>
+                      <option value="get-process-environment-variable">get-process-environment-variable</option>
+                      <option value="get-process-startupinfo">get-process-startupinfo</option>
+                      <option value="get-registry-key-attributes">get-registry-key-attributes</option>
+                      <option value="get-system-global-flags">get-system-global-flags</option>
+                      <option value="get-system-host-name">get-system-host-name</option>
+                      <option value="get-system-local-time">get-system-local-time</option>
+                      <option value="get-system-time">get-system-time</option>
+                      <option value="get-thread-context">get-thread-context</option>
+                      <option value="get-thread-username">get-thread-username</option>
+                      <option value="get-user-attributes">get-user-attributes</option>
+                      <option value="get-username">get-username</option>
+                      <option value="get-windows-directory">get-windows-directory</option>
+                      <option value="get-windows-system-directory">get-windows-system-directory</option>
+                      <option value="get-temporary-files-directory">get-temporary-files-directory</option>
+                      <option value="impersonate-process">impersonate-process</option>
+                      <option value="invoke-user-privilege">invoke-user-privilege</option>
+                      <option value="join-irc-channel">join-irc-channel</option>
+                      <option value="kill-process">kill-process</option>
+                      <option value="kill-thread">kill-thread</option>
+                      <option value="kill-window">kill-window</option>
+                      <option value="leave-irc-channel">leave-irc-channel</option>
+                      <option value="enumerate-disks">enumerate-disks</option>
+                      <option value="listen-on-port">listen-on-port</option>
+                      <option value="listen-on-socket">listen-on-socket</option>
+                      <option value="load-and-call-driver">load-and-call-driver</option>
+                      <option value="load-driver">load-driver</option>
+                      <option value="load-library">load-library</option>
+                      <option value="lock-file">lock-file</option>
+                      <option value="logon-as-user">logon-as-user</option>
+                      <option value="map-file-into-process">map-file-into-process</option>
+                      <option value="map-library-into-process">map-library-into-process</option>
+                      <option value="modify-process-virtual-memory-protection">modify-process-virtual-memory-protection</option>
+                      <option value="modify-registry-key-value">modify-registry-key-value</option>
+                      <option value="modify-registry-key">modify-registry-key</option>
+                      <option value="modify-service-configuration">modify-service-configuration</option>
+                      <option value="monitor-directory">monitor-directory</option>
+                      <option value="monitor-disk">monitor-disk</option>
+                      <option value="monitor-registry-key">monitor-registry-key</option>
+                      <option value="mount-disk">mount-disk</option>
+                      <option value="move-file">move-file</option>
+                      <option value="open-critical-section">open-critical-section</option>
+                      <option value="open-event">open-event</option>
+                      <option value="open-file-mapping">open-file-mapping</option>
+                      <option value="open-directory">open-directory</option>
+                      <option value="open-file">open-file</option>
+                      <option value="open-mutex">open-mutex</option>
+                      <option value="open-port">open-port</option>
+                      <option value="open-process">open-process</option>
+                      <option value="open-registry-key">open-registry-key</option>
+                      <option value="open-semaphore">open-semaphore</option>
+                      <option value="open-service">open-service</option>
+                      <option value="queue-apc-in-thread">queue-apc-in-thread</option>
+                      <option value="read-from-file">read-from-file</option>
+                      <option value="read-from-mailslot">read-from-mailslot</option>
+                      <option value="read-from-named-pipe">read-from-named-pipe</option>
+                      <option value="read-from-process-memory">read-from-process-memory</option>
+                      <option value="read-registry-key-value">read-registry-key-value</option>
+                      <option value="receive-data-on-socket">receive-data-on-socket</option>
+                      <option value="receive-http-response">receive-http-response</option>
+                      <option value="receive-irc-private-message">receive-irc-private-message</option>
+                      <option value="receive-network-packet">receive-network-packet</option>
+                      <option value="release-critical-section">release-critical-section</option>
+                      <option value="release-mutex">release-mutex</option>
+                      <option value="release-semaphore">release-semaphore</option>
+                      <option value="remove-user-from-group">remove-user-from-group</option>
+                      <option value="rename-file">rename-file</option>
+                      <option value="reset-event">reset-event</option>
+                      <option value="revert-thread-to-self">revert-thread-to-self</option>
+                      <option value="send-control-code-to-file">send-control-code-to-file</option>
+                      <option value="send-control-code-to-service">send-control-code-to-service</option>
+                      <option value="send-data-on-socket">send-data-on-socket</option>
+                      <option value="send-data-to-address-on-socket">send-data-to-address-on-socket</option>
+                      <option value="send-dns-query">send-dns-query</option>
+                      <option value="send-email-message">send-email-message</option>
+                      <option value="send-ftp-command">send-ftp-command</option>
+                      <option value="send-http-connect-request">send-http-connect-request</option>
+                      <option value="send-http-delete-request">send-http-delete-request</option>
+                      <option value="send-http-get-request">send-http-get-request</option>
+                      <option value="send-http-head-request">send-http-head-request</option>
+                      <option value="send-http-options-request">send-http-options-request</option>
+                      <option value="send-http-patch-request">send-http-patch-request</option>
+                      <option value="send-http-post-request">send-http-post-request</option>
+                      <option value="send-http-put-request">send-http-put-request</option>
+                      <option value="send-http-trace-request">send-http-trace-request</option>
+                      <option value="send-icmp-request">send-icmp-request</option>
+                      <option value="send-irc-private-message">send-irc-private-message</option>
+                      <option value="send-network-packet">send-network-packet</option>
+                      <option value="send-reverse-dns-lookup">send-reverse-dns-lookup</option>
+                      <option value="set-file-or-directory-attributes">set-file-or-directory-attributes</option>
+                      <option value="set-irc-nickname">set-irc-nickname</option>
+                      <option value="set-netbios-name">set-netbios-name</option>
+                      <option value="set-process-current-directory">set-process-current-directory</option>
+                      <option value="set-process-environment-variable">set-process-environment-variable</option>
+                      <option value="set-system-global-flags">set-system-global-flags</option>
+                      <option value="set-system-host-name">set-system-host-name</option>
+                      <option value="set-system-local-time">set-system-local-time/option>
+                      <option value="set-system-time">set-system-time</option>
+                      <option value="set-thread-context">set-thread-context</option>
+                      <option value="show-window">show-window</option>
+                      <option value="shutdown-system">shutdown-system</option>
+                      <option value="sleep-process">sleep-process</option>
+                      <option value="sleep-system">sleep-system</option>
+                      <option value="start-service">start-service</option>
+                      <option value="stop-service">stop-service</option>
+                      <option value="unload-driver">unload-driver</option>
+                      <option value="unlock-file">unlock-file</option>
+                      <option value="unmap-file-from-process">unmap-file-from-process</option>
+                      <option value="unmount-disk">unmount-disk</option>
+                      <option value="upload-file">upload-file</option>
+                      <option value="write-to-file">write-to-file</option>
+                      <option value="write-to-mailslot">write-to-mailslot</option>
+                      <option value="write-to-named-pipe">write-to-named-pipe</option>
+                      <option value="write-to-process-memory">write-to-process-memory</option>
+                  </select>
+                      <input type="hidden" name="type" value="malware-action">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class=" col-lg-3 col-form-label" >Is successful:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="is_successful">
+                          <option>Choose an option</option>
+                          <option value="true">True</option>
+                          <option value="false">False</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Timestamp:</label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control form-control-sm" name="timestmp">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+   <!-- The Modal -->
+  <div class="modal fade" id="malwarefamily">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Malware family</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_malwarefamily') }}" method="post" id="malfamily_form">
+                <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" >Labels:</label>
+                    <div class="col-lg-9">
+                      <input type="hidden" name="type" value="malware-family">
+                      <select  class="form-control form-control-sm" name="lab" multiple id="familylabels">
+                          <option>Choose an option</option>
+                          <option value="adware">adware</option>
+                          <option value="appender">appender</option>
+                          <option value="backdoor">backdoor</option>
+                          <option value="boot-sector-virus">boot-sector-virus</option>
+                          <option value="bot">bot</option>
+                          <option value="cavity-filler">cavity-filler</option>
+                          <option value="clicker">clicker</option>
+                          <option value="companion-virus">companion-virus</option>
+                          <option value="data-diddler">data-diddler</option>
+                          <option value="ddos">ddos</option>
+                          <option value="downloader">downloader</option>
+                          <option value="dropper">dropper</option>
+                          <option value="exploit-kit">exploit-kit</option>
+                          <option value="file-infector-virus">file-infector-virus</option>
+                          <option value="file-less">file-less</option>
+                          <option value="fork-bomb">fork-bomb</option>
+                          <option value="greyware">greyware</option>
+                          <option value="implant">implant</option>
+                          <option value="keylogger">keylogger</option>
+                          <option value="kleptographic-worm">kleptographic-worm</option>
+                          <option value="macro-virus">macro-virus</option>
+                          <option value="malware-as-a-service">malware-as-a-service</option>
+                          <option value="mass-mailer">mass-mailer</option>
+                          <option value="metamorphic-virus">metamorphic-virus</option>
+                          <option value="mid-infector">mid-infector</option>
+                          <option value="mobile-code">mobile-code</option>
+                          <option value="multipartite-virus">multipartite-virus</option>
+                          <option value="parental-control">parental-control</option>
+                          <option value="password-stealer">password-stealer</option>
+                          <option value="polymorphic-virus">polymorphic-virus</option>
+                          <option value="premium-dialer-smser">premium-dialer-smser</option>
+                          <option value="prepender">prepender</option>
+                          <option value="ransomware">ransomware</option>
+                          <option value="remote-access-trojan">remote-access-trojan</option>
+                          <option value="resource-exploiter">resource-exploiter</option>
+                          <option value="rogue-security-software">rogue-security-software</option>
+                          <option value="rootkit">rootkit</option>
+                          <option value="scareware">scareware</option>
+                          <option value="screen-capture">screen-capture</option>
+                          <option value="security-assessment-tools">security-assessment-tool</option>
+                          <option value="shellcode">shellcode</option>
+                          <option value="spyware">spyware</option>
+                          <option value="trackware">trackware</option>
+                          <option value="trojan">trojan</option>
+                          <option value="virus">virus</option>
+                          <option value="web-bug">web-bug</option>
+                          <option value="worm">worm</option>
+                      </select>
+                        <input type="hidden" name="labels" id="familylabels_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" name="desc" rows="4"></textarea> <!-- to be edited further-->
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                      <label class="col-lg-3 col-form-label">Common strings:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="comm_strings">
+                      <small id="commStringsHelpBlock" class="form-text text-muted">
+                                If you have multiple common strings to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- The Modal -->
+  <div class="modal fade" id="malwareinstance">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Malware Instance</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_malwareinstance') }}" method="post" id="malinstance_form">
+
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Labels:</label>
+                  <div class="col-lg-9">
+                      <input type="hidden" name="type"  value="malware-instance">
+                      <select  class="form-control form-control-sm" name="lab" multiple id="malinstancelabels">
+                          <option>Choose an option</option>
+                          <option value="adware">adware</option>
+                          <option value="appender">appender</option>
+                          <option value="backdoor">backdoor</option>
+                          <option value="boot-sector-virus">boot-sector-virus</option>
+                          <option value="bot">bot</option>
+                          <option value="cavity-filler">cavity-filler</option>
+                          <option value="clicker">clicker</option>
+                          <option value="companion-virus">companion-virus</option>
+                          <option value="data-diddler">data-diddler</option>
+                          <option value="ddos">ddos</option>
+                          <option value="downloader">downloader</option>
+                          <option value="dropper">dropper</option>
+                          <option value="exploit-kit">exploit-kit</option>
+                          <option value="file-infector-virus">file-infector-virus</option>
+                          <option value="file-less">file-less</option>
+                          <option value="fork-bomb">fork-bomb</option>
+                          <option value="greyware">greyware</option>
+                          <option value="implant">implant</option>
+                          <option value="keylogger">keylogger</option>
+                          <option value="kleptographic-worm">kleptographic-worm</option>
+                          <option value="macro-virus">macro-virus</option>
+                          <option value="malware-as-a-service">malware-as-a-service</option>
+                          <option value="mass-mailer">mass-mailer</option>
+                          <option value="metamorphic-virus">metamorphic-virus</option>
+                          <option value="mid-infector">mid-infector</option>
+                          <option value="mobile-code">mobile-code</option>
+                          <option value="multipartite-virus">multipartite-virus</option>
+                          <option value="parental-control">parental-control</option>
+                          <option value="password-stealer">password-stealer</option>
+                          <option value="polymorphic-virus">polymorphic-virus</option>
+                          <option value="premium-dialer-smser">premium-dialer-smser</option>
+                          <option value="prepender">prepender</option>
+                          <option value="ransomware">ransomware</option>
+                          <option value="remote-access-trojan">remote-access-trojan</option>
+                          <option value="resource-exploiter">resource-exploiter</option>
+                          <option value="rogue-security-software">rogue-security-software</option>
+                          <option value="rootkit">rootkit</option>
+                          <option value="scareware">scareware</option>
+                          <option value="screen-capture">screen-capture</option>
+                          <option value="security-assessment-tools">security-assessment-tool</option>
+                          <option value="shellcode">shellcode</option>
+                          <option value="spyware">spyware</option>
+                          <option value="trackware">trackware</option>
+                          <option value="trojan">trojan</option>
+                          <option value="virus">virus</option>
+                          <option value="web-bug">web-bug</option>
+                          <option value="worm">worm</option>
+                      </select>
+                      <input type="hidden" name="labels" id="malinstancelabels_final"  value="malware-instance">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="4" name="desc"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">OS execution environments:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" multiple id="osexecenv">
+                      <option>Choose an option</option>
+                      <option value="android-1.0.x">android-1.0.x</option>
+                      <option value="android-1.1.x">android-1.1.x</option>
+                      <option value="android-1.5.x">android-1.5.x</option>
+                      <option value="android-1.6.x">android-1.6.x</option>
+                      <option value="android-2.0.x">android-2.0.x</option>
+                      <option value="android-2.1.x">android-2.1.x</option>
+                      <option value="android-2.2.x">android-2.2.x</option>
+                      <option value="android-2.3.x">android-2.3.x</option>
+                      <option value="android-3.0.x">android-3.0.x</option>
+                      <option value="android-3.1.x">android-3.1.x</option>
+                      <option value="android-3.2.x">android-3.2.x</option>
+                      <option value="android-4.0.x">android-4.0.x</option>
+                      <option value="android-4.1.x">android-4.1.x</option>
+                      <option value="android-4.2.x">android-4.2.x</option>
+                      <option value="android-4.3.x">android-4.3.x</option>
+                      <option value="android-4.4.x">android-4.4.x</option>
+                      <option value="android-5.0.x">android-5.0.x</option>
+                      <option value="android-5.1.x">android-5.1.x</option>
+                      <option value="android-unknown-version">android-unknown-version</option>
+                      <option value="ios-1.0.x">ios-1.0.x</option>
+                      <option value="ios-1.1.x">ios-1.1.x</option>
+                      <option value="ios-2.0.x">ios-2.0.x</option>
+                      <option value="ios-2.1.x">ios-2.1.x</option>
+                      <option value="ios-2.2.x">ios-2.2.x</option>
+                      <option value="ios-3.0.x">ios-3.0.x</option>
+                      <option value="ios-3.1.x">ios-3.1.x</option>
+                      <option value="ios-3.2.x">ios-3.2.x</option>
+                      <option value="ios-4.0.x">ios-4.0.x</option>
+                      <option value="ios-4.1.x">ios-4.1.x</option>
+                      <option value="ios-4.2.x">ios-4.2.x</option>
+                      <option value="ios-4.3.x">ios-4.3.x</option>
+                      <option value="ios-5.0.x">ios-5.0.x</option>
+                      <option value="ios-5.1.x">ios-5.1.x</option>
+                      <option value="ios-6.0.x">ios-6.0.x</option>
+                      <option value="ios-6.1.x">ios-6.1.x</option>
+                      <option value="ios-7.0.x">ios-7.0.x</option>
+                      <option value="ios-7.1.x">ios-7.1.x</option>
+                      <option value="ios-8.0.x">ios-8.0.x</option>
+                      <option value="ios-8.1.x">ios-8.1.x</option>
+                      <option value="ios-8.2.x">ios-8.2.x</option>
+                      <option value="ios-8.3.x">ios-8.3.x</option>
+                      <option value="ios-8.4.x">ios-8.4.x</option>
+                      <option value="ios-9.0.x">ios-9.0.x</option>
+                      <option value="ios-9.1.x">ios-9.1.x</option>
+                      <option value="ios-9.2.x">ios-9.2.x</option>
+                      <option value="ios-9.3.x">ios-9.3.x</option>
+                      <option value="ios-10.0.x">ios-10.0.x</option>
+                      <option value="ios-10.1.x">ios-10.1.x</option>
+                      <option value="ios-unknown-version">ios-unknown-version</option>
+                      <option value="linux-kernel-2.4.x">linux-kernel-2.4.x</option>
+                      <option value="linux-kernel-2.6.x">linux-kernel-2.6.x</option>
+                      <option value="linux-kernel-3.0.x">linux-kernel-3.0.x</option>
+                      <option value="linux-kernel-3.1.x">linux-kernel-3.1.x</option>
+                      <option value="linux-kernel-3.2.x">linux-kernel-3.2.x</option>
+                      <option value="linux-kernel-3.3.x">linux-kernel-3.3.x</option>
+                      <option value="linux-kernel-3.4.x">linux-kernel-3.4.x</option>
+                      <option value="linux-kernel-3.5.x">linux-kernel-3.5.x</option>
+                      <option value="linux-kernel-3.6.x">linux-kernel-3.6.x</option>
+                      <option value="linux-kernel-3.7.x">linux-kernel-3.7.x</option>
+                      <option value="linux-kernel-3.8.x">linux-kernel-3.8.x</option>
+                      <option value="linux-kernel-3.9.x">linux-kernel-3.9.x</option>
+                      <option value="linux-kernel-3.10.x">linux-kernel-3.10.x</option>
+                      <option value="linux-kernel-3.11.x">linux-kernel-3.11.x</option>
+                      <option value="linux-kernel-3.12.x">linux-kernel-3.12.x</option>
+                      <option value="linux-kernel-3.13.x">linux-kernel-3.13.x</option>
+                      <option value="linux-kernel-3.14.x">linux-kernel-3.14.x</option>
+                      <option value="linux-kernel-3.15.x">linux-kernel-3.15.x</option>
+                      <option value="linux-kernel-3.16.x">linux-kernel-3.16.x</option>
+                      <option value="linux-kernel-3.17.x">linux-kernel-3.17.x</option>
+                      <option value="linux-kernel-3.18.x">linux-kernel-3.18.x</option>
+                      <option value="linux-kernel-3.19.x">linux-kernel-3.19.x</option>
+                      <option value="linux-kernel-4.0.x">linux-kernel-4.0.x</option>
+                      <option value="linux-kernel-4.1.x">linux-kernel-4.1.x</option>
+                      <option value="linux-unknown-version">linux-unknown-version</option>
+                      <option value="mac-os-x-10.0.x">mac-os-x-10.0.x</option>
+                      <option value="mac-os-x-10.1.x">mac-os-x-10.1.x</option>
+                      <option value="mac-os-x-10.2.x">mac-os-x-10.2.x</option>
+                      <option value="mac-os-x-10.3.x">mac-os-x-10.3.x</option>
+                      <option value="mac-os-x-10.4.x">mac-os-x-10.4.x</option>
+                      <option value="mac-os-x-10.5.x">mac-os-x-10.5.x</option>
+                      <option value="mac-os-x-10.6.x">mac-os-x-10.6.x</option>
+                      <option value="mac-os-x-10.7.x">mac-os-x-10.7.x</option>
+                      <option value="mac-os-x-10.8.x">mac-os-x-10.8.x</option>
+                      <option value="mac-os-x-10.9.x">mac-os-x-10.9.x</option>
+                      <option value="mac-os-x-10.10.x">mac-os-x-10.10.x</option>
+                      <option value="mac-os-x-10.11.x">mac-os-x-10.11.x</option>
+                      <option value="mac-os-x-unknown-version">mac-os-x-unknown-version</option>
+                      <option value="windows-7">windows-7</option>
+                      <option value="windows-7-sp1">windows-7-sp1</option>
+                      <option value="windows-8">windows-8</option>
+                      <option value="windows-8.1">windows-8.1</option>
+                      <option value="windows-10">windows-10</option>
+                      <option value="windows-server-2003">windows-server-2003</option>
+                      <option value="windows-server-2003-sp1">windows-server-2003-sp1</option>
+                      <option value="windows-server-2003-sp2">windows-server-2003-sp2</option>
+                      <option value="windows-server-2008">windows-server-2008</option>
+                      <option value="windows-server-2008-sp1">windows-server-2008-sp1</option>
+                      <option value="windows-server-2008-sp2">windows-server-2008-sp2</option>
+                      <option value="windows-server-2008-r2">windows-server-2008-r2</option>
+                      <option value="windows-server-2008-r2-sp1">windows-server-2008-r2-sp1</option>
+                      <option value="windows-server-2012">windows-server-2012</option>
+                      <option value="windows-server-2012-r2">windows-server-2012-r2</option>
+                      <option value="windows-vista">windows-vista</option>
+                      <option value="windows-vista-sp1">windows-vista-sp1</option>
+                      <option value="windows-vista-sp2">windows-vista-sp2</option>
+                      <option value="windows-xp">windows-xp</option>
+                      <option value="windows-xp-sp1">windows-xp-sp1</option>
+                      <option value="windows-xp-sp2">windows-xp-sp2</option>
+                      <option value="windows-xp-sp3">windows-xp-sp3</option>
+                      <option value="windows-unknown-version">windows-unknown-version</option>
+
+                  </select>
+                      <input type="hidden" name="osexecenv" id="osexecenv_final">
+                  </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-lg-3 col-form-label">Architecture execution environments:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" multiple id="archexec_env">
+                      <option>Choose an option</option>
+                      <option value="x86">x86</option>
+                      <option value="x86-64">x86-64</option>
+                      <option value="ia-64">ia-64</option>
+                      <option value="powerpc">powerpc</option>
+                      <option value="arm">arm</option>
+                      <option value="alpha">alpha</option>
+                      <option value="sparc">sparc</option>
+                      <option value="mips">mips</option>
+                  </select>
+                      <input type="hidden" name="archexec_env" id="archexec_env_final">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label">Os features:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" multiple id="os_feat">
+                      <option>Choose an option</option>
+                      <option value="login-items">login-items</option>
+                      <option value="plist-files">plist-files</option>
+                      <option value="applescript">applescript</option>
+                      <option value="launch-agent">launch-agent</option>
+                      <option value="launch-daemons">launch-daemons</option>
+                      <option value="kext">kext</option>
+                      <option value="login-logout-hooks">login-logout-hooks</option>
+                      <option value="named-pipes">named-pipes</option>
+                      <option value="berkeley-sockets">berkeley-sockets</option>
+                      <option value="cron">cron</option>
+                      <option value="mutexes">mutexes</option>
+                      <option value="registry-keys">registry-keys</option>
+                      <option value="services">services</option>
+                      <option value="powershell">powershell</option>
+                      <option value="ntfs-extended-attributes">ntfs-extended-attributes</option>
+                      <option value="network-shares">network-shares</option>
+                      <option value="hooks">hooks</option>
+                      <option value="wmi">wmi</option>
+                      <option value="task-scheduler">task-scheduler</option>
+                      <option value="critical-sections">critical-sections</option>
+                      <option value="device-drivers">device-drivers</option>
+                      <option value="admin-network-shares">admin-network-shares</option>
+                  </select>
+                      <input type="hidden" name="os_feat" id="os_feat_final">
+                  </div>
+              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

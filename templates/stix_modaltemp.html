@@ -1,0 +1,855 @@
+ <!-- SDO Modals -->
+  <div class="modal fade" id="attackpattern">
+    <div class="modal-dialog  modal-dialog-centered">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Attack pattern</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('attk_pattern') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                    <div class="col-lg-9">
+                        <input type="text" class="form-control form-control-sm" name="nm" required>
+                        <input type="hidden"  name="type" value="attack-pattern">
+                        <input type="hidden" name="created_by" value="{{ session['user'] }}">
+                    </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc" required></textarea>
+                  </div>
+
+              </div>
+               <!-- Modal footer -->
+              <div class="form-group row">
+                  <div class="offset-lg-3 col-lg-6">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="campaign">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Campaign</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_campaign') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9" >
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                      <input type="hidden" name="type" value="campaign">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9" > <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea></div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Aliases:</label>
+                  <div class="col-lg-9" >
+                      <input type="text" class="form-control form-control-sm" name="aliases">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple alias names to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >First seen:</label>
+                  <div class="col-lg-9" ><input type="datetime-local" class="form-control form-control-sm" name="first_seen"></div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Last seen:</label>
+                  <div class="col-lg-9" ><input type="datetime-local" class="form-control form-control-sm" name="last_seen"></div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Objective:</label>
+                  <div class="col-lg-9" ><input type="text" class="form-control form-control-sm" name="objective"></div>
+              </div>
+
+                  <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
+                  </div>
+       </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="identity">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Identity</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_identity') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="hidden" name="type" value="identity">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="labels">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple labels to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="select_id_class" >Identity class:</label>
+                    <div class="col-lg-9">
+                        <select class="form-control form-control-sm" name="id_class" id="select_id_class" required>
+                        <option value="">Choose an option</option>
+                        <option value="individual">Individual</option>
+                        <option value="group">Group</option>
+                        <option value="organization">Organization</option>
+                        <option value="class">Class</option>
+                        <option value="unknown">Unknown</option>
+                    </select>
+                    </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="select_sector" >Sectors:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" multiple="multiple"  id="select_sector">
+                        <option value="">Choose an option</option>
+                        <option value="agriculture">Agriculture</option>
+                        <option value="aerospace">Aerospace</option>
+                        <option value="automotive">Automotive</option>
+                        <option value="communications">Communications</option>
+                        <option value="construction">Construction</option>
+                        <option value="defence">Defence</option>
+                        <option value="education">Education</option>
+                        <option value="energy">Energy</option>
+                        <option value="entertainment">Entertainment</option>
+                        <option value="financial-services">Financial services</option>
+                        <option value="government-national">Government national</option>
+                        <option value="government-regional">Government regional</option>
+                        <option value="government-local">Government local</option>
+                        <option value="government-public-services">Government public services</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="hospitality-leisure">Hospitality leisure</option>
+                        <option value="infrastructure">Infrastructure</option>
+                        <option value="insurance">Insurance</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="mining">Mining</option>
+                        <option value="non-profit">Non-profit</option>
+                        <option value="pharmaceuticals">Pharmaceuticals</option>
+                        <option value="retail">Retail</option>
+                        <option value="technology">Technology</option>
+                        <option value="telecommunications">Telecommunications</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="utilities">Utilities</option>
+                    </select>
+                      <input type="hidden" name="sectors" id="selectors">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Contact Information:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="contactinfo"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <div class="offset-lg-3 col-lg-4">
+                      <input type="submit" class="btn btn-primary" value="Submit">
+                  <input type="reset" class="btn btn-light" value="Reset">
+                  </div>
+              </div>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="indicator">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Indicator</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+             <form role="form" action="{{ url_for('create_indicator') }}" method="post">
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Name:</label>
+                     <div class="col-lg-9">
+                         <input type="hidden" value="indicator" name="type">
+                      <input type="text" class="form-control form-control-sm" name="nm">
+                     </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="select_label" >Labels:</label>
+                      <div class="col-lg-9">
+                          <select class="form-control form-control-sm" name="id_class" multiple="multiple" required id="select_label">
+                        <option value="">Choose an option</option>
+                        <option value="anomalous-activity">Anomalous activity</option>
+                        <option value="anonymization">Anonymization</option>
+                        <option value="benign">Benign</option>
+                        <option value="compromised">Compromised</option>
+                        <option value="malicious-activity">Malicious activity</option>
+                        <option value="attribution">Attribution</option>
+                    </select>
+                      <input type="hidden" name="labels" id="label_final">
+                      </div>
+
+                  </div>
+                 <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                     <div class="col-lg-9">
+                         <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                     </div>
+
+                 </div>
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Pattern:</label>
+                     <div class="col-lg-9">
+                         <input type="text" class="form-control form-control-sm" name="pattern" required>
+                     </div>
+
+                 </div>
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Valid from:</label>
+                     <div class="col-lg-9">
+                         <input type="datetime-local" class="form-control form-control-sm" name="valid_from" required>
+                     </div>
+
+                 </div>
+                 <div class="form-group row">
+                      <label class="col-lg-3 col-form-label" >Valid untill:</label>
+                     <div class="col-lg-9">
+                         <input type="datetime-local" class="form-control form-control-sm" name="valid_untill">
+                     </div>
+
+                 </div>
+
+                  <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                          <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
+                  </div>
+             </form>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="intrusionset">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Intrusion set</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_intrusionset') }}" method="POST">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" value="intrusion-set" name="type">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Aliases:</label>
+                  <div class="col-lg-9">
+                       <input type="text" class="form-control form-control-sm" name="aliases">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple aliases to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >First seen:</label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control form-control-sm" name="first_seen" required>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Last seen:</label>
+                  <div class="col-lg-9">
+                      <input type="datetime-local" class="form-control form-control-sm" name="last_seen" required>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Goals:</label>
+                  <div class="col-lg-9">
+
+                      <input type="text" class="form-control form-control-sm" name="goals">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple goals to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="resource_lev" >Resource level:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="res_level" id="resource_lev">
+                        <option value="">Choose an option</option>
+                        <option value="individual">Individual</option>
+                        <option value="club">Club</option>
+                        <option value="contest">Contest</option>
+                        <option value="team">Team</option>
+                        <option value="organization">Organization</option>
+                        <option value="government">Government</option>
+                    </select>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="primary_motiv" >Primary motivation:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="prim_motiv" id="primary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="secondary_motiv" >Secondary motivation:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" name="" id="secondary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                  <input type="hidden" name="sec_motiv" id="secondary_motiv_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                          <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
+                  </div>
+          </form>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="malware">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Malware</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_malware') }}" method="POST">
+               <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                   <div class="col-lg-9">
+                       <input type="text" class="form-control form-control-sm" name="nm" required>
+                       <input type="hidden" value="malware" name="type">
+                   </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" id="labels" required>
+                        <option >Choose an option</option>
+                        <option value="adware">Adware</option>
+                        <option value="backdoor">Backdoor</option>
+                        <option value="bot">Bot</option>
+                        <option value="ddos">Ddos</option>
+                        <option value="dropper">Dropper</option>
+                        <option value="exploit-kit">Exploit kit</option>
+                          <option value="keylogger">Keylogger</option>
+                          <option value="ransomware">Ransomware</option>
+                          <option value="remote-access-trojan">Remote access trojan</option>
+                          <option value=" resource-exploitation">Resource exploitation</option>
+                          <option value="rogue-security-software">Rogue security software</option>
+                          <option value="rootkit">Rootkit</option>
+                          <option value="screen-capture">Screen capture</option>
+
+                    </select>
+                      <input type="hidden" name="labels" id="labels_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+              </div>
+              <div class="form-group row">
+                      <div class="offset-lg-3 col-lg-4">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                          <input type="reset" class="btn btn-light" value="Reset">
+                      </div>
+                  </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="report">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Report</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_report') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" name="type" value="report">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="select_label" >Labels:</label>
+                    <div class="col-lg-9">
+                        <select class="form-control form-control-sm" multiple required id="reportlabels" >
+                        <option value="">Choose an option</option>
+                        <option value="threat-report">Threat report</option>
+                        <option value="attack-pattern">Attack pattern</option>
+                        <option value="campaign">Campaign</option>
+                        <option value="identity">Identity</option>
+                        <option value="indicator">Indicator</option>
+                        <option value="malware">Malware</option>
+                        <option value="observed-data">Observed-data</option>
+                        <option value="threat-actor">Threat actor</option>
+                        <option value="tool">Tool</option>
+                        <option value="vulnerability">Vulnerability</option>
+                    </select>
+                  <input type="hidden" value="" name="labels" id="final_label">
+                    </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Published:</label>
+                  <div class="col-lg-9">
+                       <input type="datetime-local" class="form-control form-control-sm" name="published" required>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <label class="col-lg-3 col-form-label" for="obj_refs" >Object Ref's:</label>
+                    <div class="col-lg-9">
+                        <select  multiple class="form-control form-control-sm" id="obj_ref" required >
+                        <option value="">Choose an option</option>
+                        {% for dat in stixdata %}
+                        <option value="{objid:{{ dat.id }},objtype:{{ dat.type }}}" objid="{{ dat.id }}" objtype="{{ dat.type }}">{{ dat.type }}--{{ dat.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" value="" name="obj_ref" id="final_objref">
+                    </div>
+
+              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="threatactor">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Threat Actor</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_threatactor') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" name="type" value="threat-actor">
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" required id="ta_labels">
+                        <option value="activist">Activist</option>
+                        <option value="competitor">Competitor</option>
+                        <option value="crime-syndicate">Crime syndicate</option>
+                        <option value="criminal">Criminal</option>
+                        <option value="hacker">Hacker</option>
+                        <option value="insider-accidental">Insider accidental</option>
+                        <option value="insider-disgruntled">Insider disgruntled</option>
+                        <option value="nation-state">Nation state</option>
+                        <option value="sensationalist">Sensationalist</option>
+                        <option value="spy">Spy</option>
+                        <option value="terrorist">Terrorist</option>
+                  </select>
+                      <input type="hidden" name="labels" id="ta_label_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Aliases:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="aliases">
+                      <small id="aliasesHelpBlock" class="form-text text-muted">
+                                If you have multiple aliases to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Roles:</label>
+                  <div class="col-lg-9">
+                        <select multiple class="form-control form-control-sm" id="ta_roles">
+                      <option> Choose an option</option>
+                        <option value="agent">agent</option>
+                        <option value="director">director</option>
+                        <option value="independent">independent</option>
+                        <option value="infrastructure-architect">infrastructure-architect</option>
+                        <option value="infrastructure-operator">infrastructure-operator</option>
+                        <option value="malware-author">malware-author</option>
+                        <option value="sponsor">sponsor</option>
+
+                  </select>
+                      <input type="hidden" name="roles" id="ta_role_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Goals:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="goals">
+                      <small id="goalsHelpBlock" class="form-text text-muted">
+                                If you have multiple goals to be entered, kindly separate them with a semicolon(;).
+                          </small>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Sophistication:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="sophistication">
+                      <option> Choose an option</option>
+                        <option value="none">None</option>
+                        <option value="minimal">Minimal</option>
+                        <option value="intermediate">Intermediate</option>
+                        <option value="advanced">Advanced</option>
+                        <option value="expert">Expert</option>
+                        <option value="innovator">Innovator</option>
+                        <option value="strategic">Strategic</option>
+
+                  </select>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Resource level:</label>
+                  <div class="col-lg-9">
+                      <select  class="form-control form-control-sm" name="res_level">
+                      <option> Choose an option</option>
+                        <option value="individual">Individual</option>
+                        <option value="club">Club</option>
+                        <option value="contest">Contest</option>
+                        <option value="team">Team</option>
+                        <option value="organization">Organization</option>
+                        <option value="government">Government</option>
+                  </select>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="primary_motiv" >Primary motivation:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm" name="prim_motiv" id="primary_motiv">
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="sec_motiv" >Secondary motivations:</label>
+                  <div class="col-lg-9">
+                       <select class="form-control form-control-sm"  id="sec_motiv" multiple>
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                      <input type="hidden" name="sec_motiv" id="ta_sec_motiv_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" for="per_motiv" >Personal motivation:</label>
+                  <div class="col-lg-9">
+                      <select class="form-control form-control-sm"  id="per_motiv" multiple>
+                        <option value="">Choose an option</option>
+                        <option value="accidental">Accidental</option>
+                        <option value="coercion">Coercion</option>
+                        <option value="dominance">Dominance</option>
+                        <option value="ideology">Ideology</option>
+                        <option value="notoriety">Notoriety</option>
+                        <option value="organizational-gain">Organizational-gain</option>
+                        <option value="personal-gain">Personal gain</option>
+                        <option value="personal-satisfaction">Personal satisfaction</option>
+                        <option value="revenge">Revenge</option>
+                        <option value="unpredictable">Unpredictable</option>
+                    </select>
+                      <input type="hidden" name="per_motiv" id="ta_per_motiv_final">
+
+                  </div>
+
+              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="tool">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Tool</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_tool') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                      <input type="hidden" name="type" value="tool">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Labels:</label>
+                  <div class="col-lg-9">
+                      <select multiple class="form-control form-control-sm" id="tool_label" required>
+                        <option>Choose an option</option>
+                        <option value="denial-of-service">denial-of-service</option>
+                        <option value="exploitation">exploitation</option>
+                        <option value=" information-gathering"> information-gathering</option>
+                        <option value="network-capture">network-capture</option>
+                        <option value="credentialexploitation">credential exploitation</option>
+                        <option value="remote-access">remote-access</option>
+                        <option value="vulnerability-scanning">vulnerability-scanning</option>
+                  </select>
+                      <input type="hidden" value="" name="labels" id="tool_label_final">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label" >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label" >Tool version:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="tool_ver">
+                  </div>
+
+              </div>
+             <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- The Modal -->
+  <div class="modal fade" id="vulnerability">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Vulnerability</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form action="{{ url_for('create_vulnerability') }}" method="post">
+              <div class="form-group row">
+                  <label class="col-lg-3 col-form-label " >Name:</label>
+                  <div class="col-lg-9">
+                      <input type="text" class="form-control form-control-sm" name="nm" required>
+                  <input type="hidden" name="type" value="vulnerability">
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                     <label class="col-lg-3 col-form-label " >Description:</label>
+                  <div class="col-lg-9">
+                      <textarea class="form-control form-control-sm" rows="3" name="desc"></textarea>
+                  </div>
+
+              </div>
+              <div class="form-group row">
+                    <div class="offset-lg-3 col-lg-4">
+                         <input type="submit" class="btn btn-primary" value="Submit">
+                         <input type="reset" class="btn btn-light" value="Reset">
+                    </div>
+             </div>
+          </form>
+
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Peasec Threat Intelligence Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'bootstrap/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename = 'custom/styles.css')}}">
+    <script src="{{ url_for('static',filename = 'bootstrap/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/popper.min.js') }}"></script>
+    <script src="{{ url_for('static',filename = 'bootstrap/bootstrap.min.js') }}"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+            <!--Navbar-->
+            <nav class="navbar navbar-expand-lg bg-light  navbar-light fixed-top " role="navigation">
+                <a class="navbar-brand" href="#">
+                    <img src="{{ url_for('static',filename='images/peaseclogo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
+                    PEASEC Threat Intelligence Platform</a>
+
+            </nav>
+            <!--/.Navbar-->
+       </div>
+    <div class="row">
+        <div class="container" style="margin-top: 10%;">
+            <div class="alert alert-danger">
+            {{ msg }}
+        </div>
+        </div>
+
+    </div>
+<div class="row">
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+                <span class="navbar-text"> All rights reserved @ PEASEC </span>
+            </nav>
+        </div>
+</div>
+</body>
+</html>
