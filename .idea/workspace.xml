@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="62822a07-8042-4e57-8b3c-51647f255cbd" name="Default" comment="Merge branch 'master' of https://github.com/tarunkumar1391/peasecTIP&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources/10c79e1d-ecc7-4334-9757-6ef168f5102d.xml&#10;#&#9;.idea/workspace.xml" />
+    <list default="true" id="62822a07-8042-4e57-8b3c-51647f255cbd" name="Default" comment="Merge branch 'master' of https://github.com/tarunkumar1391/peasecTIP&#10;&#10;# Conflicts:&#10;#&#9;.idea/dataSources/10c79e1d-ecc7-4334-9757-6ef168f5102d.xml&#10;#&#9;.idea/workspace.xml">
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,7 +15,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/peasecTIP$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1536366174417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/cti-stix-visualization-master/stix2viz" />
     <SUITE FILE_PATH="coverage/peasecTIP$setup.coverage" NAME="setup Coverage Results" MODIFIED="1536368508796" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/static/cti-stix-visualization-master" />
-    <SUITE FILE_PATH="coverage/peasecTIP$peasecTIP.coverage" NAME="peasecTIP Coverage Results" MODIFIED="1538331679814" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/peasecTIP$peasecTIP.coverage" NAME="peasecTIP Coverage Results" MODIFIED="1538921671894" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="DatabaseView">
     <option name="SHOW_INTERMEDIATE" value="true" />
@@ -65,11 +69,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
+          <entry key="Python Console" value="3" />
           <entry key="cell" value="89" />
           <entry key="css" value="205" />
-          <entry key="html" value="50700" />
+          <entry key="html" value="50704" />
           <entry key="js" value="11573" />
-          <entry key="py" value="79545" />
+          <entry key="py" value="80481" />
           <entry key="sql" value="2507" />
           <entry key="txt" value="9" />
         </counts>
@@ -77,10 +82,10 @@
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="205" />
-          <entry key="HTML" value="50700" />
+          <entry key="HTML" value="50704" />
           <entry key="JavaScript" value="11573" />
           <entry key="PLAIN_TEXT" value="9" />
-          <entry key="Python" value="79514" />
+          <entry key="Python" value="80453" />
           <entry key="SQL" value="1832" />
           <entry key="Scratch" value="795" />
         </counts>
@@ -91,11 +96,11 @@
           <entry key="analysis-metadata" value="4" />
           <entry key="api-call" value="10" />
           <entry key="artifact" value="20" />
-          <entry key="attack-pattern" value="5" />
+          <entry key="attack-pattern" value="6" />
           <entry key="autonomous-system" value="4" />
           <entry key="behavior" value="13" />
           <entry key="binary-obfuscation" value="2" />
-          <entry key="bundle" value="4" />
+          <entry key="bundle" value="6" />
           <entry key="campaign" value="4" />
           <entry key="capability" value="5" />
           <entry key="cfg" value="1" />
@@ -106,21 +111,21 @@
           <entry key="dynamic-features" value="6" />
           <entry key="email-addr" value="4" />
           <entry key="email-message" value="3" />
-          <entry key="external_references" value="13" />
+          <entry key="external_references" value="15" />
           <entry key="field-data" value="5" />
           <entry key="file" value="9" />
-          <entry key="html" value="407" />
-          <entry key="identity" value="5" />
-          <entry key="indicator" value="3" />
-          <entry key="intrusion-set" value="2" />
+          <entry key="html" value="410" />
+          <entry key="identity" value="6" />
+          <entry key="indicator" value="4" />
+          <entry key="intrusion-set" value="3" />
           <entry key="ipv4-addr" value="2" />
           <entry key="ipv6-addr" value="2" />
-          <entry key="js" value="234" />
+          <entry key="js" value="235" />
           <entry key="json" value="1" />
-          <entry key="kill_chain_phase" value="3" />
+          <entry key="kill_chain_phase" value="5" />
           <entry key="mac-addr" value="2" />
           <entry key="maec_content" value="13" />
-          <entry key="malware" value="3" />
+          <entry key="malware" value="4" />
           <entry key="malware-action" value="15" />
           <entry key="malware-development-environment" value="2" />
           <entry key="malware-family" value="14" />
@@ -132,19 +137,19 @@
           <entry key="png" value="1" />
           <entry key="process" value="4" />
           <entry key="process-tree-node" value="6" />
-          <entry key="py" value="6" />
+          <entry key="py" value="7" />
           <entry key="refined_capability" value="5" />
-          <entry key="relationship" value="7" />
+          <entry key="relationship" value="8" />
           <entry key="report" value="2" />
           <entry key="rnc" value="1" />
           <entry key="signature-metadata" value="3" />
           <entry key="software" value="4" />
           <entry key="sql" value="31" />
           <entry key="static-features" value="2" />
-          <entry key="stix_content" value="13" />
+          <entry key="stix_content" value="14" />
           <entry key="svg" value="1" />
-          <entry key="threat-actor" value="4" />
-          <entry key="tool" value="1" />
+          <entry key="threat-actor" value="5" />
+          <entry key="tool" value="2" />
           <entry key="url" value="2" />
           <entry key="user-account" value="3" />
           <entry key="users" value="2" />
@@ -156,14 +161,14 @@
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="CSS" value="6" />
-          <entry key="Database Element" value="299" />
-          <entry key="HTML" value="407" />
+          <entry key="Database Element" value="314" />
+          <entry key="HTML" value="410" />
           <entry key="Image" value="1" />
           <entry key="Ini" value="1" />
           <entry key="JSON" value="1" />
-          <entry key="JavaScript" value="234" />
+          <entry key="JavaScript" value="235" />
           <entry key="Markdown" value="3" />
-          <entry key="Python" value="6" />
+          <entry key="Python" value="7" />
           <entry key="RNG Compact" value="1" />
           <entry key="SQL" value="2" />
           <entry key="SVG" value="1" />
@@ -177,15 +182,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="311">
+              <caret line="8602" lean-forward="true" selection-start-line="8602" selection-end-line="8602" />
               <folding>
                 <element signature="e#0#113#0" expanded="true" />
-                <marker date="1538331665328" expanded="true" signature="553:705" ph="..." />
-                <marker date="1538331665328" expanded="true" signature="378101:434389" ph="..." />
+                <marker date="1538921671868" expanded="true" signature="570:722" ph="..." />
+                <marker date="1538921671868" expanded="true" signature="380188:436476" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/templates/view_templates/intrusion-set.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="555">
+              <caret line="70" column="23" selection-start-line="70" selection-start-column="23" selection-end-line="70" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -202,15 +217,11 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>/insert_malware</find>
-      <find>/insertfield</find>
-      <find>/insertcapa</find>
       <find>malware_family</find>
       <find>/publis</find>
       <find>/view_</find>
       <find>behavior_refs</find>
       <find>/update_malware</find>
-      <find>/update</find>
       <find>/u</find>
       <find>Replace</find>
       <find>/insert_dynami</find>
@@ -232,6 +243,10 @@
       <find>/delete_re</find>
       <find>$PROJECT_DIR$/../../../delete</find>
       <find>source_type</find>
+      <find>if len</find>
+      <find>/update</find>
+      <find>/</find>
+      <find>/update_indica</find>
     </findStrings>
     <replaceStrings>
       <replace>form-group row</replace>
@@ -278,7 +293,6 @@
         <option value="$PROJECT_DIR$/templates/view_templates/campaign.html" />
         <option value="$PROJECT_DIR$/templates/view_templates/identity.html" />
         <option value="$PROJECT_DIR$/templates/view_templates/indicator.html" />
-        <option value="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" />
         <option value="$PROJECT_DIR$/templates/view_templates/malware.html" />
         <option value="$PROJECT_DIR$/templates/view_templates/report.html" />
         <option value="$PROJECT_DIR$/templates/view_templates/threat-actor.html" />
@@ -295,9 +309,10 @@
         <option value="$PROJECT_DIR$/templates/maec_modaltemp.html" />
         <option value="$PROJECT_DIR$/templates/400.html" />
         <option value="$PROJECT_DIR$/templates/500.html" />
-        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/templates/error.html" />
         <option value="$PROJECT_DIR$/templates/stix_modaltemp.html" />
+        <option value="$PROJECT_DIR$/app.py" />
+        <option value="$PROJECT_DIR$/templates/view_templates/intrusion-set.html" />
       </list>
     </option>
   </component>
@@ -308,10 +323,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-1" />
+    <option name="x" value="67" />
     <option name="y" value="25" />
-    <option name="width" value="1922" />
-    <option name="height" value="1056" />
+    <option name="width" value="1853" />
+    <option name="height" value="1055" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -353,7 +368,20 @@
             <path>
               <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
               <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="custom" type="462c0819:PsiDirectoryNode" />
+              <item name="indicator" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="peasecTIP" type="462c0819:PsiDirectoryNode" />
+              <item name="templates" type="462c0819:PsiDirectoryNode" />
+              <item name="view_templates" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="peasecTIP" type="b2602c69:ProjectViewProjectNode" />
@@ -374,7 +402,7 @@
     <property name="database.console.LAST_STATE" value="false" />
     <property name="database.data.extractors.current.id" value="Tab-separated (TSV)_id" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/app.py" />
-    <property name="settings.editor.selected.configurable" value="preferences.general" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -492,13 +520,13 @@
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49679896" visible="true" weight="0.17044826" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49679896" visible="true" weight="0.17044826" />
       <window_info id="Structure" order="1" sideWeight="0.503201" side_tool="true" weight="0.1307364" />
       <window_info id="Favorites" order="2" sideWeight="0.50136614" side_tool="true" weight="0.14941302" />
       <window_info anchor="bottom" id="SQL Generator" order="0" weight="0.32869378" />
       <window_info anchor="bottom" id="Message" order="1" />
       <window_info anchor="bottom" id="Find" order="2" sideWeight="0.49786553" weight="0.32790223" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.49010417" visible="true" weight="0.25513515" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.49010417" visible="true" weight="0.25513515" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -506,7 +534,7 @@
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32972974" />
       <window_info anchor="bottom" id="Database Changes" order="10" weight="0.3295099" />
-      <window_info anchor="bottom" id="Python Console" order="11" />
+      <window_info anchor="bottom" id="Python Console" order="11" weight="0.32972974" />
       <window_info anchor="bottom" id="Terminal" order="12" weight="0.32892057" />
       <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.5052083" side_tool="true" weight="0.20162933" />
       <window_info anchor="bottom" id="Database Console" order="14" sideWeight="0.49479166" weight="0.20162933" />
@@ -524,48 +552,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/attack-pattern">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/autonomous-system">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/behavior">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/binary-obfuscation">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/bundle">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/campaign">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/capability">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -615,13 +601,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/external_references">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/field-data">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -630,27 +609,6 @@
       </provider>
     </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/file">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/identity">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/indicator">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/intrusion-set">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
@@ -671,13 +629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/kill_chain_phase">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/mac-addr">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -686,13 +637,6 @@
       </provider>
     </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/maec_content">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/malware">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
@@ -776,13 +720,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/relationship">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/report">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
@@ -798,27 +735,6 @@
       </provider>
     </entry>
     <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/software">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/stix_content">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/threat-actor">
-      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
-        <state>
-          <filtering enabled="true" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/tool">
       <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
         <state>
           <filtering enabled="true" />
@@ -874,14 +790,121 @@
         </state>
       </provider>
     </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/attack-pattern">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/static/custom/indicator/update_indicator.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/update_templates/indicator.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-630" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1125" />
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/bundle">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/kill_chain_phase">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/external_references">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/intrusion-set">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/relationship">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/tool">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/threat-actor">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/malware">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/indicator">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/identity">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="das://10c79e1d-ecc7-4334-9757-6ef168f5102d/schema/peasecTIP/table/stix_content">
+      <provider selected="true" editor-type-id="com.intellij.database.editor.DatabaseTableFileEditorProvider">
+        <state>
+          <filtering enabled="true" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="311">
+          <caret line="8602" lean-forward="true" selection-start-line="8602" selection-end-line="8602" />
           <folding>
             <element signature="e#0#113#0" expanded="true" />
-            <marker date="1538331665328" expanded="true" signature="553:705" ph="..." />
-            <marker date="1538331665328" expanded="true" signature="378101:434389" ph="..." />
+            <marker date="1538921671868" expanded="true" signature="570:722" ph="..." />
+            <marker date="1538921671868" expanded="true" signature="380188:436476" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/view_templates/intrusion-set.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="70" column="23" selection-start-line="70" selection-start-column="23" selection-end-line="70" selection-end-column="23" />
         </state>
       </provider>
     </entry>

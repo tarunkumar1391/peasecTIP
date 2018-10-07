@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, url_for, redirect, ses
 from flask_mysqldb import MySQL
 from stix2 import *
 import uuid
+import unidecode
 import os.path, io
 from datetime import datetime
 
@@ -8005,21 +8006,28 @@ def generate_stix2():
                 cur.execute("select * from `kill_chain_phase` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
                             (objtype, objid, g.user))
                 row_kc = cur.fetchall()
+
                 kclist = []
-                if row_kc is not None:
+                if bool(row_kc) != False:
                     for row in row_kc:
                         rowdict = {
                             'kill_chain_name': row[3],
                             'phase_name': row[4]
                         }
                         kclist.append(rowdict)
+                else:
+                    rowdict={
+                        'kill_chain_name': "None",
+                        'phase_name': "None"
+                    }
+                    kclist.append(rowdict)
                 # external references
                 cur = mysql.connection.cursor()
                 cur.execute("select * from `external_references` where  obj_type=%s AND obj_id=%s AND created_by=%s ",
                             (objtype, objid, g.user))
                 row_extref = cur.fetchall()
                 extreflist = []
-                if row_extref is not None:
+                if bool(row_extref) != False:
                     for row in row_extref:
                         rowdict = {
                             'source_name': row[3],
@@ -8029,6 +8037,15 @@ def generate_stix2():
                             'external_id': row[8]
                         }
                         extreflist.append(rowdict)
+                else:
+                    rowdict = {
+                        'source_name': "None",
+                        'description': "None",
+                        'url': "None",
+                        'hashes': {"None": "None"},
+                        'external_id': "None"
+                    }
+                    extreflist.append(rowdict)
 
                 # generate stix - Attack pattern
 
@@ -8129,15 +8146,30 @@ def generate_stix2():
                             (objtype, objid, g.user))
                 row_kc = cur.fetchall()
                 kclist = []
-                for row in row_kc:
+                if bool(row_kc) != False:
+                    for row in row_kc:
+                        rowdict = {
+                            'kill_chain_name': row[3],
+                            'phase_name': row[4]
+                        }
+                        kclist.append(rowdict)
+                else:
                     rowdict = {
-                        'kill_chain_name': row[3],
-                        'phase_name': row[4]
+                        'kill_chain_name': "None",
+                        'phase_name': "None"
                     }
                     kclist.append(rowdict)
 
+
+
+                patternval = ''
+                if main[5] is not None:
+                    patternval = main[5]
+                    print patternval
+                else:
+                    patternval = "None"
                 # generate stix - indicator
-                indicator = Indicator(name=main[2], labels=labels_result, description=main[4], pattern=main[5],
+                indicator = Indicator(name=main[2], labels=labels_result, description=main[4], pattern=patternval,
                                       valid_from=main[6].strftime('%Y-%m-%dT%H:%M'),
                                       valid_until=main[7].strftime('%Y-%m-%dT%H:%M'),
                                       kill_chain_phases=kclist)
@@ -8209,10 +8241,17 @@ def generate_stix2():
                             (objtype, objid, g.user))
                 row_kc = cur.fetchall()
                 kclist = []
-                for row in row_kc:
+                if bool(row_kc) != False:
+                    for row in row_kc:
+                        rowdict = {
+                            'kill_chain_name': row[3],
+                            'phase_name': row[4]
+                        }
+                        kclist.append(rowdict)
+                else:
                     rowdict = {
-                        'kill_chain_name': row[3],
-                        'phase_name': row[4]
+                        'kill_chain_name': "None",
+                        'phase_name': "None"
                     }
                     kclist.append(rowdict)
                 # generate stix - malware
@@ -8340,10 +8379,17 @@ def generate_stix2():
                             (objtype, objid, g.user))
                 row_kc = cur.fetchall()
                 kclist = []
-                for row in row_kc:
+                if bool(row_kc) != False:
+                    for row in row_kc:
+                        rowdict = {
+                            'kill_chain_name': row[3],
+                            'phase_name': row[4]
+                        }
+                        kclist.append(rowdict)
+                else:
                     rowdict = {
-                        'kill_chain_name': row[3],
-                        'phase_name': row[4]
+                        'kill_chain_name': "None",
+                        'phase_name': "None"
                     }
                     kclist.append(rowdict)
 
@@ -8381,13 +8427,23 @@ def generate_stix2():
                             (objtype, objid, g.user))
                 row_extref = cur.fetchall()
                 extreflist = []
-                for row in row_extref:
+                if bool(row_extref) != False:
+                    for row in row_extref:
+                        rowdict = {
+                            'source_name': row[3],
+                            'description': row[4],
+                            'url': row[5],
+                            'hashes': {row[6]: row[7]},
+                            'external_id': row[8]
+                        }
+                        extreflist.append(rowdict)
+                else:
                     rowdict = {
-                        'source_name': row[3],
-                        'description': row[4],
-                        'url': row[5],
-                        'hashes': {row[6]: row[7]},
-                        'external_id': row[8]
+                        'source_name': "None",
+                        'description': "None",
+                        'url': "None",
+                        'hashes': {"None": "None"},
+                        'external_id': "None"
                     }
                     extreflist.append(rowdict)
 

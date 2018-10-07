@@ -47,7 +47,7 @@
 {#    body content section#}
     <div class="row attkpat_bodycontent ">
         <div class="col-lg-6">
-            {% if publishedflag != 1 %}
+
             <div class="alert alert-info">
             <form method="POST" action="{{ url_for('delete_all_entry') }}">
                 <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
@@ -56,9 +56,10 @@
               <button type="submit" class="btn btn-primary">Click here</button>
             </form>
             </div>
-            {% endif %}
+
         </div>
         <div class="col-lg-6">
+            {% if publishedflag != 1 %}
             <div class="alert alert-success">
             <form method="POST" action="{{ url_for('generate_stix2') }}">
                 <input type="hidden" class="form-control " name="id" value="{{ main.id }}">
@@ -67,6 +68,7 @@
               <button type="submit" class="btn btn-primary">Click here</button>
             </form>
             </div>
+            {% endif %}
         </div>
     </div>
     <div class="row">
