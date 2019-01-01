@@ -296,7 +296,7 @@ $(function(){
                     var tbl_row = $(this).closest('tr');
 
                     var row_id = tbl_row.attr('row_id2');
-
+					var obj_type = 'attack-pattern';
                     //--->get row data > start
                     var arr = {};
                     tbl_row.find('.row_data2').each(function(index, val)
@@ -306,6 +306,7 @@ $(function(){
                         arr[col_name] = col_val;
                     });
                     $.extend(arr, {id:row_id});
+                    $.extend(arr, {objtype:obj_type});
                     //--->get row data > end
                     var sendData = JSON.stringify(arr, null, 2)
                      $.ajax({
